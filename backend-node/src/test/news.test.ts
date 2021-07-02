@@ -1,9 +1,8 @@
 import request from 'supertest';
 import app from '../app';
-import News from '../model/news.model';
 
 describe('/news end point testing', () => {
-    // Returned Content-Type shoudl be json
+    // Returned Content-Type should be json
     test('/news (GET) --> should have a Content-Type of JSON', async () => {
         await request(app).get('/news').expect('Content-Type', /json/);
     });
@@ -16,6 +15,21 @@ describe('/news end point testing', () => {
     // Return array of 'news' when accesing path '/news' (method = GET)
     test('/news (GET) --> should get an array of news as a response when successful', async () => {
         const response = await request(app).get('/news');
-        expect(typeof response.body).toBe(typeof Array<News>());
+
+        // Make sure response body is an array
+        expect(response.body).toBeInstanceOf(Array);
+
+        // If body not empty expect array of news objects
+        if (response.body.length > 0) {
+            expect(response.body).toEqual(expect.arrayContaining([
+                expect.objectContaining({
+                    _id: expect.any(String),
+                    description: expect.any(String),
+                    shortDescription: expect.any(String),
+                    createdAt: expect.any(String),
+                    updatedAt: expect.any(String)
+                })
+            ]))
+        }
     });
 });

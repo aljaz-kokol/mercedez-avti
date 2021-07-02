@@ -32,4 +32,8 @@ describe('/news end point testing', () => {
             ]))
         }
     });
+
+    test('/news (GET) --> should throw error with status code of 500 if there was an error', () => {
+        
+    })
 });

@@ -1,7 +1,9 @@
 export default interface News {
     _id: string;
-    description: string;
-    shortDescription: string;
-    createdAt: string;
-    updatedAt: string;
+    title: string;
+    body: string,
+    summary: string,
+    imageUrl: string,
+    createdAt: string,
+    updatedAt: string
 }

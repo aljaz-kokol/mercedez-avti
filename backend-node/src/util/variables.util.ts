@@ -1,0 +1,2 @@
+export const mongoUri = 'mongodb+srv://kokol:86yKC4SYHl1lwWef@cluster0.0tzsf.mongodb.net/mercedez-avti?retryWrites=true&w=majority';
+export const mongoTestUri = 'mongodb+srv://kokol:86yKC4SYHl1lwWef@cluster0.0tzsf.mongodb.net/mercedez-avti-test?retryWrites=true&w=majority';

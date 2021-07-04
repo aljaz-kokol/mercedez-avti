@@ -1,5 +1,13 @@
-import app from './app';
+import mongoose from 'mongoose';
 
-app.listen(3000, () => {
-    'Now listening on port 3000'
-})
+import app from './app';
+import { mongoUri } from './util/variables.util';
+
+mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    app.listen(3000, () => {  
+        console.log('Now listening on port 3000');
+    });
+}).catch(err => console.log(err));

@@ -17,6 +17,6 @@ const newsSchema = new Schema({
        type: String,
        required: true,
    }
-}, {timestamps: true});
+}, {timestamps: true, versionKey: false});
 
 export default model('News', newsSchema);

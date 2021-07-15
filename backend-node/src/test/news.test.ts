@@ -5,19 +5,19 @@ import {Request, Response} from 'express';
 
 import app from '../app';
 import MongoNews from '../model/mongo/news.monog.model';
-import { mongoTestUri } from '../util/variables.util';
-import { getNews, createNews } from '../controller/news.controller';
+import { mongoTestUri, mongoTestId } from '../util/variables.util';
+import { getNews, createNews, getNewsFromId } from '../controller/news.controller';
 
 describe('/news end point testing', () => {
-    beforeAll(() => {
-        mongoose.connect(mongoTestUri, {
+    beforeAll(async () => {
+        await mongoose.connect(mongoTestUri, {
             useNewUrlParser: true, 
             useUnifiedTopology: true
         });
     }); 
 
-    afterAll(() => {
-        mongoose.disconnect();
+    afterAll(async () => {
+        await mongoose.disconnect();
     });
 
     describe('Fetching all news documents', () => {
@@ -67,9 +67,84 @@ describe('/news end point testing', () => {
             expect(result).toHaveProperty('statusCode', 500);
         });  
     });
-   
-    describe('Creating a new news document', () => {
+    
+    describe('Fetching a single news document', () => {
+        // Before any test runs create a news doucument with the id of ${mongoTestId}
+        beforeAll(async () => {
+            const news = new MongoNews({
+                _id: mongoTestId,
+                title: 'A random test title',
+                body: 'A random test body',
+                summary: 'A random test summary',
+                imageUrl: 'A random image url'
+            });
+            await news.save();
+        });
+
+        // After all tests run delete all news doucuments in the test DB
+        afterAll(async () => {
+            await MongoNews.deleteMany();
+        });
+
+        // Returned content type should be JSON
+        test('GET /news/:newsId --> should have a Content-Type of JSON', async () => {
+            await request(app).get(`/news/${mongoTestId}`).expect('Content-Type', /json/);
+        });
         
+        // Returned status code should be 200
+        test('GET /news/:newsId --> should have a staus code of 200', async () => {
+            await request(app).get(`/news/${mongoTestId}`).expect(200);
+        });
+    
+        // Returned object shuld be a News document
+        test('GET --> /news/:newsId --> should get a News object as response', async () => {
+            const response = await request(app).get(`/news/${mongoTestId}`);
+            expect(response.body).toEqual({
+                _id: mongoTestId,
+                title: 'A random test title',
+                body: 'A random test body',
+                summary: 'A random test summary',
+                imageUrl: 'A random image url',
+                createdAt: expect.any(String),
+                updatedAt: expect.any(String)
+            });
+        });
+
+        // Throw error with status code of 500 if there was an error accessing the database
+        test('GET --> /news/:newsId --> should throw an error with statusCode of 500 if there was an error accessing the database', async () => {
+            const findByIdStub = sinon.stub(MongoNews, 'findById');
+            findByIdStub.throws();
+
+            const res: Response = ({
+                status: function(code) {return this;},
+                json: function(data) {}
+            }) as Response;
+            
+            const req: Request = ({
+                params: ({
+                    newsId: mongoTestId
+                }) as Partial<Request>
+            }) as Request;
+
+            const result = await getNewsFromId(req, res, () => {});
+            findByIdStub.restore();
+            expect(result).toHaveProperty('statusCode', 500);
+
+        });
+
+        test('GET --> /news/:newsId --> should throw an error if there is no news document with the specified id', async () => {
+            const req: Request = ({
+                params: ({
+                    newsId: '60e3429ab33c3461ecc4106f' // This is an invalid id
+                }) as Partial<Request>
+            }) as Request;
+            const result = await getNewsFromId(req, {} as Response, () => {});
+            expect(result).toHaveProperty('message','News document with this id does not exist');
+        });
+    });
+
+    describe('Creating a new news document', () => {
+
         // Delete test db entries
         afterAll(async () => {
             await MongoNews.deleteMany();
@@ -96,7 +171,7 @@ describe('/news end point testing', () => {
         });
         
         // Throw error with status code of 500 if there was an error accessing the database
-        test('POST /news --> shoudl throw an error with statusCode of 500 if there was an error accessing the database', async () => {
+        test('POST /news --> should throw an error with statusCode of 500 if there was an error accessing the database', async () => {
             const stub = sinon.stub(MongoNews.prototype, 'save');
             stub.throws();
 
@@ -105,7 +180,7 @@ describe('/news end point testing', () => {
                 json: function(data) {}
             }) as Response;
 
-            const req = ({
+            const req: Request = ({
                 body: {
                     title: 'A random title 2',
                     body: 'A random body',

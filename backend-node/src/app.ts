@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import News from './model/mongo/news.monog.model';
 import newsRoutes from './routes/news.routes';
+import carClassRoutes from './routes/car-class.routes';
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
+// Routes
 app.use('/news', newsRoutes);
+app.use('/car-class', carClassRoutes);
 
 export default app;

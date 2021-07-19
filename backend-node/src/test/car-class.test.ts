@@ -5,8 +5,8 @@ import { Response, Request } from 'express';
 
 import app from '../app';
 import CarClassMongo from '../model/mongo/car-class.mongo.model';
-import { getCarClasses } from '../controller/car-class.controller';
-import { mongoTestUri } from '../util/variables.util';
+import { getCarClasses, getCarClassFromId } from '../controller/car-class.controller';
+import { mongoTestUri, mongoTestId } from '../util/variables.util';
 
 describe('/car-class end point testing', () => {
     // Connect to database
@@ -60,5 +60,72 @@ describe('/car-class end point testing', () => {
             expect(result).toHaveProperty('statusCode', 500);
         });
 
+    });
+
+    describe('Fetching a single CarClass document', () => {
+        // Create a dummy CarClass document to fetch later
+        beforeAll(async () => {
+            const carClass = new CarClassMongo({
+                _id: mongoTestId,
+                name: 'A'
+            });
+            await carClass.save();
+        });
+
+        // Delete all dummy CarClass documents from db
+        afterAll(async () => {
+            await CarClassMongo.deleteMany();
+        });
+
+        // Response Content-Type should be json
+        test('GET /car-class/:classId --> should have a response with Content-Type of JSON', async () => {
+            await request(app).get(`/car-class/${mongoTestId}`).expect('Content-Type', /json/);
+        });
+
+        // Response status code should be 200
+        test('GET /car-class/:classId --> should have a response with status code 200', async () => {
+            await request(app).get(`/car-class/${mongoTestId}`).expect(200);
+        });
+        
+        // Response should contain a CarClass object
+        test('GET /car-class/:classId --> should return a CarClass object', async () => {
+            const result = await request(app).get(`/car-class/${mongoTestId}`);
+            expect(result.body).toEqual(expect.objectContaining({
+                _id: mongoTestId,
+                name: 'A'
+            }));
+        });
+        
+        // Return an error with status code of 500 if there was an error connecting to the database
+        test('GET /car-class/:classId --> should return an error with status code of 500 if there was an error connecting to the database', async () => {
+            const findByIdStub = sinon.stub(CarClassMongo, 'findById');
+            findByIdStub.throws();
+            const req: Request = ({
+                params: ({
+                    classId: mongoTestId
+                }) as Partial<Request>
+            }) as Request;
+
+            const res: Response = ({
+                status: function(code) {return this;},
+                json: function(data) {}
+            }) as Response;
+
+            const result = await getCarClassFromId(req, res, () => {});
+            findByIdStub.restore();
+            expect(result).toHaveProperty('statusCode', 500);
+        });
+
+        // Return an error if an invalid id was sent as a parameter
+        test('GET /car-class/:classId --> should return an error if classId is invalid', async () => {
+            const req: Request = ({
+                params: ({
+                    classId: '60e3429ab33c3461ecc40f85' // Id that does not exist
+                }) as Partial<Request>
+            }) as Request;
+            const result = await getCarClassFromId(req, {} as Response, () => {});
+            expect(result).toBeInstanceOf(Error);
+            expect(result).toHaveProperty('message', 'car-class with this id does not exist!');
+        });
     });
 });

@@ -15,3 +15,21 @@ export const getCarClasses = async (req: Request, res: Response, next: NextFunct
         return err;
     }
 }
+
+export const getCarClassFromId = async (req: Request, res: Response, next: NextFunction) => {
+    type ExpectedReq = { classId: string };
+    const params = (req.params) as ExpectedReq;
+    try {
+        const carClass = await CarClassMongo.findById(params.classId);
+        if (!carClass) {
+            throw new Error('car-class with this id does not exist!');
+        }
+        res.status(200).json(carClass);
+    } catch (err) {
+        if (!err.stautsCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+        return err;
+    }
+}

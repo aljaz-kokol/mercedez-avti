@@ -5,7 +5,7 @@ import { Response, Request } from 'express';
 
 import app from '../app';
 import CarClassMongo from '../model/mongo/car-class.mongo.model';
-import { getCarClasses, getCarClassFromId } from '../controller/car-class.controller';
+import { getCarClasses, getCarClassFromId, createCarClass } from '../controller/car-class.controller';
 import { mongoTestUri, mongoTestId } from '../util/variables.util';
 
 describe('/car-class end point testing', () => {
@@ -126,6 +126,75 @@ describe('/car-class end point testing', () => {
             const result = await getCarClassFromId(req, {} as Response, () => {});
             expect(result).toBeInstanceOf(Error);
             expect(result).toHaveProperty('message', 'car-class with this id does not exist!');
+        });
+    });
+
+    describe('Creating a CarClass document', () => {
+        // Delete all CarClass documents aftery each test
+        afterEach(async () => {
+            await CarClassMongo.deleteMany();
+        })
+
+        // Response Content-Type should be json
+        test('POST /car-class --> should have a response with Content-Type json', async () => {
+            await request(app).post('/car-class').send({
+                name: 'A'
+            }).expect('Content-Type', /json/);
+        });
+
+        // Response status code should be 201
+        test('POST /car-class --> should have a response with status code of 201', async () => {
+            await request(app).post('/car-class').send({
+                name: 'A'
+            }).expect(201);
+        });
+        
+        // Response body should contain object of the new CarClass document
+        test('POST /car-class --> should have response body with object of the new CarClass document', async () => {
+            const result = await request(app).post('/car-class').send({ name: 'A' });
+            expect(result.body).toEqual(expect.objectContaining({
+                carClass: expect.objectContaining({
+                    name: 'A'
+                }),
+                message: 'CarClass successfully created'
+            }));
+        });
+        
+        // Throw an error with status code of 500 if there was an error connecting to the database
+        test('POST /car-class --> should throw an error with status code of 500 if there was an error connecting to the database', async () => {
+            const saveStub = sinon.stub(CarClassMongo.prototype, 'save');
+            saveStub.throws();
+            const req: Request = ({
+                body: {
+                    name: 'A'
+                }
+            }) as Request;
+            const res: Response = ({
+                status: function(code) {return this;},
+                json: function(data) {}
+            }) as Response;
+            const result = await createCarClass(req, res, () => {});
+            saveStub.restore();
+            expect(result).toBeInstanceOf(Error);
+            expect(result).toHaveProperty('statusCode', 500);
+        });
+
+        // Throw an error if CarClass with the same name already exists
+        test('POST /car-class --> should throw an error if CarClass with the same name already exists', async () => {
+            // Create CarClass with name A
+            await new CarClassMongo({name: 'A'}).save();
+
+            const req: Request = ({
+                body: {
+                    name: 'A'
+                }
+            }) as Request;
+            
+            // Trying to crate a CarClass with the same name
+            const result = await createCarClass(req, {} as Response, () => {});
+            
+            expect(result).toBeInstanceOf(Error);
+            expect(result).toHaveProperty('message', 'CarClass with this name already exists!');
         });
     });
 });

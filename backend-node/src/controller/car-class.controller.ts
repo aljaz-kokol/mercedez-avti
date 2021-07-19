@@ -33,3 +33,33 @@ export const getCarClassFromId = async (req: Request, res: Response, next: NextF
         return err;
     }
 }
+
+export const createCarClass = async (req: Request, res: Response, next: NextFunction) => {
+    type ExpectedReq = {
+        name: string
+    };
+    const reqBody = (req.body) as ExpectedReq;
+    
+    try {
+
+        // Check if CarClass with this name already exists
+        if (await CarClassMongo.findOne({name: reqBody.name})) {
+            throw new Error('CarClass with this name already exists!');
+        }
+
+        const carClass = new CarClassMongo({
+            name: reqBody.name
+        });
+        const savedCarClass = await carClass.save();
+        res.status(201).json({
+            carClass: savedCarClass,
+            message: 'CarClass successfully created'
+        });
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+        return err;
+    } 
+}

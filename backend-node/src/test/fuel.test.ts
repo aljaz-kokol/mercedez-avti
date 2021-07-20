@@ -6,8 +6,8 @@ import {Request, Response} from 'express';
 import FuelMongo from '../model/mongo/fuel.mongo.model';
 import Fuel  from '../model/fuel.model';
 import app from '../app';
-import { getFuels, getFuelFromId } from '../controller/fuel.controller';
-import { mongoTestId, mongoTestUri, mongoUri } from '../util/variables.util';
+import { getFuels, getFuelFromId, createFuel } from '../controller/fuel.controller';
+import { mongoTestId, mongoTestUri } from '../util/variables.util';
 
 describe('/fuel end point testing', () => {
     // Connect to the database before any tests run
@@ -141,6 +141,81 @@ describe('/fuel end point testing', () => {
             const result = await getFuelFromId(req, {} as Response, () => {});
             expect(result).toBeInstanceOf(Error);
             expect(result).toHaveProperty('message', 'Fuel document with this id does not exist!');
+        });
+    });
+
+    describe('Creating a Fuel document', () => {
+        // Delete any dummy Fuel documents that were created after each test
+        afterEach(async () => {
+            await FuelMongo.deleteMany();
+        });
+
+        // Response Content-Type should be json
+        test('POST /fuel --> should have a response with Content-Type of JSON', async () => {
+            await request(app).post('/fuel').send({
+                type: 'Test'
+            }).expect('Content-Type', /json/);
+        });
+
+        // Response status code should be 201
+        test('POST /fuel --> should have a response with status code of 201', async () => {
+            await request(app).post('/fuel').send({
+                type: 'Test'
+            }).expect(201);
+        });
+
+        // Response body should contain a message and an object of the new Fuel document
+        test('POST /fuel --> should have a response body with a success message and an object representing the new Fuel document', async () => {
+            const result = (await request(app).post('/fuel').send({ type: 'Test' })).body;
+            expect(result).toEqual(
+                expect.objectContaining({
+                    message: 'Successfully created a Fuel document',
+                    fuel: expect.objectContaining({
+                        type: 'Test'
+                    })
+                })
+            );
+        });
+
+        // Throw error with status code of 500 if there was an error connecting to the database
+        test('POST /fuel --> should return an error with status code of 500 if there was an error connecting to the database', async () => {
+            const saveStub = sinon.stub(FuelMongo.prototype, 'save');
+            saveStub.throws();
+            const req = ({
+                body: {
+                    type: 'Test'
+                }
+            }) as Request;
+
+            const res = ({
+                status: function(code) {return this;},
+                json: function(data) {}
+            }) as Response;
+
+            const result = await createFuel(req, res, () => {});
+            saveStub.restore();
+
+            expect(result).toBeInstanceOf(Error);
+            expect(result).toHaveProperty('statusCode', 500);
+        });
+
+        // Throw error if t a Fuel with the same type already exists
+        test('POST /fuel --> should return an error if a Fuel document with the same type already exists', async () => {
+            // Create a Fuel document with type 'Test'
+            await new FuelMongo({
+                type: 'Test'
+            }).save();
+
+            const req = ({
+                body: {
+                    type: 'Test'
+                }
+            }) as Request;
+
+            // Try to create another Fuel document with type 'Test'
+            const result = await createFuel(req, {} as Response, () => {});
+            expect(result).toBeInstanceOf(Error);
+            expect(result).toHaveProperty('message', 'Fuel document with this type already exists!');
         });
     });
 });

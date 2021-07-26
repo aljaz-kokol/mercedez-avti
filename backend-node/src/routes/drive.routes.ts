@@ -1,9 +1,10 @@
 import { Router } from 'express';
 
-import { getDrives } from '../controller/drive.controller';
+import { getDrives, getDriveFromId } from '../controller/drive.controller';
 
 const router = Router();
 
 router.get('/', getDrives);
+router.get('/:driveId', getDriveFromId);
 
 export default router;

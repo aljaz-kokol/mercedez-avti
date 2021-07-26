@@ -4,6 +4,7 @@ import newsRoutes from './routes/news.routes';
 import carClassRoutes from './routes/car-class.routes';
 import fuelRoutes from './routes/fuel.routes';
 import gearBoxRoutes from './routes/gearbox.routes';
+import driveRoutes from './routes/drive.routes';
 
 const app = express();
 
@@ -21,5 +22,6 @@ app.use('/news', newsRoutes);
 app.use('/car-class', carClassRoutes);
 app.use('/fuel', fuelRoutes);
 app.use('/gearbox', gearBoxRoutes);
+app.use('/drive', driveRoutes);
 
 export default app;

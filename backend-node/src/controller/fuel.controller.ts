@@ -1,11 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
-import Fuel from '../model/fuel.model';
-import FuelMongo  from '../model/mongo/fuel.mongo.model';
+import Fuel  from '../model/fuel.model';
 
 export const getFuels = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const fuels = (await FuelMongo.find()) as Fuel[];
+        const fuels = await Fuel.find();
         res.status(200).json(fuels);
     } catch(err) {
         if (!err.statusCode) {
@@ -21,7 +20,7 @@ export const getFuelFromId = async (req: Request, res: Response, next: NextFunct
     const params = req.params as ExpectedReq;
  
     try {
-        const fuel = await FuelMongo.findById(params.fuelId) as Fuel;
+        const fuel = await Fuel.findById(params.fuelId);
         if (!fuel) {
             throw new Error('Fuel document with this id does not exist!');
         }
@@ -41,11 +40,11 @@ export const createFuel = async (req: Request, res: Response, next: NextFunction
 
     try {
         //Check if a Fuel document with a given type already exists
-        if (await FuelMongo.findOne({ type: reqBody.type })) {
+        if (await Fuel.findOne({ type: reqBody.type })) {
             throw new Error('Fuel document with this type already exists!');
         }
         
-        const newFuel = await new FuelMongo({
+        const newFuel = await new Fuel({
             type: reqBody.type
         }).save();
 

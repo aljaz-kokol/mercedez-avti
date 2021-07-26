@@ -1,11 +1,10 @@
 import {Request, Response, NextFunction} from 'express';
 
 import CarClass from '../model/car-class.model';
-import CarClassMongo from '../model/mongo/car-class.mongo.model';
 
 export const getCarClasses = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const carClasses: CarClass[] = await CarClassMongo.find();
+        const carClasses = await CarClass.find();
         res.status(200).json(carClasses);
     } catch(err) {
         if (!err.statusCode) {
@@ -20,7 +19,7 @@ export const getCarClassFromId = async (req: Request, res: Response, next: NextF
     type ExpectedReq = { classId: string };
     const params = (req.params) as ExpectedReq;
     try {
-        const carClass = await CarClassMongo.findById(params.classId);
+        const carClass = await CarClass.findById(params.classId);
         if (!carClass) {
             throw new Error('car-class with this id does not exist!');
         }
@@ -43,11 +42,11 @@ export const createCarClass = async (req: Request, res: Response, next: NextFunc
     try {
 
         // Check if CarClass with this name already exists
-        if (await CarClassMongo.findOne({name: reqBody.name})) {
+        if (await CarClass.findOne({name: reqBody.name})) {
             throw new Error('CarClass with this name already exists!');
         }
 
-        const carClass = new CarClassMongo({
+        const carClass = new CarClass({
             name: reqBody.name
         });
         const savedCarClass = await carClass.save();

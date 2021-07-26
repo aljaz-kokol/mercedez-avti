@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import { Response, Request } from 'express';
 
 import app from '../app';
-import CarClassMongo from '../model/mongo/car-class.mongo.model';
+import CarClass from '../model/car-class.model';
 import { getCarClasses, getCarClassFromId, createCarClass } from '../controller/car-class.controller';
 import { mongoTestUri, mongoTestId } from '../util/variables.util';
 
@@ -49,7 +49,7 @@ describe('/car-class end point testing', () => {
 
         // Return a error with status code of 500 if there was an error accessing the database
         test('GET /car-class --> should return an error with staus code of 500 if there was an error accessing the database', async () => {
-            const findStub = sinon.stub(CarClassMongo, 'find');
+            const findStub = sinon.stub(CarClass, 'find');
             findStub.throws();
             const res: Response = ({
                 status: function(code) {return this;},
@@ -65,7 +65,7 @@ describe('/car-class end point testing', () => {
     describe('Fetching a single CarClass document', () => {
         // Create a dummy CarClass document to fetch later
         beforeAll(async () => {
-            const carClass = new CarClassMongo({
+            const carClass = new CarClass({
                 _id: mongoTestId,
                 name: 'A'
             });
@@ -74,7 +74,7 @@ describe('/car-class end point testing', () => {
 
         // Delete all dummy CarClass documents from db
         afterAll(async () => {
-            await CarClassMongo.deleteMany();
+            await CarClass.deleteMany();
         });
 
         // Response Content-Type should be json
@@ -98,7 +98,7 @@ describe('/car-class end point testing', () => {
         
         // Return an error with status code of 500 if there was an error connecting to the database
         test('GET /car-class/:classId --> should return an error with status code of 500 if there was an error connecting to the database', async () => {
-            const findByIdStub = sinon.stub(CarClassMongo, 'findById');
+            const findByIdStub = sinon.stub(CarClass, 'findById');
             findByIdStub.throws();
             const req: Request = ({
                 params: ({
@@ -132,7 +132,7 @@ describe('/car-class end point testing', () => {
     describe('Creating a CarClass document', () => {
         // Delete all CarClass documents aftery each test
         afterEach(async () => {
-            await CarClassMongo.deleteMany();
+            await CarClass.deleteMany();
         })
 
         // Response Content-Type should be json
@@ -162,7 +162,7 @@ describe('/car-class end point testing', () => {
         
         // Throw an error with status code of 500 if there was an error connecting to the database
         test('POST /car-class --> should throw an error with status code of 500 if there was an error connecting to the database', async () => {
-            const saveStub = sinon.stub(CarClassMongo.prototype, 'save');
+            const saveStub = sinon.stub(CarClass.prototype, 'save');
             saveStub.throws();
             const req: Request = ({
                 body: {
@@ -182,7 +182,7 @@ describe('/car-class end point testing', () => {
         // Throw an error if CarClass with the same name already exists
         test('POST /car-class --> should throw an error if CarClass with the same name already exists', async () => {
             // Create CarClass with name A
-            await new CarClassMongo({name: 'A'}).save();
+            await new CarClass({name: 'A'}).save();
 
             const req: Request = ({
                 body: {

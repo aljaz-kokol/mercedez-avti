@@ -3,7 +3,7 @@ import request from 'supertest';
 import sinon from 'sinon';
 import mongoose from 'mongoose';
 
-import GearBoxMongo from '../model/mongo/gearbox.mongo.model';
+import GearBox from '../model/gearbox.model';
 import app from '../app';
 import { mongoTestUri, mongoTestId } from '../util/variables.util';
 import { getGearBoxes, getGearBoxFromId, createGearBox } from '../controller/gearbox.controller';
@@ -25,12 +25,12 @@ describe('/gearbox end point testing', () => {
     describe('Fetching all gearboxes', () => {
         // Create GearBox documents to be fetched
         beforeAll(async () => {
-            await new GearBoxMongo({ type: 'Test' }).save();
+            await new GearBox({ type: 'Test' }).save();
         });
 
         // Delete any GearBox documents
         afterAll(async () => {
-            await GearBoxMongo.deleteMany();
+            await GearBox.deleteMany();
         });
 
         // Response should have Content-Type of json
@@ -56,7 +56,7 @@ describe('/gearbox end point testing', () => {
         
         // Throw error with status code of 500 if there was an error connecting to the database
         test('GET /gearbox --> should return an error with status code of 500 if there was an error connecting to the database', async () => {
-            const findStub = sinon.stub(GearBoxMongo, 'find');
+            const findStub = sinon.stub(GearBox, 'find');
             findStub.throws();
             const res = ({
                 status: function(code) {return this},
@@ -72,7 +72,7 @@ describe('/gearbox end point testing', () => {
     describe('Fetching a single GearBox from id', () => {
         // Create GearBox document with test id
         beforeAll(async () => {
-            await new GearBoxMongo({
+            await new GearBox({
                 _id: mongoTestId,
                 type: 'Test'
             }).save();
@@ -80,7 +80,7 @@ describe('/gearbox end point testing', () => {
 
         // Delete test GearBox document
         afterAll(async () => {
-            await GearBoxMongo.deleteMany();
+            await GearBox.deleteMany();
         });
 
         // Response should have a Content-Type of json
@@ -104,7 +104,7 @@ describe('/gearbox end point testing', () => {
 
         // Throw error with status code 500 if there was an error connecting to the database
         test('GET /gearbox/:gearId --> should return an error with status code of 500 if there was an error connecting to the database', async () => {
-            const findByIdStub = sinon.stub(GearBoxMongo, 'findById');
+            const findByIdStub = sinon.stub(GearBox, 'findById');
             findByIdStub.throws();
             const req  = ({
                 params: ({
@@ -141,7 +141,7 @@ describe('/gearbox end point testing', () => {
     describe('Crating a GearBox document', () => {
         // After every test delete any GearBox documents that were created
         afterEach(async () => {
-            await GearBoxMongo.deleteMany();
+            await GearBox.deleteMany();
         });
 
         // Response should have Content-Type of json
@@ -171,7 +171,7 @@ describe('/gearbox end point testing', () => {
 
         // Throw error with status code of 500 if there was an error connecting to the database
         test('POST /gearbox --> should return an error with status code of 500 if there was an error connecting to the database', async () => {
-            const saveStub = sinon.stub(GearBoxMongo.prototype, 'save');
+            const saveStub = sinon.stub(GearBox.prototype, 'save');
             saveStub.throws();
             const req = {
                 body: {
@@ -194,7 +194,7 @@ describe('/gearbox end point testing', () => {
         // Throw error with message if GearBox with the given type already exists
         test('POST /gearbox --> should return an error with a message if a GearBox document with the given type already exists', async () => {
             // Create a GearBox document with type 'Test'
-            await new GearBoxMongo({ type: 'Test' }).save();
+            await new GearBox({ type: 'Test' }).save();
 
             const req = {
                 body: {

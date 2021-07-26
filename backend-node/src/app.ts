@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 
-import News from './model/mongo/news.monog.model';
 import newsRoutes from './routes/news.routes';
 import carClassRoutes from './routes/car-class.routes';
 import fuelRoutes from './routes/fuel.routes';

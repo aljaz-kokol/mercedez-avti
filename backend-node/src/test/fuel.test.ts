@@ -3,8 +3,7 @@ import sinon from 'sinon';
 import request from 'supertest';
 import {Request, Response} from 'express';
 
-import FuelMongo from '../model/mongo/fuel.mongo.model';
-import Fuel  from '../model/fuel.model';
+import Fuel from '../model/fuel.model';
 import app from '../app';
 import { getFuels, getFuelFromId, createFuel } from '../controller/fuel.controller';
 import { mongoTestId, mongoTestUri } from '../util/variables.util';
@@ -26,14 +25,14 @@ describe('/fuel end point testing', () => {
     describe('Fetching all Fuel documents', () => {
         // Create a Fuel document to be fetched
         beforeAll(async () => {
-            await new FuelMongo({
+            await new Fuel({
                 type: 'Test fuel'
             }).save();
         });
 
         // Delete the test Fuel document
         afterAll(async () => {
-            await FuelMongo.deleteMany();
+            await Fuel.deleteMany();
         });
 
         // Response Content-Type should be json
@@ -48,7 +47,7 @@ describe('/fuel end point testing', () => {
 
         // Response body should return an array of Fuel objects
         test('GET /fuel --> should have a response body with array of Fuel objects', async () => {
-            const result = ((await request(app).get('/fuel')).body) as Fuel[];
+            const result = ((await request(app).get('/fuel')).body);
             expect(result).toBeInstanceOf(Array);
             expect(result).toEqual(
                 expect.arrayContaining([
@@ -62,7 +61,7 @@ describe('/fuel end point testing', () => {
 
         // Throw an error with status code of 500 if there was an error connecting to the database
         test('GET /fuel --> should throw an error with status code of 500 if there was an error connecting to the database', async () => {
-            const findStub = sinon.stub(FuelMongo, 'find');
+            const findStub = sinon.stub(Fuel, 'find');
             findStub.throws();
             const res = ({
                 status: function(code) {return this;},
@@ -78,7 +77,7 @@ describe('/fuel end point testing', () => {
     describe('Fetching a single Fuel document from fuelId', () => {
         // Create a Fuel document with test id before any tests run
         beforeAll(async () => {
-            await new FuelMongo({
+            await new Fuel({
                 _id: mongoTestId,
                 type: 'Test'
             }).save();
@@ -86,7 +85,7 @@ describe('/fuel end point testing', () => {
 
         // Delete all Fuel documents after all tests run
         afterAll(async () => {
-            await FuelMongo.deleteMany();
+            await Fuel.deleteMany();
         })
 
         // Response Content-Type should be json
@@ -101,7 +100,7 @@ describe('/fuel end point testing', () => {
 
         // Response body should be a Fuel object
         test('GET /fuel/:fuelId --> should have a response body with the Fuel object', async () => {
-            const result = (await request(app).get(`/fuel/${mongoTestId}`)).body as Fuel;
+            const result = (await request(app).get(`/fuel/${mongoTestId}`)).body;
             expect(result).toEqual(
                 expect.objectContaining({
                     _id: mongoTestId,
@@ -112,7 +111,7 @@ describe('/fuel end point testing', () => {
 
         // Throw error with status code of 500 if there was an error connecting to the database
         test('GET /fuel/:fuelId --> should return an error with status code of 500 if there was an error connecting to the database', async () => {
-            const findByIdStub = sinon.stub(FuelMongo, 'findById');
+            const findByIdStub = sinon.stub(Fuel, 'findById');
             findByIdStub.throws();
             const req = ({
                 params: ({
@@ -147,7 +146,7 @@ describe('/fuel end point testing', () => {
     describe('Creating a Fuel document', () => {
         // Delete any dummy Fuel documents that were created after each test
         afterEach(async () => {
-            await FuelMongo.deleteMany();
+            await Fuel.deleteMany();
         });
 
         // Response Content-Type should be json
@@ -179,7 +178,7 @@ describe('/fuel end point testing', () => {
 
         // Throw error with status code of 500 if there was an error connecting to the database
         test('POST /fuel --> should return an error with status code of 500 if there was an error connecting to the database', async () => {
-            const saveStub = sinon.stub(FuelMongo.prototype, 'save');
+            const saveStub = sinon.stub(Fuel.prototype, 'save');
             saveStub.throws();
             const req = ({
                 body: {
@@ -202,7 +201,7 @@ describe('/fuel end point testing', () => {
         // Throw error if t a Fuel with the same type already exists
         test('POST /fuel --> should return an error if a Fuel document with the same type already exists', async () => {
             // Create a Fuel document with type 'Test'
-            await new FuelMongo({
+            await new Fuel({
                 type: 'Test'
             }).save();
 

@@ -1,11 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import News from '../model/news.model';
-import MongoNews from '../model/mongo/news.monog.model';
 
 // Get all news documents from the database
 export const getNews = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const news: News[] = await MongoNews.find();
+        const news = await News.find();
         res.status(200).json(news);
     } catch (err) {
         if (!err.statusCode) {
@@ -16,7 +15,7 @@ export const getNews = async (req: Request, res: Response, next: NextFunction) =
     }
 }
 
-// Get one news doucment with specified id
+// Get one news document with specified id
 export const getNewsFromId = async (req: Request, res: Response, next: NextFunction) => {
     type ExpectedReq = {
         newsId: string
@@ -25,7 +24,7 @@ export const getNewsFromId = async (req: Request, res: Response, next: NextFunct
     const reqParams = req.params as ExpectedReq;
     const newsId  = reqParams.newsId;
     try {
-        const news: News = await MongoNews.findById(newsId);
+        const news= await News.findById(newsId);
         if (!news) {
             throw new Error('News document with this id does not exist');
         }
@@ -39,37 +38,37 @@ export const getNewsFromId = async (req: Request, res: Response, next: NextFunct
     }
 }
 
-// Create a new news doucment and save it in the database
+// Create a new news document and save it in the database
 export const createNews = async (req: Request, res: Response, next: NextFunction) => {
     type ExpectedReq = {
         title: string,
         body: string,
         summary: string,
-        imageUrl: string
+        imagePath: string
     };
     const reqBody = req.body as ExpectedReq;
 
     const title: string = reqBody.title;
     const body: string = reqBody.body;
     const summary: string = reqBody.summary;
-    const imageUrl: string =  reqBody.imageUrl;
+    const imagePath: string =  reqBody.imagePath;
     
-    const mongoNews = new MongoNews({
+    const mongoNews = new News({
         title: title,
         body: body,
         summary: summary,
-        imageUrl: imageUrl
+        imagePath: imagePath
     });
 
     try {
         // Check if news document with a given title already exists
-        if (await MongoNews.findOne({title: title})) {
+        if (await News.findOne({title: title})) {
             throw Error('News with this title already exists');
         }
-        const saveNews: News = await mongoNews.save();
+        const saveNews = await mongoNews.save();
     
         res.status(201).json({
-            message: 'News successfuly created',
+            message: 'News successfully created',
             news: saveNews
         });   
     } catch (err) {

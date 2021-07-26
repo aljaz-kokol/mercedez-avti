@@ -11,5 +11,7 @@ const fuelSchema = new Schema({
     }
 });
 
-export default model<FuelDocument>('Fuel', fuelSchema);
+const Fuel = model<FuelDocument>('Fuel', fuelSchema);
+
+export default Fuel;
 

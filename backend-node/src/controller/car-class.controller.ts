@@ -40,12 +40,10 @@ export const createCarClass = async (req: Request, res: Response, next: NextFunc
     const reqBody = (req.body) as ExpectedReq;
     
     try {
-
         // Check if CarClass with this name already exists
         if (await CarClass.findOne({name: reqBody.name})) {
             throw new Error('CarClass with this name already exists!');
         }
-
         const carClass = new CarClass({
             name: reqBody.name
         });

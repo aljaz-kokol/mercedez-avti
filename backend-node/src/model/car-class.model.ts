@@ -11,4 +11,6 @@ const carClassSchema: Schema = new Schema({
     }
 }); 
 
-export default model<CarClassDocument>('CarClass', carClassSchema);
+const CarClass = model<CarClassDocument>('CarClass', carClassSchema);
+
+export default CarClass;

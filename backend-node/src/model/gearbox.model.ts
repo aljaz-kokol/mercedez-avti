@@ -11,4 +11,6 @@ const gearBoxSchema = new Schema({
     }
 });
 
-export default model('GearBox', gearBoxSchema);
+const GearBox = model<GearBoxDocument>('GearBox', gearBoxSchema); 
+
+export default GearBox;

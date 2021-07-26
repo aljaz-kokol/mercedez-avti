@@ -28,4 +28,6 @@ const newsSchema = new Schema({
    }
 }, {timestamps: true, versionKey: false});
 
-export default model('News', newsSchema);
+const News = model<NewsDocument>('News', newsSchema);
+
+export default News;

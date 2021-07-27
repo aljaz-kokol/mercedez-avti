@@ -5,6 +5,7 @@ import carClassRoutes from './routes/car-class.routes';
 import fuelRoutes from './routes/fuel.routes';
 import gearBoxRoutes from './routes/gearbox.routes';
 import driveRoutes from './routes/drive.routes';
+import carTypeRoutes from './routes/car-type.routes';
 
 const app = express();
 
@@ -23,5 +24,6 @@ app.use('/car-class', carClassRoutes);
 app.use('/fuel', fuelRoutes);
 app.use('/gearbox', gearBoxRoutes);
 app.use('/drive', driveRoutes);
+app.use('/car-type', carTypeRoutes);
 
 export default app;

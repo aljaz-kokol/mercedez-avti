@@ -32,3 +32,31 @@ export const getCarTypeFromId = async (req: Request, res: Response, next: NextFu
         return err;
     }
 };
+
+export const createCarType = async (req: Request, res: Response, next: NextFunction) => {
+    type ExpectedReq = {
+        type: string;
+        abbreviation: string;
+    };
+    const reqBody = req.body as ExpectedReq;
+    try {
+        // Check if CarType with a given id already exists
+        if (await CarType.exists({ type: reqBody.type })) {
+            throw new Error('CarType document with this type already exists!');
+        }
+        const carType = await CarType.create({
+            type: reqBody.type,
+            abbreviation: reqBody.abbreviation
+        });
+        res.status(201).json({
+            message: 'Successfully created a CarType document',
+            carType
+        })
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+        return err;
+    }
+};

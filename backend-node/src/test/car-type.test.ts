@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 import app from '../app';
 import CarType from '../model/car-type.model';
 import { mongoTestId, mongoTestUri } from '../util/variables.util';
-import { getCarTypes, getCarTypeFromId } from '../controller/car-type.controller';
+import { getCarTypes, getCarTypeFromId, createCarType } from '../controller/car-type.controller';
 
 describe('/car-type end point testing', () => {
     // Connect to the test database
@@ -117,6 +117,69 @@ describe('/car-type end point testing', () => {
             const result = await getCarTypeFromId(req, {} as Response, () => {});
             expect(result).toBeInstanceOf(Error);
             expect(result).toHaveProperty('message', 'CarType document with this id does not exist!');
+        });
+    });
+
+    describe('Creating a CarType document', () => {
+        // Delete any created documents after each test
+        afterEach(async () => {
+            await CarType.deleteMany();
+        });
+        // Response should have a Content-Type of JSON and status code of 201
+        test('POST /car-type --> should have a response with Content-Type of JSON and status code of 201', async () => {
+            await request(app).post('/car-type').send({
+                type: 'Test',
+                abbreviation: 'T'
+            }).expect('Content-Type', /json/).expect(201);
+        });
+        // Response body should contain a message and an object representing the new CarType document
+        test('POST /car-type --> should have a response body with a message and an object representing the new document', async () =>{
+            const result = (await request(app).post('/car-type').send({
+                type: 'Test',
+                abbreviation: 'T'
+            })).body;
+            expect(result).toEqual({
+                message: 'Successfully created a CarType document',
+                carType: expect.objectContaining({
+                    _id: expect.any(String),
+                    type: 'Test',
+                    abbreviation: 'T'
+                })
+            });
+        });
+        // Throw an error with status code of 500 if there was an error connecting to the database
+        test('POST /car-type --> should return an error with status code of 500 if there was an error connecting to the database', async () => {
+            const createStub = sinon.stub(CarType, 'create');
+            createStub.throws();
+            const req = {
+                body: {
+                    type: 'Test',
+                    abbreviation: 'T'
+                }
+            } as Request;
+            const res = {
+                status: function(code) {return this;},
+                json: function(data) {}
+            } as Response;
+            const result = await createCarType(req, res, () => {});
+            createStub.restore();
+            expect(result).toBeInstanceOf(Error);
+            expect(result).toHaveProperty('statusCode', 500);
+        });
+        // Throw an error with a message if a CarType with the given type already exists
+        test('POST /car-type --> should return an error with a message if CarType with a given type already exists', async () => {
+            // Create CarType document with type 'Test'
+            await CarType.create({ type: 'Test', abbreviation: 'T' });
+            const req = {
+                body: {
+                    type: 'Test',
+                    abbreviation: 'T'
+                }
+            } as Request;
+            // Try to create another CarType with type 'Test'
+            const result = await createCarType(req, {} as Response, () => {});
+            expect(result).toBeInstanceOf(Error);
+            expect(result).toHaveProperty('message', 'CarType document with this type already exists!');
         });
     });
 });

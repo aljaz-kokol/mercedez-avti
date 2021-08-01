@@ -19,6 +19,7 @@ describe('/car-class end point testing', () => {
     
     // Disconnect from database
     afterAll(async () => {
+        await CarClass.deleteMany();
         await mongoose.disconnect();
     });
 

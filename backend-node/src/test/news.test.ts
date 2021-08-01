@@ -17,6 +17,7 @@ describe('/news end point testing', () => {
     }); 
 
     afterAll(async () => {
+        await News.deleteMany();
         await mongoose.disconnect();
     });
 

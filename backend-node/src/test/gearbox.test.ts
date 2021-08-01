@@ -19,6 +19,7 @@ describe('/gearbox end point testing', () => {
 
     // Disconnect from the database after all the tests run
     afterAll(async () => {
+        await GearBox.deleteMany();
         await mongoose.disconnect();
     });
 

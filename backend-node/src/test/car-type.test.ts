@@ -18,6 +18,7 @@ describe('/car-type end point testing', () => {
     });
     // Disconnect from the test database
     afterAll(async () => {
+        await CarType.deleteMany();
         await mongoose.disconnect();
     });
     describe('Fetching all CarType documents', () => {

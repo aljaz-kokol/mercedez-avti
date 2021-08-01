@@ -1,22 +1,25 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
 import { FuelDocument } from '../model/fuel.model';
 import { CarClassDocument } from '../model/car-class.model';
 import { CarTypeDocument } from '../model/car-type.model';
 import { DriveDocument } from '../model/drive.model';
+import { GearBoxDocument } from '../model/gearbox.model';
 
 export interface Engine {
-    fuel: FuelDocument;
     kilowatts: number;
     torque: number;
     volume: number;
 }
 
 export interface CarDocument extends Document{
-    class: CarClassDocument;
-    type: CarTypeDocument;
+    class: string;
+    type: string;
+    fuel: string;
     engine: Engine;
-    drive: DriveDocument;
+    drive: string;
+    gearbox: string;
+    imagePath: string;
     name: string;
     releaseYear: Date;
     doors: number;
@@ -29,22 +32,22 @@ export interface CarDocument extends Document{
 
 const carSchema = new Schema({
     class: {
-        type: Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'CarClass',
         required: true
     },
     type: {
-        type: Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'CarType',
+        required: true
+    },
+    fuel: {
+        type: Schema.Types.ObjectId,
+        ref: 'Fuel',
         required: true
     },
     engine: {
         type: {
-            fuel: {
-                type: Types.ObjectId,
-                ref: 'Fuel',
-                required: true
-            },
             kilowatts: {
                 type: Number,
                 required: true
@@ -61,8 +64,17 @@ const carSchema = new Schema({
         required: true
     },
     drive: {
-        type: Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Drive',
+        required: true
+    },
+    gearbox: {
+        type: Schema.Types.ObjectId,
+        ref: 'GearBox',
+        required: true
+    },
+    imagePath: {
+        type: String,
         required: true
     },
     name: {

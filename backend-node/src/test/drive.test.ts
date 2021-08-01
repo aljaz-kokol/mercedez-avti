@@ -18,6 +18,7 @@ describe('/drive end point testing', () => {
     });
     // Disconnect from the test db
     afterAll(async () => {
+        await Drive.deleteMany();
         await mongoose.disconnect();
     });
 

@@ -20,12 +20,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Routes
-app.use('/news', newsRoutes);
-app.use('/car-class', carClassRoutes);
-app.use('/fuel', fuelRoutes);
-app.use('/gearbox', gearBoxRoutes);
-app.use('/drive', driveRoutes);
-app.use('/car-type', carTypeRoutes);
-app.use('/car', carRoutes);
+app.use('/api/news', newsRoutes);
+app.use('/api/car-class', carClassRoutes);
+app.use('/api/fuel', fuelRoutes);
+app.use('/api/gearbox', gearBoxRoutes);
+app.use('/api/drive', driveRoutes);
+app.use('/api/car-type', carTypeRoutes);
+app.use('/api/car', carRoutes);
 
 export default app;

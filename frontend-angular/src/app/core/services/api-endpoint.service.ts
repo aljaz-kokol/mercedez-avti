@@ -29,4 +29,8 @@ export class ApiEndpointService {
   public getNewsByIdEndPoint(id: string): string {
     return this.createUrlWithPathVariables('news', [id]);
   }
+  // Return url of api endpoint which returns a list of car classes
+  public getCarClassListEndPoint(): string {
+    return this.createUrl('car-class');
+  }
 }

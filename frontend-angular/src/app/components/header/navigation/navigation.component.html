@@ -1,0 +1,11 @@
+<nav>
+  <div class="page-navigation">
+    <button class="nav-button" mat-button *ngFor="let carClass of carClassList">
+      {{ carClass.name }}-Class
+    </button>
+  </div>
+  <div class="auth-navigation">
+    <button class="nav-auth-button" mat-button>Login</button>
+    <button class="nav-auth-button" mat-button>Sign in</button>
+  </div>
+</nav>

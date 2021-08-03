@@ -1,0 +1,18 @@
+nav {
+  display: flex;
+  margin-top: 5px;
+  justify-content: space-between;
+}
+
+.page-navigation {
+  justify-content: space-between;
+  margin-left: 3px;
+}
+
+.nav-button {
+  margin-right: 15px;
+}
+
+.nav-auth-button {
+  margin: 0 5px;
+}

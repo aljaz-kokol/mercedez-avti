@@ -1,0 +1,14 @@
+.header {
+  border-radius: 0;
+  margin: 0;
+  padding: 0 0 5px;
+}
+
+.header-title {
+  display: inline;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+
+ /*TODO: Add phone mode support */

@@ -1,0 +1,7 @@
+<div class="page-title-container">
+  <h1 class="page-title mat-display-2">News</h1>
+  <hr class="page-title-separator">
+</div>
+<div class="news-list-container">
+  <app-news-card *ngFor="let news of newsList" [news]="news"></app-news-card>
+</div>

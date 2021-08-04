@@ -1,0 +1,17 @@
+<mat-card class="news-card-container">
+  <div class="img-container">
+    <!-- TODO: Replace fixed image path with dynamic one -->
+    <img src="https://www.mercedes-benz.si/passengercars/mercedes-benz-cars/models/g-class/suv-w463/specifications/offroad-performance/_jcr_content/par/productinfotabnav_ae/tabnav/productinfotabnavite_1673384304/tabnavitem/videoimageslider_573/slides/videoimageslide_b48/image.MQ6.12.20190827104413.jpeg" alt="Some image">
+  </div>
+  <div class="content-container">
+    <div class="main-info">
+      <h2 class="news-title">{{ news.title }}</h2>
+      <hr>
+      <p class="summary">{{ news.summary }}</p>
+    </div>
+    <div class="extra-info">
+      <button class="read-more-btn" mat-button>Read More</button>
+      <p class="published-date"><i>Published: {{ news.createdAt }}</i></p>
+    </div>
+  </div>
+</mat-card>

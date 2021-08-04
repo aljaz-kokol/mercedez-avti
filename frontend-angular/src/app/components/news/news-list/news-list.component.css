@@ -1,0 +1,18 @@
+.page-title-container {
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
+.page-title {
+  text-align: center;
+  margin: 0 0 3px;
+  padding: 0;
+}
+
+.page-title-separator {
+  width: 25%;
+  margin: auto;
+  background: black;
+  border: 1px solid black;
+  border-radius: 1px;
+}

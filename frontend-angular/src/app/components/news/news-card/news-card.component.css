@@ -1,0 +1,78 @@
+.news-card-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.img-container {
+  flex: 1;
+}
+
+.content-container {
+  flex: 1;
+}
+
+img {
+  width: 95%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1px;
+}
+
+.summary {
+  text-align: justify;
+  overflow: auto;
+  height: 70%;
+  padding-right: 7px;
+  font-weight: normal;
+}
+
+.main-info {
+  height: 65%;
+  margin-bottom: 10px;
+}
+
+.extra-info {
+  position: relative;
+  height: 35%;
+  margin-top: 15px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: black;
+}
+
+.news-title {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+hr {
+  margin: 0 0 7px;
+  padding: 0;
+  border: 0.7px solid black;
+  background: black;
+  border-radius: 2px;
+}
+
+.read-more-btn {
+  display: block;
+  background: black;
+  color: white;
+  width: 20%;
+  padding: 0;
+}
+
+.published-date {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: fit-content;
+  color: gray;
+}

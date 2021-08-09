@@ -1,6 +1,10 @@
 <nav>
   <div class="page-navigation">
-    <button class="nav-button" mat-button *ngFor="let carClass of carClassList">
+    <button
+      class="nav-button"
+      mat-button
+      (click)="navigate(['class', carClass.id])"
+      *ngFor="let carClass of carClassList">
       {{ carClass.name }}-Class
     </button>
   </div>

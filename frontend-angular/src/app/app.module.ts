@@ -11,6 +11,8 @@ import {NavigationComponent} from './components/header/navigation/navigation.com
 import {AppRouterModule} from './app-router.module';
 import {NewsListComponent} from './components/news/news-list/news-list.component';
 import {NewsCardComponent} from './components/news/news-card/news-card.component';
+import {CarListComponent} from './components/car/car-list/car-list.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import {NewsCardComponent} from './components/news/news-card/news-card.component
     HeaderComponent,
     NavigationComponent,
     NewsListComponent,
-    NewsCardComponent
+    NewsCardComponent,
+    CarListComponent
   ],
   imports: [
     BrowserModule,
@@ -26,6 +29,7 @@ import {NewsCardComponent} from './components/news/news-card/news-card.component
     HttpClientModule,
     MatCardModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
     AppRouterModule
   ],
   providers: [],

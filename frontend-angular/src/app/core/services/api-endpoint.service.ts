@@ -33,4 +33,8 @@ export class ApiEndpointService {
   public getCarClassListEndPoint(): string {
     return this.createUrl('car-class');
   }
+  // Return url of api endpoint which return a single CarClass based on the passed id
+  public getCarClassByIdEndPoint(id: string): string {
+    return this.createUrlWithPathVariables('car-class', [id]);
+  }
 }

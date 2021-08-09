@@ -1,0 +1,12 @@
+<mat-spinner *ngIf="showSpinner"></mat-spinner>
+<div class="content-container" *ngIf="!showSpinner">
+  <div class="page-title-container">
+    <h1 class="page-title">{{ carClass.name }}-CLASS</h1>
+    <hr class="page-title-separator">
+  </div>
+  <div class="car-list-grid">
+    <mat-card class="car-card" *ngFor="let i of [1,2,3,4,5]">
+      <h2>CAR</h2>
+    </mat-card>
+  </div>
+</div>

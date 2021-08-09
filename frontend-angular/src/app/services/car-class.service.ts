@@ -17,4 +17,10 @@ export class CarClassService {
     return [...this.carClassList];
   }
 
+  public async getCarClassFromId(id: string): Promise<CarClass> {
+    const carClass: CarClass = await this.apiHttp.get<CarClassApi>(this.apiEndPoint.getCarClassByIdEndPoint(id))
+      .pipe(map(CarClass.fromApi)).toPromise()
+    return carClass;
+  }
+
 }

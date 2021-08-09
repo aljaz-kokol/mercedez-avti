@@ -1,3 +1,5 @@
+import path from 'path';
+
 import express, { Request, Response, NextFunction } from 'express';
 
 import newsRoutes from './routes/news.routes';
@@ -11,6 +13,7 @@ import carRoutes from './routes/car.routes';
 const app = express();
 
 app.use(express.json());
+app.use('/api/images', express.static(path.join('images')));
 
 app.use((req: Request, res: Response, next: NextFunction) => {    
     res.setHeader('Access-Control-Allow-Origin', '*');

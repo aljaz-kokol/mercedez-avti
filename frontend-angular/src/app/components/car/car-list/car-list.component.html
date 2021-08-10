@@ -5,8 +5,12 @@
     <hr class="page-title-separator">
   </div>
   <div class="car-list-grid">
-    <mat-card class="car-card" *ngFor="let i of [1,2,3,4,5]">
-      <h2>CAR</h2>
+    <mat-card class="car-card" *ngFor="let car of carList">
+    <div class="car-price-container">
+      <p class="car-price">{{ car.basePrice }}&euro;</p>
+    </div>
+      <img [src]="car.image" [alt]="car.name" class="car-img">
+      <h3 class="car-name">{{ car.name }}</h3>
     </mat-card>
   </div>
 </div>

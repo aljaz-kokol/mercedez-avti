@@ -11,7 +11,7 @@ export class NewsService {
   constructor(private apiHttp: ApiHttpService, private apiEndPoint: ApiEndpointService) {}
 
   public async getNewsList(): Promise<News[]> {
-    this.newsList = await this.apiHttp.get<NewsApi[]>(this.apiEndPoint.getNewsListEndPoint())
+    this.newsList = await this.apiHttp.get<NewsApi[]>(this.apiEndPoint.newsListEndPoint)
       .pipe(map(News.fromApiList)).toPromise();
     return [...this.newsList];
   }

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CarClass} from '../../../models/car-class.model';
 import {CarClassService} from '../../../services/car-class.service';
+import {Car} from '../../../models/car.model';
+import {CarService} from '../../../services/car.service';
 
 @Component({
   selector: 'app-car-list',
@@ -9,14 +11,20 @@ import {CarClassService} from '../../../services/car-class.service';
   styleUrls: ['./car-list.component.css']
 })
 export class CarListComponent implements OnInit {
-  classId: string;
+  private classId: string;
+
   carClass: CarClass;
-  constructor(private route: ActivatedRoute, private carClassService: CarClassService) {}
+  carList: Car[];
+
+  constructor(private route: ActivatedRoute,
+              private carClassService: CarClassService,
+              private carService: CarService) {}
 
   async ngOnInit(): Promise<void> {
     this.route.paramMap.subscribe(async params => {
       this.classId = params.get('classId');
       this.carClass = await this.carClassService.getCarClassFromId(this.classId);
+      this.carList = await this.carService.getCarListFromClass(this.carClass.id);
     });
   }
 

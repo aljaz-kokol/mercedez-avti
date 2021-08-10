@@ -31,4 +31,9 @@ app.use('/api/drive', driveRoutes);
 app.use('/api/car-type', carTypeRoutes);
 app.use('/api/car', carRoutes);
 
+// Simple Error handling
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    res.status(500).json(err);
+});
+
 export default app;

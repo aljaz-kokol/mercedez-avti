@@ -1,11 +1,5 @@
 import { Schema, model, Document } from 'mongoose';
 
-import { FuelDocument } from '../model/fuel.model';
-import { CarClassDocument } from '../model/car-class.model';
-import { CarTypeDocument } from '../model/car-type.model';
-import { DriveDocument } from '../model/drive.model';
-import { GearBoxDocument } from '../model/gearbox.model';
-
 export interface Engine {
     kilowatts: number;
     torque: number;
@@ -28,6 +22,7 @@ export interface CarDocument extends Document{
     height: number;
     width: number;
     topSpeed: number;
+    basePrice: number;
 }
 
 const carSchema = new Schema({
@@ -46,6 +41,16 @@ const carSchema = new Schema({
         ref: 'Fuel',
         required: true
     },
+    drive: {
+        type: Schema.Types.ObjectId,
+        ref: 'Drive',
+        required: true
+    },
+    gearbox: {
+        type: Schema.Types.ObjectId,
+        ref: 'GearBox',
+        required: true
+    },
     engine: {
         type: {
             kilowatts: {
@@ -61,16 +66,6 @@ const carSchema = new Schema({
                 required: true
             }
         },
-        required: true
-    },
-    drive: {
-        type: Schema.Types.ObjectId,
-        ref: 'Drive',
-        required: true
-    },
-    gearbox: {
-        type: Schema.Types.ObjectId,
-        ref: 'GearBox',
         required: true
     },
     imagePath: {
@@ -106,6 +101,10 @@ const carSchema = new Schema({
         required: true
     },
     topSpeed: {
+        type: Number,
+        required: true
+    },
+    basePrice: {
         type: Number,
         required: true
     }

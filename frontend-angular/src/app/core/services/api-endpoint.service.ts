@@ -22,7 +22,7 @@ export class ApiEndpointService {
     return urlBuilder.toString();
   }
   // Return url of api endpoint which returns a list of news
-  public getNewsListEndPoint(): string {
+  public get newsListEndPoint(): string {
     return this.createUrl('news');
   }
   // Return url of api endpoint which returns one news element based on the passed id
@@ -30,11 +30,19 @@ export class ApiEndpointService {
     return this.createUrlWithPathVariables('news', [id]);
   }
   // Return url of api endpoint which returns a list of car classes
-  public getCarClassListEndPoint(): string {
+  public get carClassListEndPoint(): string {
     return this.createUrl('car-class');
   }
   // Return url of api endpoint which return a single CarClass based on the passed id
   public getCarClassByIdEndPoint(id: string): string {
     return this.createUrlWithPathVariables('car-class', [id]);
+  }
+  // Return url of api endpoint which returns a list of cars
+  public get carListEndPoint(): string {
+    return this.createUrl('car');
+  }
+  // Return ulr of api endpoint which returns a list of cars based on the give car-class id
+  public getCarListByClassEndPoint(classId: string): string {
+    return this.createUrlWithPathVariables('car/class',[classId])
   }
 }

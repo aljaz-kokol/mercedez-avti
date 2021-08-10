@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import CarClass from '../model/car-class.model';
 
 import Car from '../model/car.model';
 
@@ -70,3 +71,21 @@ export const createCar = async (req: Request, res: Response, next: NextFunction)
         return err;
     }
 };
+
+export const getCarsFromClass = async (req: Request, res: Response, next: NextFunction) => {
+    const classId = req.params.classId;
+    try {
+        // Check if car class with given id exists else throw an error
+        if (!await CarClass.exists({ _id: classId })) {
+            throw new Error(`Can't find cars related to this class. Class does not exist`);
+        }
+        const cars = await Car.find({ class: classId });
+        res.status(200).json(cars);
+    } catch(err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+        return err;
+    }
+}

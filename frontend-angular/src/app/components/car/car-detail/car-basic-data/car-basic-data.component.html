@@ -1,0 +1,19 @@
+<mat-card class="basic-data">
+  <div class="img-container">
+    <img [src]="car.image" [alt]="car.name" class="car-img">
+  </div>
+  <div class="data">
+    <h2>ESSENTIAL DATA</h2>
+    <hr>
+    <ul class="data-list">
+      <li>Name: {{ car.name }}</li>
+      <li>Base price: {{ car.basePrice }}&euro;</li>
+      <li>Kilowatts: {{ car.engine.kilowatts }}kW</li>
+      <li>Horsepower: {{ car.engine.horsepower }}hp</li>
+      <li>Torque: {{ car.engine.torque }}Nm</li>
+      <li class="capitalize">Fuel: {{ car.fuel.type }}</li>
+      <li>Year of release: {{ car.releaseYear }}</li>
+      <li>Number of doors: {{ car.doors }}</li>
+    </ul>
+  </div>
+</mat-card>

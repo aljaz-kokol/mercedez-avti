@@ -1,3 +1,9 @@
+import {CarClass} from './car-class.model';
+import {CarType} from './car-type.model';
+import {Fuel} from './fuel.model';
+import {Drive} from './drive.model';
+import {Gearbox} from './gearbox.model';
+
 export interface CarApi {
   _id: string;
   class: string;
@@ -22,6 +28,28 @@ export interface Engine {
   kilowatts: number;
   torque: number;
   volume: number;
+  horsepower: string;
+}
+
+// A car object that contains object values of reference tables not just the id's
+export interface CarFull {
+  id: string;
+  class: CarClass;
+  type: CarType;
+  fuel: Fuel;
+  engine: Engine;
+  drive: Drive;
+  gearbox: Gearbox;
+  image: string;
+  name: string;
+  releaseYear: number;
+  doors: number;
+  weight: number;
+  length: number;
+  height: number;
+  width: number;
+  topSpeed: number;
+  basePrice: string;
 }
 
 export class Car {
@@ -58,7 +86,10 @@ export class Car {
       apiObj.class,
       apiObj.type,
       apiObj.fuel,
-      apiObj.engine,
+      {
+        ...apiObj.engine,
+        horsepower: (apiObj.engine.kilowatts * 1.34102209).toFixed(2)
+      },
       apiObj.drive,
       apiObj.gearbox,
       apiObj.imagePath,
@@ -74,9 +105,32 @@ export class Car {
     );
   }
 
+  public toCarFull(carClass: CarClass, type: CarType, fuel: Fuel, drive: Drive, gearbox: Gearbox): CarFull {
+    return {
+      id: this.id,
+      class: carClass,
+      type: type,
+      fuel: fuel,
+      engine: this.engine,
+      drive: drive,
+      gearbox: gearbox,
+      image: this.image,
+      name: this.name,
+      releaseYear: this.releaseYear,
+      doors: this.doors,
+      weight: this.weight,
+      length: this.length,
+      height: this.height,
+      width: this.width,
+      topSpeed: this.topSpeed,
+      basePrice: this.basePrice
+    };
+  }
+
   public static fromApiList(apiObjList: CarApi[]): Car[] {
     return apiObjList.map((apiObj) => Car.fromApi(apiObj)) ?? [];
   }
+
 }
 
 

@@ -1,0 +1,26 @@
+<mat-card class="all-data">
+  <div class="data">
+    <h2>ALL DATA</h2>
+    <hr>
+    <ul class="data-list">
+      <li>Class: {{ car.class.name }}</li>
+      <li>Name: {{ car.name }}</li>
+      <li>Car type: {{ car.type.type }}</li>
+      <li>Base price: {{ car.basePrice }}&euro;</li>
+      <li>Top speed: {{ car.topSpeed }} km/h</li>
+      <li>Engine volume: {{ car.engine.volume }}cm3</li>
+      <li>Kilowatts: {{ car.engine.kilowatts }}kW</li>
+      <li>Horsepower: {{ car.engine.horsepower }}hp</li>
+      <li>Torque: {{ car.engine.torque }}Nm</li>
+      <li class="capitalize">Fuel: {{ car.fuel.type }}</li>
+      <li>Year of release: {{ car.releaseYear }}</li>
+      <li>Number of doors: {{ car.doors }}</li>
+      <li>Drive type: {{ car.drive.type }}</li>
+      <li class="capitalize">Gearbox: {{ car.gearbox.type }}</li>
+      <li>Weight: {{ car.weight }}kg</li>
+      <li>Length: {{ car.length }}mm</li>
+      <li>Width: {{ car.width }}mm</li>
+      <li>Height: {{ car.height }}mm</li>
+    </ul>
+  </div>
+</mat-card>

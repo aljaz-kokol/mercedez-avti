@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CarClass} from '../../../models/car-class.model';
 import {CarClassService} from '../../../services/car-class.service';
 import {Car} from '../../../models/car.model';
@@ -17,6 +17,7 @@ export class CarListComponent implements OnInit {
   carList: Car[];
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private carClassService: CarClassService,
               private carService: CarService) {}
 
@@ -28,8 +29,20 @@ export class CarListComponent implements OnInit {
     });
   }
 
-  public get showSpinner(): boolean {
-    return !this.carClass;
+  public async navigate(path: any[]): Promise<void> {
+    await this.router.navigate(path);
   }
 
+  // Return true if the carClass has not yet been instantiated
+  public get showSpinner(): boolean {
+    return (!this.carClass || !this.carList);
+  }
+  // Return true if there is at least 1 one in carList array
+  public get haveCars(): boolean {
+    return this.carList.length > 0;
+  }
+  // Return page title
+  public get pageTitle(): string {
+    return `${this.carClass.name}-CLASS`
+  }
 }

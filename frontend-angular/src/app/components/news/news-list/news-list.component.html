@@ -1,7 +1,7 @@
-<div class="page-title-container">
-  <h1 class="page-title">NEWS</h1>
-  <hr class="page-title-separator">
-</div>
-<div class="news-list-container">
-  <app-news-card *ngFor="let news of newsList" [news]="news"></app-news-card>
+<mat-spinner *ngIf="showSpinner"></mat-spinner>
+<div class="content-container" *ngIf="!showSpinner">
+  <app-page-title [title]="'NEWS'"></app-page-title>
+  <div class="news-list-container">
+    <app-news-card *ngFor="let news of newsList" [news]="news"></app-news-card>
+  </div>
 </div>

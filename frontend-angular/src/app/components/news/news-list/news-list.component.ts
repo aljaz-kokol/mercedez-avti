@@ -8,11 +8,15 @@ import {NewsService} from '../../../services/news.service';
   styleUrls: ['./news-list.component.css']
 })
 export class NewsListComponent implements OnInit {
-  newsList: News[] = [];
+  newsList: News[];
 
   constructor(private newsService: NewsService) {}
 
   async ngOnInit(): Promise<void> {
     this.newsList = await this.newsService.getNewsList();
+  }
+
+  public get showSpinner(): boolean {
+    return !this.newsList;
   }
 }

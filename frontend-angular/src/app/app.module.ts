@@ -13,6 +13,11 @@ import {NewsListComponent} from './components/news/news-list/news-list.component
 import {NewsCardComponent} from './components/news/news-card/news-card.component';
 import {CarListComponent} from './components/car/car-list/car-list.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {CarDetailComponent} from './components/car/car-detail/car-detail.component';
+import {CarCardComponent} from './components/car/car-card/car-card.component';
+import {PageTitleComponent} from './components/page-title/page-title.component';
+import {CarBasicDataComponent} from './components/car/car-detail/car-basic-data/car-basic-data.component';
+import {CarDataComponent} from './components/car/car-detail/car-data/car-data.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +26,12 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     NavigationComponent,
     NewsListComponent,
     NewsCardComponent,
-    CarListComponent
+    CarListComponent,
+    CarDetailComponent,
+    CarCardComponent,
+    PageTitleComponent,
+    CarBasicDataComponent,
+    CarDataComponent
   ],
   imports: [
     BrowserModule,

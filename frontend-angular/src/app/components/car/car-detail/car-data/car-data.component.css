@@ -1,0 +1,46 @@
+.all-data {
+  border-radius: 15px;
+}
+
+.data {
+  flex: 1;
+}
+
+.car-img {
+  width: 90%;
+  border-radius: 15px;
+}
+
+.data h2 {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.data-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.data-list li {
+  font-size: 1rem;
+  padding: 5px 3px;
+  background: rgb(207, 207, 207);
+}
+
+.data-list li:nth-child(odd) {
+  background: rgb(224, 224, 224);
+}
+
+hr {
+  margin: 0 0 7px;
+  padding: 0;
+  border: 0.7px solid black;
+  background: black;
+  border-radius: 2px;
+}

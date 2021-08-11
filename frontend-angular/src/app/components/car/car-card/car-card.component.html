@@ -1,0 +1,7 @@
+<mat-card class="car-card" (click)="showDetail()">
+  <div class="car-price-container">
+    <p class="car-price">{{ car.basePrice }}&euro;</p>
+  </div>
+  <img [src]="car.image" [alt]="car.name" class="car-img">
+  <h3 class="car-name">{{ car.name }}</h3>
+</mat-card>

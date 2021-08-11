@@ -1,8 +1,10 @@
 .news-card-container {
   display: flex;
   justify-content: space-between;
-  border-radius: 10px;
+  border-radius: 15px;
   margin-bottom: 20px;
+  /*box-shadow: 0 0 7px rgba(128, 128, 128, 0.5);*/
+  background: #fcfcfc;
 }
 
 .img-container {
@@ -17,7 +19,7 @@ img {
   width: 95%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 15px;
 }
 
 .summary {

@@ -16,7 +16,7 @@
 .car-name {
   text-align: center;
   font-weight: 500;
-  margin: 10px;
+  padding: 20px 0;
 }
 
 .car-card:hover .car-price-container {
@@ -44,3 +44,4 @@
   font-size: 2.2rem;
   color: black;
 }
+

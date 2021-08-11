@@ -18,6 +18,7 @@ import {CarCardComponent} from './components/car/car-card/car-card.component';
 import {PageTitleComponent} from './components/page-title/page-title.component';
 import {CarBasicDataComponent} from './components/car/car-detail/car-basic-data/car-basic-data.component';
 import {CarDataComponent} from './components/car/car-detail/car-data/car-data.component';
+import {MatRippleModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -33,15 +34,16 @@ import {CarDataComponent} from './components/car/car-detail/car-data/car-data.co
     CarBasicDataComponent,
     CarDataComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MatCardModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    AppRouterModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        MatCardModule,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        AppRouterModule,
+        MatRippleModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

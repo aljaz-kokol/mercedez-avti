@@ -1,5 +1,4 @@
 import { Schema, model, Document } from 'mongoose';
-
 export interface CarClassDocument extends Document {
     name: string;
 }

@@ -130,7 +130,6 @@ export class Car {
   public static fromApiList(apiObjList: CarApi[]): Car[] {
     return apiObjList.map((apiObj) => Car.fromApi(apiObj)) ?? [];
   }
-
 }
 
 

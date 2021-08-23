@@ -25,7 +25,7 @@ export const getCarClassFromId = async (req: Request, res: Response, next: NextF
         }
         res.status(200).json(carClass);
     } catch (err) {
-        if (!err.stautsCode) {
+        if (!err.statusCode) {
             err.statusCode = 500;
         }
         next(err);

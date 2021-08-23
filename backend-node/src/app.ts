@@ -36,7 +36,7 @@ app.use('/api/auth', authRoutes);
 // Simple Error handling
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(500).json({
-        error: `Error: ${err.message}`
+        error: err
     });
 });
 

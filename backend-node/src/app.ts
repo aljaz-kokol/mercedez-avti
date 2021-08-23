@@ -9,6 +9,7 @@ import gearBoxRoutes from './routes/gearbox.routes';
 import driveRoutes from './routes/drive.routes';
 import carTypeRoutes from './routes/car-type.routes';
 import carRoutes from './routes/car.routes';
+import authRoutes from './routes/auth.routes';
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api/gearbox', gearBoxRoutes);
 app.use('/api/drive', driveRoutes);
 app.use('/api/car-type', carTypeRoutes);
 app.use('/api/car', carRoutes);
+app.use('/api/auth', authRoutes);
 
 // Simple Error handling
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

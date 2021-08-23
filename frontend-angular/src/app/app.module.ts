@@ -18,7 +18,12 @@ import {CarCardComponent} from './components/car/car-card/car-card.component';
 import {PageTitleComponent} from './components/page-title/page-title.component';
 import {CarBasicDataComponent} from './components/car/car-detail/car-basic-data/car-basic-data.component';
 import {CarDataComponent} from './components/car/car-detail/car-data/car-data.component';
-import {MatRippleModule} from '@angular/material/core';
+import {MatOptionModule, MatRippleModule} from '@angular/material/core';
+import {MatIconModule} from '@angular/material/icon';
+import {LayoutModule} from '@angular/cdk/layout';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSelectModule} from '@angular/material/select';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -34,16 +39,22 @@ import {MatRippleModule} from '@angular/material/core';
     CarBasicDataComponent,
     CarDataComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        MatCardModule,
-        MatButtonModule,
-        MatProgressSpinnerModule,
-        AppRouterModule,
-        MatRippleModule
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    MatCardModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    AppRouterModule,
+    MatRippleModule,
+    MatIconModule,
+    LayoutModule,
+    MatSidenavModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatToolbarModule,
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

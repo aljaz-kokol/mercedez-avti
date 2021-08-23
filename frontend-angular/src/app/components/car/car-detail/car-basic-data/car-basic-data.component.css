@@ -56,4 +56,8 @@ hr {
   .basic-data {
     display: block;
   }
+
+  .car-img {
+    width: 100%;
+  }
 }

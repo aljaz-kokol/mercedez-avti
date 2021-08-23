@@ -21,7 +21,7 @@ export class CarListComponent implements OnInit {
               private carClassService: CarClassService,
               private carService: CarService) {}
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.route.paramMap.subscribe(async params => {
       this.classId = params.get('classId');
       this.carClass = await this.carClassService.getCarClassFromId(this.classId);
@@ -35,7 +35,7 @@ export class CarListComponent implements OnInit {
 
   // Return true if the carClass has not yet been instantiated
   public get showSpinner(): boolean {
-    return (!this.carClass || !this.carList);
+    return (!this.carList);
   }
   // Return true if there is at least 1 one in carList array
   public get haveCars(): boolean {

@@ -1,4 +1,10 @@
 <mat-card class="header">
+  <button *ngIf="mobileScreen"
+          mat-icon-button
+          (click)="toggleNavigation()"
+          id="burger-bar">
+    <mat-icon>menu</mat-icon>
+  </button>
   <h1 class="header-title" routerLink="news">Mercedes Benz</h1>
-  <app-navigation></app-navigation>
+  <app-navigation *ngIf="showNavigation"></app-navigation>
 </mat-card>

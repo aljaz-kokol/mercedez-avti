@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
+import { ResourceAlreadyExistsError } from '../errors/already-exists.error';
 import { CustomError } from '../errors/custom.error';
+import { ResourceNotFoundError } from '../errors/not-found.error';
 
 import Fuel  from '../model/fuel.model';
 
@@ -29,10 +31,7 @@ export const getFuelFromId = async (req: Request, res: Response, next: NextFunct
         }
         const fuel = await Fuel.findById(params.fuelId);
         if (!fuel) {
-            const error = new CustomError('Fuel document with this id does not exist!');
-            error.name = 'Resource was not found';
-            error.statusCode = 404;
-            throw error;
+            throw new ResourceNotFoundError('Fuel document with this id does not exist!');
         }
         res.status(200).json(fuel);
     } catch (err) {
@@ -51,12 +50,8 @@ export const createFuel = async (req: Request, res: Response, next: NextFunction
     try {
         //Check if a Fuel document with a given type already exists
         if (await Fuel.findOne({ type: reqBody.type })) {
-            const error = new CustomError('Fuel document with this type already exists!');
-            error.name = 'Resource already exists';
-            error.statusCode = 409;
-            throw error;
+            throw new ResourceAlreadyExistsError('Fuel document with this type already exists!');
         }
-        
         const newFuel = await new Fuel({
             type: reqBody.type
         }).save();

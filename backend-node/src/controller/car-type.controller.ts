@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
+import { ResourceAlreadyExistsError } from '../errors/already-exists.error';
 
 import { CustomError } from '../errors/custom.error';
+import { ResourceNotFoundError } from '../errors/not-found.error';
 import CarType from '../model/car-type.model';
 
 export const getCarTypes = async (req: Request, res: Response, next: NextFunction) => {
@@ -28,10 +30,7 @@ export const getCarTypeFromId = async (req: Request, res: Response, next: NextFu
         }
         const carType = await CarType.findById(params.typeId);
         if (!carType) {
-            const error = new CustomError('CarType document with this id does not exist!');
-            error.name = 'Resource was not found';
-            error.statusCode = 404;
-            throw error;
+            throw new ResourceNotFoundError('CarType document with this id does not exits!');
         }
         res.status(200).json(carType);
     } catch (err) {
@@ -52,10 +51,7 @@ export const createCarType = async (req: Request, res: Response, next: NextFunct
     try {
         // Check if CarType with a given id already exists
         if (await CarType.exists({ type: reqBody.type })) {
-            const error = new CustomError('CarType document with this type already exists!');
-            error.name = 'Resource already exists';
-            error.statusCode = 409;
-            throw error;
+            throw new ResourceAlreadyExistsError('CarType document with this type already exists!');
         }
         const carType = await CarType.create({
             type: reqBody.type,

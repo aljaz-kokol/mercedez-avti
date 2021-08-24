@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
+import { ResourceAlreadyExistsError } from '../errors/already-exists.error';
 
 import { CustomError } from '../errors/custom.error';
+import { ResourceNotFoundError } from '../errors/not-found.error';
 import CarClass from '../model/car-class.model';
 import Car from '../model/car.model';
 
@@ -29,10 +31,7 @@ export const getCarFromId = async (req: Request, res: Response, next: NextFuncti
         }
         const car = await Car.findById(params.carId);
         if (!car) {
-            const error = new CustomError('Car document with this id does not exist!');
-            error.name = 'Resource was not found';
-            error.statusCode = 404;
-            throw error;
+            throw new ResourceNotFoundError('Car document with this id does not exist!');
         }
         res.status(200).json(car);
     } catch (err) {
@@ -87,10 +86,7 @@ export const getCarsFromClass = async (req: Request, res: Response, next: NextFu
     try {
         // Check if car class with given id exists else throw an error
         if (!await CarClass.exists({ _id: classId })) {
-            const error = new CustomError(`Can't find cars related to this class. Class does not exist`);
-            error.name = 'Resource was not found';
-            error.statusCode = 404;
-            throw error;
+            throw new ResourceNotFoundError(`Can't find cars related to this class. Class does not exits.`);
         }
         const cars = await Car.find({ class: classId });
         res.status(200).json(cars);

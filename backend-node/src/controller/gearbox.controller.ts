@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
+import { ResourceAlreadyExistsError } from '../errors/already-exists.error';
 import { CustomError } from '../errors/custom.error';
+import { ResourceNotFoundError } from '../errors/not-found.error';
 
 import GearBox from '../model/gearbox.model';
 
@@ -28,10 +30,7 @@ export const getGearBoxFromId = async (req: Request, res: Response, next: NextFu
         }
         const gearBox = await GearBox.findById(params.gearId);
         if (!gearBox) {
-            const error = new CustomError('GearBox document with this id does not exist!');
-            error.name = 'Resource was not found';
-            error.statusCode = 404;
-            throw error;
+            throw new ResourceNotFoundError('GearBox document with this id does not exist!');
         }
         res.status(200).json(gearBox);
     } catch (err) {
@@ -49,10 +48,7 @@ export const createGearBox = async (req: Request, res: Response, next: NextFunct
     try {
         // Check if GearBox document with a given type already exists
         if (await GearBox.findOne({ type: reqBody.type })) {
-            const error = new CustomError('GearBox document with this type already exists!');
-            error.name = 'Resource already exists';
-            error.statusCode = 409;
-            throw error;
+            throw new ResourceAlreadyExistsError('GearBox document with this type already exists!');
         }
         // Create new GearBox document
         const newGearBox = await new GearBox({

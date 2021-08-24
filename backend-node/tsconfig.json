@@ -3,6 +3,10 @@
     "src/test",
     "node_modules"
   ],
+  "typeRoots": [
+    "@types",
+    "./node_modules/@types",
+  ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     /* Basic Options */

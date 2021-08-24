@@ -4,6 +4,7 @@ import {NewsListComponent} from './components/news/news-list/news-list.component
 import {CarListComponent} from './components/car/car-list/car-list.component';
 import {CarDetailComponent} from './components/car/car-detail/car-detail.component';
 import {CarListGuard} from './guards/car-list.guard';
+import {CarDetailGuard} from './guards/car-detail.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'news', pathMatch: 'full'},
@@ -12,7 +13,7 @@ const routes: Routes = [
       { path: ':classId', component: CarListComponent, canActivate: [CarListGuard] },
   ]},
   {path: 'car', children: [
-      { path: ':carId', component: CarDetailComponent }
+      { path: ':carId', component: CarDetailComponent, canActivate: [CarDetailGuard] }
   ]}
 ];
 

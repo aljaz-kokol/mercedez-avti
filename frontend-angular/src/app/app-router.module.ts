@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Router, RouterModule, Routes} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {NewsListComponent} from './components/news/news-list/news-list.component';
 import {CarListComponent} from './components/car/car-list/car-list.component';
 import {CarDetailComponent} from './components/car/car-detail/car-detail.component';

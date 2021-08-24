@@ -130,6 +130,10 @@ export class Car {
   public static fromApiList(apiObjList: CarApi[]): Car[] {
     return apiObjList.map((apiObj) => Car.fromApi(apiObj)) ?? [];
   }
+
+  public static instanceOfCarApi(object: any): object is CarApi {
+    return ('_id' in object && 'topSpeed' in object);
+  }
 }
 
 

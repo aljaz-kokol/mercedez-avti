@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { Types } from 'mongoose';
+import { CustomError } from '../errors/custom.error';
 
 import Drive from '../model/drive.model';
 
@@ -19,9 +21,17 @@ export const getDriveFromId  = async (req: Request, res: Response, next: NextFun
     type ExpectedReq = { driveId: string };
     const params = req.params as ExpectedReq;
     try {
+        if (!Types.ObjectId.isValid(params.driveId)) {
+            const error = new CustomError('Drive id is invalid');
+            error.statusCode = 400;
+            throw error;
+        }
         const drive = await Drive.findById(params.driveId);
         if (!drive) {
-            throw new Error('Drive document with this id does not exist!');
+            const error = new CustomError('Drive document with this id does not exist!');
+            error.name = 'Resource was not found';
+            error.statusCode = 404;
+            throw error;
         }
         res.status(200).json(drive);
     } catch (err) {
@@ -39,7 +49,10 @@ export const createDrive = async (req: Request, res: Response, next: NextFunctio
     try {
         // Check if Drive document with a given type already exists
         if (await Drive.exists({ type: reqBody.type })) {
-            throw new Error('Drive document with this type already exists!');
+            const error = new CustomError('Drive document with this type already exists!');
+            error.name = 'Resource already exists';
+            error.statusCode = 409;
+            throw error;
         }
         const drive = await Drive.create({
             type: reqBody.type

@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { Types } from 'mongoose';
+import { CustomError } from '../errors/custom.error';
 import News from '../model/news.model';
 
 // Get all news documents from the database
@@ -24,9 +26,17 @@ export const getNewsFromId = async (req: Request, res: Response, next: NextFunct
     const reqParams = req.params as ExpectedReq;
     const newsId  = reqParams.newsId;
     try {
+        if (!Types.ObjectId.isValid(reqParams.newsId)) {
+            const error = new CustomError('News id is invalid');
+            error.statusCode = 400;
+            throw error;
+        }
         const news= await News.findById(newsId);
         if (!news) {
-            throw new Error('News document with this id does not exist');
+            const error = new CustomError('News document with this id does not exist');
+            error.statusCode = 404;
+            error.name = 'Resource was not found';
+            throw error;
         }
         res.status(200).json(news);
     } catch(err) {
@@ -63,7 +73,10 @@ export const createNews = async (req: Request, res: Response, next: NextFunction
     try {
         // Check if news document with a given title already exists
         if (await News.findOne({title: title})) {
-            throw Error('News with this title already exists');
+            const error = new CustomError('News with this title already exists');
+            error.name = 'Resource already exists';
+            error.statusCode = 409;
+            throw error;
         }
         const saveNews = await mongoNews.save();
     

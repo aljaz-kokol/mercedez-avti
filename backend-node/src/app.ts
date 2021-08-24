@@ -10,6 +10,7 @@ import driveRoutes from './routes/drive.routes';
 import carTypeRoutes from './routes/car-type.routes';
 import carRoutes from './routes/car.routes';
 import authRoutes from './routes/auth.routes';
+import { CustomError } from './errors/custom.error';
 
 const app = express();
 
@@ -35,7 +36,8 @@ app.use('/api/auth', authRoutes);
 
 // Simple Error handling
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    res.status(500).json({
+    const statusCode = err instanceof CustomError ? err.statusCode : 500;
+    res.status(statusCode).json({
         error: err
     });
 });

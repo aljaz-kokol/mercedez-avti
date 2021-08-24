@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import CarClass from '../model/car-class.model';
+import { Types } from 'mongoose';
 
+import { CustomError } from '../errors/custom.error';
+import CarClass from '../model/car-class.model';
 import Car from '../model/car.model';
 
 export const getCars = async (req: Request, res: Response, next: NextFunction) => {
@@ -20,9 +22,17 @@ export const getCarFromId = async (req: Request, res: Response, next: NextFuncti
     type ExpectedReq = { carId: string };
     const params = req.params as ExpectedReq;
     try {
+        if (!Types.ObjectId.isValid(params.carId)) {
+            const error = new CustomError('Car id is invalid');
+            error.statusCode = 400;
+            throw error;
+        }
         const car = await Car.findById(params.carId);
         if (!car) {
-            throw new Error('Car document with this id does not exist!');
+            const error = new CustomError('Car document with this id does not exist!');
+            error.name = 'Resource was not found';
+            error.statusCode = 404;
+            throw error;
         }
         res.status(200).json(car);
     } catch (err) {
@@ -77,7 +87,10 @@ export const getCarsFromClass = async (req: Request, res: Response, next: NextFu
     try {
         // Check if car class with given id exists else throw an error
         if (!await CarClass.exists({ _id: classId })) {
-            throw new Error(`Can't find cars related to this class. Class does not exist`);
+            const error = new CustomError(`Can't find cars related to this class. Class does not exist`);
+            error.name = 'Resource was not found';
+            error.statusCode = 404;
+            throw error;
         }
         const cars = await Car.find({ class: classId });
         res.status(200).json(cars);

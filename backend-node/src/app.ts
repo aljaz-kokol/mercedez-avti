@@ -36,7 +36,12 @@ app.use('/api/auth', authRoutes);
 
 // Simple Error handling
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    const statusCode = err instanceof CustomError ? err.statusCode : 500;
+    let statusCode = 500;
+    if (err instanceof CustomError) {
+        statusCode = err.statusCode;
+    } else {
+        err = CustomError.toCustomError(err);
+    }
     res.status(statusCode).json({
         error: err
     });

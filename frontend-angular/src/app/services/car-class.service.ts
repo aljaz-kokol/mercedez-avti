@@ -20,11 +20,7 @@ export class CarClassService {
   }
 
   public async getCarClassFromId(id: string): Promise<CarClass> | null {
-    try {
       return await this.apiHttp.get<CarClassApi>(this.apiEndPoint.getCarClassByIdEndPoint(id))
         .pipe(map(CarClass.fromApi)).toPromise();
-    } catch (err) {
-      throw err.error;
-    }
   }
 }

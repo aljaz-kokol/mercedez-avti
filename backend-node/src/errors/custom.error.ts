@@ -14,11 +14,6 @@ export class CustomError implements Error {
     public static toCustomError(err: Error) {
         const customError = new CustomError(err.message);
         customError.name = err.name;
-        customError.statusCode = 500;
         return customError;
-    }
-
-    public static isCustomError(err: Error) {
-        return (err instanceof CustomError);
     }
 }

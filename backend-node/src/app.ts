@@ -42,9 +42,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     } else {
         err = CustomError.toCustomError(err);
     }
-    res.status(statusCode).json({
-        error: err
-    });
+    res.status(statusCode).json(err);
 });
 
 export default app;

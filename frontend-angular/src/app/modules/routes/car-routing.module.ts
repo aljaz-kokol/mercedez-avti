@@ -6,7 +6,7 @@ import {CarListComponent} from '../../components/car/car-list/car-list.component
 import {CarListGuard} from '../../services/guards/car-list.guard';
 
 const routes: Routes = [
-  {path: 'car', children: [
+  {path: '', children: [
     { path: ':carId', component: CarDetailComponent, canActivate: [CarDetailGuard] },
     { path: 'class', children: [
         { path: ':classId', component: CarListComponent, canActivate: [CarListGuard] },

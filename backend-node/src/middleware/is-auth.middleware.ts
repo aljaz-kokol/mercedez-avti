@@ -6,13 +6,14 @@ import { jwtPrivateKey } from '../util/variables.util';
 
 export const isAuth = (req: Request, res: Response, next: NextFunction) => {
     // Get value from the Authorization header
-    const authHeader = req.get('Authorization');
+    const authHeader = req.headers.authorization;
     if (!authHeader) {
         const error = new CustomError('Not Authenticated');
         error.statusCode = 401;
         error.name = 'Authentication error'
         throw error;
     }
+    // Bearer tokenValue
     const token = authHeader.split(' ')[1];
     try {
         const decodedToken = jwt.verify(token, jwtPrivateKey) as { username: string; userId: string };
@@ -30,5 +31,4 @@ export const isAuth = (req: Request, res: Response, next: NextFunction) => {
         }
         next(err);
     }
-    
 }

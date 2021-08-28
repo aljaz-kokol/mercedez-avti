@@ -13,10 +13,8 @@ export class CarDetailGuard implements CanActivate {
       this.carService.getCarFromId(route.paramMap.get('carId'))
         .then(data => resolve(true))
         .catch(err => {
-          this.router.navigate(['/news']);
-          resolve(false);
+          resolve(this.router.createUrlTree(['/news']));
         });
     });
   }
-
 }

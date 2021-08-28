@@ -14,8 +14,7 @@ export class CarListGuard implements CanActivate {
         this.carClassService.getCarClassFromId(route.paramMap.get('classId'))
           .then(data => resolve(true))
           .catch(err => {
-            this.router.navigate(['/news'])
-            resolve(false);
+            resolve(this.router.createUrlTree(['/']));
           });
       });
   }

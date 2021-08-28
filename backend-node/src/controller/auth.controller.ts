@@ -75,11 +75,13 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             userId: user._id
         }, 
         jwtPrivateKey, 
-        { expiresIn: 1200 });
+        { expiresIn: 1200 }); // 1200 --> 20min
         
         res.status(200).json({
+            message: 'Successfully logged in',
             token: token,
-            userId: user._id
+            userId: user._id,
+            expiresIn: 1200
         });
     } catch(err) {
         if (!err.statusCode) {

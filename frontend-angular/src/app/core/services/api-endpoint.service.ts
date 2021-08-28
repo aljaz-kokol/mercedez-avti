@@ -82,7 +82,11 @@ export class ApiEndpointService {
 
   // === AUTH ENDPOINTS ==
   // Return url of api endpoint which returns a message and a newly created user
-  public get signupEndPont(): string {
+  public get signupEndpoint(): string {
     return this.createUrl('auth/signup');
+  }
+  // Return ulr of api endpoint which is responsible for login
+  public get loginEndpoint(): string {
+    return this.createUrl('auth/login');
   }
 }

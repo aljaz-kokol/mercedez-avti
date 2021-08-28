@@ -41,7 +41,7 @@ export class CreateUserComponent implements OnInit {
     return 'visibility_off';
   }
 
-  async signup(): Promise<void> {
+  async onSignup(): Promise<void> {
     if (this.signupForm.valid) {
       const email: string = this.signupForm.get('email').value;
       const username: string = this.signupForm.get('username').value;
@@ -62,12 +62,13 @@ export class CreateUserComponent implements OnInit {
 
   private initSignupForm(): void {
     this.signupForm = new FormGroup({
-      username: new FormControl('', [
-        Validators.required
-      ]),
       email: new FormControl('', [
         Validators.email,
         Validators.required
+      ]),
+      username: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3)
       ]),
       password: new FormControl('', [
         Validators.required,
@@ -79,8 +80,5 @@ export class CreateUserComponent implements OnInit {
     }, {
       validators: [CustomValidators.passwordConfirming]
     });
-  }
-  private resetForm() {
-
   }
 }

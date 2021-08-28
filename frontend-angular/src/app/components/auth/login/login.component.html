@@ -1,0 +1,16 @@
+<app-page-title title="Login"></app-page-title>
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+  <mat-form-field appearance="outline">
+    <mat-label>Username or E-mail</mat-label>
+    <input type="text" formControlName="username" required matInput />
+    <mat-error>Please enter a valid username</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input [type]="showPassword.inputType"  formControlName="password" required matInput />
+    <mat-icon matSuffix (click)="toggleShowPassword()">{{ showPassword.icon }}</mat-icon>
+    <mat-error>Please enter a valid password</mat-error>
+  </mat-form-field>
+  <button type="submit" class="login-btn" [disabled]="loginForm.invalid" mat-flat-button>Login</button>
+</form>
+<p>Don't have an account? <a routerLink="/auth/signup">Signup</a></p>

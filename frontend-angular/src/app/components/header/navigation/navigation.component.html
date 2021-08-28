@@ -10,7 +10,8 @@
     </button>
   </div>
   <div class="auth-navigation">
-    <button class="nav-auth-button" color="black" mat-button routerLink="/auth/login">Login</button>
-    <button class="nav-auth-button" color="black" mat-button routerLink="/auth/signup">Sign in</button>
+    <button *ngIf="!userIsAuth" class="nav-auth-button" mat-button (click)="navigate(['auth', 'login'])">Login</button>
+    <button *ngIf="!userIsAuth" class="nav-auth-button" mat-button (click)="navigate(['auth', 'signup'])">Signup</button>
+    <button *ngIf="userIsAuth" class="nav-auth-button" mat-button (click)="onLogout()">Logout</button>
   </div>
 </nav>

@@ -38,7 +38,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
             password: passwordHash
         });
         res.status(201).json({
-            message: 'User created!',
+            message: 'Account successfully created!',
             user
         });
     } catch(err) {

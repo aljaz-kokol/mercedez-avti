@@ -1,1 +1,36 @@
-<h1>This is the crate user component</h1>
+<app-page-title title="Signup"></app-page-title>
+<app-alert *ngIf="signupResult" [message]="signupResult.message" [state]="signupResult.state"></app-alert>
+<form [formGroup]="signupForm" (ngSubmit)="signup()" class="signup-form">
+  <mat-form-field appearance="outline">
+    <mat-label>E-mail</mat-label>
+    <input type="email"
+           formControlName="email"
+           matInput required />
+    <mat-error>Please enter a valid email</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Username</mat-label>
+    <input type="text"
+           formControlName="username"
+           matInput required  />
+    <mat-error>Please enter a valid username</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input [type]="showPassword ? 'text' : 'password'"
+           formControlName="password"
+           matInput required />
+    <mat-icon (click)="toggleShowPassword()" matSuffix>{{  togglePasswordIcon }}</mat-icon>
+    <mat-error>Password must be at least 6 characters long</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Re-password</mat-label>
+    <input [type]="showRePassword ? 'text' : 'password'"
+           formControlName="rePassword"
+           matInput required />
+    <mat-icon (click)="toggleShowRePassword()" matSuffix>{{ toggleRePasswordIcon }}</mat-icon>
+    <mat-error>Re-password must have the same value as password</mat-error>
+  </mat-form-field>
+  <button type="submit" mat-flat-button class="signup-btn" [disabled]="signupForm.invalid">Create Account</button>
+</form>
+<p>Already have an account? <a routerLink="/auth/signup">Login</a></p>

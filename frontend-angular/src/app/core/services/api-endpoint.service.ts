@@ -79,4 +79,10 @@ export class ApiEndpointService {
   public getGearboxByIdEndPoint(gearboxId: string): string {
     return this.createUrlWithPathVariables('gearbox', [gearboxId]);
   }
+
+  // === AUTH ENDPOINTS ==
+  // Return url of api endpoint which returns a message and a newly created user
+  public get signupEndPont(): string {
+    return this.createUrl('auth/signup');
+  }
 }

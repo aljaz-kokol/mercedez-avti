@@ -1,0 +1,25 @@
+div {
+  text-align: center;
+  width: 50%;
+  margin: auto auto 25px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.success {
+  background: rgba(0, 234, 122, 0.14);
+  border: 2px solid #00b248;
+  color: #008a37;
+}
+
+.failure {
+  background: rgba(255, 0, 89, 0.25);
+  border: 2px solid #bb002f;
+  color: #bb002f;
+}
+
+@media only screen and (max-width: 820px) {
+  div {
+    width: 95%;
+  }
+}

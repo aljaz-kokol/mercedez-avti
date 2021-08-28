@@ -23,7 +23,6 @@ router.post('/signup', [
     }),
     body('password').trim().isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
     body('passwordConfirmation').trim().custom((value, { req }) => {
-        console.log(`Value: ${value}\npassword: ${req.body.password}`);
         if (value !== req.body.password)
             throw new Error('Password confirmation does not match password!');
         return true;

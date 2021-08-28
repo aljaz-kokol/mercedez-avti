@@ -6,8 +6,7 @@ import {CarService} from '../car.service';
 @Injectable({ providedIn: 'root' })
 export class CarDetailGuard implements CanActivate {
   constructor(private carService: CarService,
-              private router: Router,
-              private activeRoute: ActivatedRoute) {}
+              private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return new Promise(resolve => {

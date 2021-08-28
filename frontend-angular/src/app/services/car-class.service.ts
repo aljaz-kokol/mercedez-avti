@@ -3,8 +3,6 @@ import {CarClass, CarClassApi} from '../models/car-class.model';
 import {ApiHttpService} from '../core/services/api-http.service';
 import {ApiEndpointService} from '../core/services/api-endpoint.service';
 import {map} from 'rxjs/operators';
-import {ApiResponseError} from '../shared/response-error';
-import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class CarClassService {

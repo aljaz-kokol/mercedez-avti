@@ -2,6 +2,6 @@ export interface ApiResponseError {
   name: string;
   message: string;
   statusCode: number;
-  data?: any;
+  data?: {[p: string]: any; message: string}[];
 }
 

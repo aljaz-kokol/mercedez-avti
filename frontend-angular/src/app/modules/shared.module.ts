@@ -5,7 +5,7 @@ import {MaterialModule} from './material.module';
 
 @NgModule({
   declarations: [
-    PageTitleComponent
+    PageTitleComponent,
   ],
   imports: [
     CommonModule,
@@ -14,7 +14,7 @@ import {MaterialModule} from './material.module';
   exports: [
     PageTitleComponent,
     CommonModule,
-    MaterialModule
+    MaterialModule,
   ]
 })
 export class SharedModule {}

@@ -28,8 +28,8 @@ export class AuthService {
     return this.isAuth;
   }
 
-  public getToken() {
-    return `Bearer ${this.token}`;
+  public getToken(): string {
+    return this.token;
   }
 
   public getAuthStatusListener(): Observable<boolean> {

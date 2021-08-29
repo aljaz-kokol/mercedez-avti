@@ -6,7 +6,7 @@ import { jwtPrivateKey } from '../util/variables.util';
 
 export const isAuth = (req: Request, res: Response, next: NextFunction) => {
     // Get value from the Authorization header
-    const authHeader = req.headers.authorization;
+    const authHeader = req.headers.authorization;    
     if (!authHeader) {
         const error = new CustomError('Not Authenticated');
         error.statusCode = 401;

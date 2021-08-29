@@ -1,6 +1,6 @@
 <mat-spinner *ngIf="showSpinner"></mat-spinner>
 <div class="content-container" *ngIf="!showSpinner">
-  <app-page-title [title]="pageTitle"></app-page-title>
+  <app-page-title>{{ carClass.name }}-CLASS</app-page-title>
   <div class="car-list-grid" *ngIf="haveCars">
     <app-car-card *ngFor="let car of carList" [car]="car"></app-car-card>
   </div>

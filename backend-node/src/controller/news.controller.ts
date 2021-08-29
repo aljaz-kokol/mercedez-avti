@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 import { ResourceAlreadyExistsError } from '../errors/already-exists.error';
 import { CustomError } from '../errors/custom.error';
 import { ResourceNotFoundError } from '../errors/not-found.error';
-import News from '../model/news.model';
+import News, { NewsImage } from '../model/news.model';
 
 // Get all news documents from the database
 export const getNews = async (req: Request, res: Response, next: NextFunction) => {
@@ -53,20 +53,20 @@ export const createNews = async (req: Request, res: Response, next: NextFunction
         title: string,
         body: string,
         summary: string,
-        imagePath: string
+        images: NewsImage[]
     };
     const reqBody = req.body as ExpectedReq;
 
     const title: string = reqBody.title;
     const body: string = reqBody.body;
     const summary: string = reqBody.summary;
-    const imagePath: string =  reqBody.imagePath;
+    const images: NewsImage[] =  reqBody.images;
     
     const mongoNews = new News({
         title: title,
         body: body,
         summary: summary,
-        imagePath: imagePath
+        images: images
     });
 
     try {

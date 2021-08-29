@@ -1,7 +1,6 @@
 <mat-card class="news-card-container">
   <div class="img-container">
-    <!-- TODO: Replace fixed image path with a dynamic one -->
-    <img src="https://www.mercedes-benz.si/passengercars/mercedes-benz-cars/models/g-class/suv-w463/specifications/offroad-performance/_jcr_content/par/productinfotabnav_ae/tabnav/productinfotabnavite_1673384304/tabnavitem/videoimageslider_573/slides/videoimageslide_b48/image.MQ6.12.20190827104413.jpeg" alt="Some image">
+    <img [src]="news.images[0].path" [alt]="news.images[0].name">
   </div>
   <div class="content-container">
     <div class="main-info">
@@ -10,7 +9,7 @@
       <p class="summary">{{ news.summary }}</p>
     </div>
     <div class="extra-info">
-      <button matRipple class="read-more-btn" mat-button>Read More</button>
+      <button *ngIf="userIsAuth" matRipple class="read-more-btn" (click)="navigateRelative([news.id])" mat-button>Read More</button>
       <p class="published-date"><i>Published: {{ news.createdAt }}</i></p>
     </div>
   </div>

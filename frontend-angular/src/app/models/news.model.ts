@@ -1,9 +1,14 @@
+export interface NewsImage {
+  name: string;
+  path: string;
+}
+
 export interface NewsApi {
   _id: string;
   title: string;
   body: string;
   summary: string;
-  imagePath: string;
+  images: NewsImage[];
   createdAt: string;
   updatedAt: string;
 }
@@ -13,12 +18,12 @@ export class News {
               public title: string,
               public body: string,
               public summary: string,
-              public image: string,
+              public images: NewsImage[],
               private createdAt_: string,
               private updatedAt_: string) {}
 
   public static fromApi(apiObj: NewsApi): News {
-    return new News(apiObj._id, apiObj.title, apiObj.body, apiObj.summary, apiObj.imagePath, apiObj.createdAt, apiObj.updatedAt);
+    return new News(apiObj._id, apiObj.title, apiObj.body, apiObj.summary, apiObj.images, apiObj.createdAt, apiObj.updatedAt);
   }
 
   public get createdAt() {

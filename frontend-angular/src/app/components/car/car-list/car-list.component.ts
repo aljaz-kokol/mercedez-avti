@@ -41,8 +41,4 @@ export class CarListComponent implements OnInit {
   public get haveCars(): boolean {
     return this.carList.length > 0;
   }
-  // Return page title
-  public get pageTitle(): string {
-    return `${this.carClass.name}-CLASS`
-  }
 }

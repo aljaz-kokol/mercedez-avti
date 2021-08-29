@@ -1,4 +1,4 @@
-<app-page-title title="Signup"></app-page-title>
+<app-page-title>Signup</app-page-title>
 <app-alert *ngIf="signupResult" [message]="signupResult.message" [state]="signupResult.state"></app-alert>
 <form [formGroup]="signupForm" (ngSubmit)="onSignup()" class="signup-form">
   <mat-form-field appearance="outline">

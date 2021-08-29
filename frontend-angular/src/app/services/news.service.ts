@@ -15,4 +15,10 @@ export class NewsService {
       .pipe(map(News.fromApiList)).toPromise();
     return [...this.newsList];
   }
+
+  public async getNewsFromId(newsId: string): Promise<News> {
+    return await this.apiHttp.get<NewsApi>(this.apiEndPoint.getNewsByIdEndPoint(newsId))
+      .pipe(map(News.fromApi)).toPromise();
+  }
 }
+

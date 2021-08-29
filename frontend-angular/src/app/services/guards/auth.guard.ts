@@ -9,11 +9,11 @@ export class AuthGuard implements CanActivate {
               private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const isAuth = this.authService.getIsAuth();
-    if (!isAuth) {
+    const authToken = this.authService.getToken();
+    // If the authorization token does not exists navigate to the login page
+    if (!authToken) {
       this.router.navigate(['/auth', 'login']);
     }
     return true;
   }
-
 }

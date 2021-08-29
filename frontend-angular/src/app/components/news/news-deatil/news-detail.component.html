@@ -1,0 +1,17 @@
+<mat-spinner *ngIf="showSpinner"></mat-spinner>
+<div class="content-container" *ngIf="!showSpinner">
+  <div class="news-title-container">
+    <h1 class="news-title">{{ news.title }}</h1>
+    <hr class="news-title-separator" />
+  </div>
+  <section class="summary">
+    <h2 class="section-title">Summary</h2>
+    <div class="summary-text">{{ news.summary }}</div>
+  </section>
+  <section class="body">
+    <h2 class="section-title">Entire story</h2>
+    <div class="body-content">
+      {{ news.body }}
+    </div>
+  </section>
+</div>

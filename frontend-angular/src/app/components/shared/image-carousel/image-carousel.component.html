@@ -1,4 +1,4 @@
-<div  class="carousel">
+<div  class="carousel" [ngClass]="{'detailView': detailView}">
   <div *ngFor="let img of images; let i = index">
     <img class="slide"
          @carousel
@@ -6,19 +6,34 @@
          [src]="img.path"
          [alt]="img.name" />
   </div>
-  <div class="indicator-container" *ngIf="showInteractions">
+  <!-- Dots representing the currently selected img -->
+  <div class="indicator-container" *ngIf="showInteractions && !detailView">
     <button mat-fab class="indicator inactive"
          [ngClass]="{'inactive': i !== currentIndex}"
          *ngFor="let img of images; let i = index"
-        (click)="onSelect(i)"
+        (click)="onSelectImg(i)"
     >
     </button>
   </div>
+
+
+
   <button *ngIf="showInteractions" class="next" (click)="onNext()" mat-icon-button>
     <mat-icon>arrow_forward_ios_new</mat-icon>
   </button>
   <button *ngIf="showInteractions" class="previous" (click)="onPrevious()" mat-icon-button>
     <mat-icon>arrow_back_ios_new</mat-icon>
   </button>
-  <div class="overlay"></div>
+  <app-overlay *ngIf="!detailView" (click)="toggleDetailView()"></app-overlay>
 </div>
+
+<div class="small-img-container" *ngIf="showInteractions && detailView">
+  <div *ngFor="let img of images; let i = index"
+       class="small-img"
+       (click)="onSelectImg(i)"
+       [ngClass]="{'inactive': i !== currentIndex}">
+    <img [src]="img.path" [alt]="img.name" />
+  </div>
+</div>
+
+<app-overlay *ngIf="detailView" (click)="toggleDetailView()"></app-overlay>

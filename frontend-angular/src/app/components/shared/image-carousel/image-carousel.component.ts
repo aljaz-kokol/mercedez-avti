@@ -17,6 +17,7 @@ import {fadeIn, fadeOut} from '../../../animations/image-carousel.animations';
 export class ImageCarouselComponent implements OnInit, OnDestroy {
   @Input() images: NewsImage[];
   private autoLoopTimer: any;
+  detailView = false;
   currentIndex = 0;
 
   ngOnInit(): void {
@@ -38,12 +39,23 @@ export class ImageCarouselComponent implements OnInit, OnDestroy {
   onPrevious() {
     const previous = this.currentIndex - 1;
     this.currentIndex = previous < 0 ? this.images.length - 1 : previous;
+    if (!this.detailView) {
+      this.resetLoopTimer();
+    }
+  }
+
+  onSelectImg(index: number){
+    this.currentIndex = index;
     this.resetLoopTimer();
   }
 
-  onSelect(index: number){
-    this.currentIndex = index;
-    this.resetLoopTimer();
+  toggleDetailView() {
+    this.detailView = !this.detailView;
+    if (this.detailView) {
+      this.stopLoopTimer();
+    } else {
+      this.resetLoopTimer();
+    }
   }
 
   // true --> show next, previous buttons and circle indicators, false --> don't show buttons
@@ -51,10 +63,16 @@ export class ImageCarouselComponent implements OnInit, OnDestroy {
     return this.images.length > 1;
   }
 
-  private resetLoopTimer() {
+  private stopLoopTimer() {
     clearTimeout(this.autoLoopTimer);
-    this.autoLoopTimer = setTimeout(() => {
-      this.onNext()
-    }, 5000);
+  }
+
+  private resetLoopTimer() {
+    if (!this.detailView) {
+      clearTimeout(this.autoLoopTimer);
+      this.autoLoopTimer = setTimeout(() => {
+        this.onNext();
+      }, 5000);
+    }
   }}
 

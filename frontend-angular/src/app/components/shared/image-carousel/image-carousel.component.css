@@ -7,6 +7,19 @@
   cursor: pointer;
 }
 
+.detailView {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  width: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.detailView img {
+  object-fit: cover;
+}
+
 .slide {
   position: absolute;
   top: 0;
@@ -18,7 +31,7 @@
 
 .next, .previous {
   opacity: 0.0;
-  z-index: 2;
+  z-index: 3;
   position: absolute;
   color: white;
   top: 50%;
@@ -34,15 +47,21 @@
   right: 0;
 }
 
-.indicator-container {
+.indicator-container, .small-img-container {
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   justify-content: center;
   align-items: center;
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.small-img-container {
+  position: absolute;
+  top: 85%;
+  transform: translateY(-85%);
 }
 
 .indicator {
@@ -57,8 +76,27 @@
 .inactive {
   height: 7px;
   width: 7px;
-  background: rgba(255, 255, 255, 0.47);
+  opacity: 0.47;
   transition: height 250ms, width 250ms, background 250ms;
+}
+
+.small-img {
+  width: 150px;
+  position: relative;
+  margin: 0 10px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.small-img img {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.small-img.inactive {
+  width: 130px;
+  height: fit-content;
 }
 
 .carousel:hover .previous,
@@ -67,12 +105,9 @@
   opacity: 1.0;
 }
 
-.overlay {
-  z-index: 1;
-  position: absolute;
-  background: rgba(0, 0, 0, 0.4);
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+@media only screen and (max-width: 820px) {
+  .detailView {
+    width: 95%;
+  }
+
 }

@@ -1,5 +1,5 @@
-import {ApiHttpService} from '../core/services/api-http.service';
-import {ApiEndpointService} from '../core/services/api-endpoint.service';
+import {ApiHttpService} from '../core/api-http.service';
+import {ApiEndpointService} from '../core/api-endpoint.service';
 import {Injectable} from '@angular/core';
 import {CarType, CarTypeApi} from '../models/car-type.model';
 import {map} from 'rxjs/operators';

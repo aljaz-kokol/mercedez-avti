@@ -1,0 +1,24 @@
+<div  class="carousel">
+  <div *ngFor="let img of images; let i = index">
+    <img class="slide"
+         @carousel
+         *ngIf="i === currentIndex"
+         [src]="img.path"
+         [alt]="img.name" />
+  </div>
+  <div class="indicator-container" *ngIf="showInteractions">
+    <button mat-fab class="indicator inactive"
+         [ngClass]="{'inactive': i !== currentIndex}"
+         *ngFor="let img of images; let i = index"
+        (click)="onSelect(i)"
+    >
+    </button>
+  </div>
+  <button *ngIf="showInteractions" class="next" (click)="onNext()" mat-icon-button>
+    <mat-icon>arrow_forward_ios_new</mat-icon>
+  </button>
+  <button *ngIf="showInteractions" class="previous" (click)="onPrevious()" mat-icon-button>
+    <mat-icon>arrow_back_ios_new</mat-icon>
+  </button>
+  <div class="overlay"></div>
+</div>

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {News, NewsApi} from '../models/news.model';
-import {ApiHttpService} from '../core/services/api-http.service';
-import {ApiEndpointService} from '../core/services/api-endpoint.service';
+import {ApiHttpService} from '../core/api-http.service';
+import {ApiEndpointService} from '../core/api-endpoint.service';
 import {map} from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })

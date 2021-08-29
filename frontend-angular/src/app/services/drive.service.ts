@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {ApiHttpService} from '../core/services/api-http.service';
-import {ApiEndpointService} from '../core/services/api-endpoint.service';
+import {ApiHttpService} from '../core/api-http.service';
+import {ApiEndpointService} from '../core/api-endpoint.service';
 import {Drive, DriveApi} from '../models/drive.model';
 import {map} from 'rxjs/operators';
 

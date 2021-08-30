@@ -1,0 +1,7 @@
+<app-page-title>CONTROL PANEL</app-page-title>
+<div class="grid">
+  <mat-card [matRippleColor]="'primary'" mat-ripple class="grid-item" *ngFor="let item of controlItems">
+    <mat-card-title>{{ item }}</mat-card-title>
+    <mat-card-subtitle>Add, edit or delete {{ item }}</mat-card-subtitle>
+  </mat-card>
+</div>

@@ -3,7 +3,8 @@ import { Types } from 'mongoose';
 import { ResourceAlreadyExistsError } from '../errors/already-exists.error';
 import { CustomError } from '../errors/custom.error';
 import { ResourceNotFoundError } from '../errors/not-found.error';
-import News, { NewsImage } from '../model/news.model';
+import News from '../model/news.model';
+import { ApiImage } from '../util/api-image';
 
 // Get all news documents from the database
 export const getNews = async (req: Request, res: Response, next: NextFunction) => {
@@ -53,14 +54,14 @@ export const createNews = async (req: Request, res: Response, next: NextFunction
         title: string,
         body: string,
         summary: string,
-        images: NewsImage[]
+        images: ApiImage[]
     };
     const reqBody = req.body as ExpectedReq;
 
     const title: string = reqBody.title;
     const body: string = reqBody.body;
     const summary: string = reqBody.summary;
-    const images: NewsImage[] =  reqBody.images;
+    const images: ApiImage[] =  reqBody.images;
     
     const mongoNews = new News({
         title: title,

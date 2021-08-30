@@ -1,14 +1,11 @@
 import { Schema, model, Document } from 'mongoose';
+import { ApiImage } from '../util/api-image';
 
-export interface NewsImage {
-    name: string;
-    path: string;
-}
 export interface NewsDocument extends Document {
     title: string;
     body: string;
     summary: string;
-    images: NewsImage[];
+    images: ApiImage[];
     createdAt: string;
     updatedAt: string;
 }

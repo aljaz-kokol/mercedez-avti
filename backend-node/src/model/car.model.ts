@@ -1,4 +1,5 @@
 import { Schema, model, Document } from 'mongoose';
+import { ApiImage } from '../util/api-image';
 
 export interface Engine {
     kilowatts: number;
@@ -13,7 +14,7 @@ export interface CarDocument extends Document{
     engine: Engine;
     drive: string;
     gearbox: string;
-    imagePath: string;
+    images: ApiImage[];
     name: string;
     releaseYear: Date;
     doors: number;
@@ -68,10 +69,16 @@ const carSchema = new Schema({
         },
         required: true
     },
-    imagePath: {
-        type: String,
-        required: true
-    },
+    images: [{
+        name: {
+            type: String,
+            required: true
+        },
+        path: {
+            type: String,
+            required: true
+        }
+    }],
     name: {
         type: String,
         required: true

@@ -6,6 +6,7 @@ import { CustomError } from '../errors/custom.error';
 import { ResourceNotFoundError } from '../errors/not-found.error';
 import CarClass from '../model/car-class.model';
 import Car from '../model/car.model';
+import { ApiImage } from '../util/api-image';
 
 export const getCars = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -55,7 +56,7 @@ export const createCar = async (req: Request, res: Response, next: NextFunction)
         },
         drive: string,
         gearbox: string,
-        imagePath: string,
+        images: ApiImage[],
         name: string,
         releaseYear: string,
         doors: number,

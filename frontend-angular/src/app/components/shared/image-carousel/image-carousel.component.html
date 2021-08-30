@@ -1,4 +1,4 @@
-<div  class="carousel" [ngClass]="{'detailView': detailView}">
+<div  class="carousel" [ngStyle]="{'width': width, 'border-radius': bRadius}" [ngClass]="{'detailView': detailView}">
   <div *ngFor="let img of images; let i = index">
     <img class="slide"
          @carousel
@@ -15,18 +15,16 @@
     >
     </button>
   </div>
-
-
-
+  <!-- Interaction buttons -->
   <button *ngIf="showInteractions" class="next" (click)="onNext()" mat-icon-button>
     <mat-icon>arrow_forward_ios_new</mat-icon>
   </button>
   <button *ngIf="showInteractions" class="previous" (click)="onPrevious()" mat-icon-button>
     <mat-icon>arrow_back_ios_new</mat-icon>
   </button>
-  <app-overlay *ngIf="!detailView" (click)="toggleDetailView()"></app-overlay>
+  <app-overlay *ngIf="!detailView" [lightTheme]="true" (click)="toggleDetailView()"></app-overlay>
 </div>
-
+<!-- Small images the currently selected img -->
 <div class="small-img-container" *ngIf="showInteractions && detailView">
   <div *ngFor="let img of images; let i = index"
        class="small-img"
@@ -35,5 +33,4 @@
     <img [src]="img.path" [alt]="img.name" />
   </div>
 </div>
-
-<app-overlay *ngIf="detailView" (click)="toggleDetailView()"></app-overlay>
+<app-overlay *ngIf="detailView" [entireScreen]="true" (click)="toggleDetailView()"></app-overlay>

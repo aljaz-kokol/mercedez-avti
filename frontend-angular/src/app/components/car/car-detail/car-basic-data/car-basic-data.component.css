@@ -7,6 +7,7 @@
 
 .img-container {
   flex: 1;
+  margin-right: 15px;
 }
 
 .data {
@@ -14,8 +15,6 @@
 }
 
 .car-img {
-  width: 90%;
-  border-radius: 15px;
 }
 
 .data h2 {

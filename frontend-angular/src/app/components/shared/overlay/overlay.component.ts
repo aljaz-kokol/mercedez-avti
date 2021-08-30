@@ -1,8 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-overlay',
   templateUrl: './overlay.component.html',
   styleUrls: ['./overlay.component.css']
 })
-export class OverlayComponent {}
+export class OverlayComponent {
+  @Input() entireScreen = false;
+  @Input() lightTheme = false;
+}

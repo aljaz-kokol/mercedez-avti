@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {NewsImage} from '../../../models/news.model';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn, fadeOut} from '../../../animations/image-carousel.animations';
+import {ApiImage} from '../../../shared/api-image';
 
 @Component({
   selector: 'app-image-carousel',
@@ -15,15 +15,19 @@ import {fadeIn, fadeOut} from '../../../animations/image-carousel.animations';
   ]
 })
 export class ImageCarouselComponent implements OnInit, OnDestroy {
-  @Input() images: NewsImage[];
+  @Input() images: ApiImage[];
+  @Input() width?: string;
+  @Input() bRadius?: string; //  Border radius
+
   private autoLoopTimer: any;
+  private loopDuration = 3000;
   detailView = false;
   currentIndex = 0;
 
   ngOnInit(): void {
     this.autoLoopTimer = setTimeout(() => {
       this.onNext()
-    }, 5000);
+    }, this.loopDuration);
   }
 
   ngOnDestroy() {
@@ -72,7 +76,7 @@ export class ImageCarouselComponent implements OnInit, OnDestroy {
       clearTimeout(this.autoLoopTimer);
       this.autoLoopTimer = setTimeout(() => {
         this.onNext();
-      }, 5000);
+      }, this.loopDuration);
     }
   }}
 

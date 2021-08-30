@@ -1,6 +1,10 @@
 <mat-card class="basic-data">
   <div class="img-container">
-    <img [src]="car.image" [alt]="car.name" class="car-img">
+    <app-image-carousel
+      bRadius="15px"
+      class="car-img"
+      [images]="car.images">
+    </app-image-carousel>
   </div>
   <div class="data">
     <h2>ESSENTIAL DATA</h2>

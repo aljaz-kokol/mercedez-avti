@@ -1,14 +1,11 @@
-export interface NewsImage {
-  name: string;
-  path: string;
-}
+import {ApiImage} from '../shared/api-image';
 
 export interface NewsApi {
   _id: string;
   title: string;
   body: string;
   summary: string;
-  images: NewsImage[];
+  images: ApiImage[];
   createdAt: string;
   updatedAt: string;
 }
@@ -18,7 +15,7 @@ export class News {
               public title: string,
               public body: string,
               public summary: string,
-              public images: NewsImage[],
+              public images: ApiImage[],
               private createdAt_: string,
               private updatedAt_: string) {}
 

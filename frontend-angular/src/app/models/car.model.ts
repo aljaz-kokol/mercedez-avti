@@ -3,6 +3,7 @@ import {CarType} from './car-type.model';
 import {Fuel} from './fuel.model';
 import {Drive} from './drive.model';
 import {Gearbox} from './gearbox.model';
+import {ApiImage} from '../shared/api-image';
 
 export interface CarApi {
   _id: string;
@@ -12,7 +13,7 @@ export interface CarApi {
   engine: Engine;
   drive: string;
   gearbox: string;
-  imagePath: string;
+  images: ApiImage[];
   name: string;
   releaseYear: string;
   doors: number;
@@ -40,7 +41,7 @@ export interface CarFull {
   engine: Engine;
   drive: Drive;
   gearbox: Gearbox;
-  image: string;
+  images: ApiImage[];
   name: string;
   releaseYear: number;
   doors: number;
@@ -60,7 +61,7 @@ export class Car {
               public engine: Engine,
               public drive: string,
               public gearbox: string,
-              public image: string,
+              public images: ApiImage[],
               public name: string,
               private releaseYear_: string,
               public doors: number,
@@ -92,7 +93,7 @@ export class Car {
       },
       apiObj.drive,
       apiObj.gearbox,
-      apiObj.imagePath,
+      apiObj.images,
       apiObj.name,
       apiObj.releaseYear,
       apiObj.doors,
@@ -114,7 +115,7 @@ export class Car {
       engine: this.engine,
       drive: drive,
       gearbox: gearbox,
-      image: this.image,
+      images: this.images,
       name: this.name,
       releaseYear: this.releaseYear,
       doors: this.doors,

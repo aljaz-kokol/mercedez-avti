@@ -8,10 +8,11 @@
 }
 
 .detailView {
-  position: absolute;
+  position: fixed;
+  border-radius: 0!important;
   z-index: 3;
   top: 50%;
-  width: 60%;
+  width: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -59,7 +60,7 @@
 }
 
 .small-img-container {
-  position: absolute;
+  position: fixed;
   top: 85%;
   transform: translateY(-85%);
 }
@@ -70,14 +71,14 @@
   width: 10px;
   border-radius: 20px;
   margin: 5px;
-  transition: height 250ms, width 250ms, background 250ms;
+  transition: height 350ms, width 350ms, background 350ms;
 }
 
 .inactive {
   height: 7px;
   width: 7px;
   opacity: 0.47;
-  transition: height 250ms, width 250ms, background 250ms;
+  transition: height 350ms, width 350ms, background 350ms;
 }
 
 .small-img {

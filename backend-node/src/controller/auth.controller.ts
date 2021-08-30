@@ -55,6 +55,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         username: string;
         password: string;
     };
+    const tokenExpiration = 3600; // 3600 --> 60min
     const reqBody = req.body as ExpectedReq;
     const username = reqBody.username;
     const password = reqBody.password;
@@ -75,13 +76,13 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             userId: user._id
         }, 
         jwtPrivateKey, 
-        { expiresIn: 1200 }); // 1200 --> 20min
+        { expiresIn: tokenExpiration });
         
         res.status(200).json({
             message: 'Successfully logged in',
             token: token,
             userId: user._id,
-            expiresIn: 1200
+            expiresIn: tokenExpiration
         });
     } catch(err) {
         if (!err.statusCode) {

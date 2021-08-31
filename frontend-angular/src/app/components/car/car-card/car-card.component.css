@@ -1,14 +1,22 @@
 .car-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 0;
   margin: 0;
+  height: 100%;
   border-radius: 15px;
   cursor: pointer;
 }
 
+.img-container {
+  height: 75%;
+}
+
 .car-img {
   width: 100%;
-  height: 80%;
+  height: 100%;
   object-fit: cover;
   border-radius: 15px;
 }
@@ -16,7 +24,7 @@
 .car-name {
   text-align: center;
   font-weight: 500;
-  padding: 20px 0;
+  padding-bottom: 10px;
 }
 
 .car-card:hover .car-price-container {

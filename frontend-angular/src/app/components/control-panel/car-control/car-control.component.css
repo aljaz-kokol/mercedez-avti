@@ -1,0 +1,75 @@
+.class-list {
+  padding-bottom: 1px;
+}
+
+.outline {
+  border-width: thin;
+  border-style: solid;
+  border-color: rgb(181, 181, 181);
+}
+
+.car-list {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 2px;
+}
+
+.car-class-block {
+  margin-bottom: 5px;
+}
+
+mat-expansion-panel-header {
+  padding-left: 5px;
+}
+
+.add-car-btn {
+  position: absolute;
+  background: black;
+  bottom: 5%;
+  right: 5%;
+}
+
+.add-class-car-btn {
+  margin-right: 10px;
+  margin-left: 0;
+}
+
+.car-class-name {
+  font-size: 1.1rem;
+  align-items: center;
+}
+
+.car-card {
+  width: 30%;
+  cursor: pointer;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.car-name {
+  text-align: center;
+  font-weight: 500;
+}
+
+.no-content-text {
+  color: #8e8e8e;
+  font-weight: normal;
+}
+
+/* Added custom scroll bar */
+::-webkit-scrollbar {
+  height: 4px;
+  background: rgba(154, 154, 154, 0.11);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: black;
+}
+
+@media only screen and (max-width: 820px) {
+  .car-card {
+    width: 80%;
+  }
+}

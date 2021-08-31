@@ -1,0 +1,38 @@
+<app-page-title>CONTROL PANEL - CARS</app-page-title>
+<mat-accordion class="class-list" multi>
+  <mat-expansion-panel class="car-class-block" *ngFor="let carClass of classes">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="car-class-name">
+        <button matTooltip="Add car to {{carClass.name}}-CLASS" mat-icon-button class="add-class-car-btn">
+          <mat-icon>add</mat-icon>
+        </button>
+        {{ carClass.name }}-CLASS
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="car-list" *ngIf="classHasCars(carClass)">
+      <mat-card class="car-card" *ngFor="let car of getCarsFromClass(carClass)">
+        <img [src]="getCarImage(car).path" [alt]="getCarImage(car).name" mat-card-image>
+        <h3 class="car-name">{{ car.name }}</h3>
+      </mat-card>
+    </div>
+    <div class="no-content" *ngIf="!classHasCars(carClass)">
+      <h2 class="no-content-text" >There are no cars in this class</h2>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+<button mat-fab class="add-car-btn">
+  <mat-icon>add</mat-icon>
+</button>
+
+<!--  <mat-card class="car-class-block mat-elevation-z0 outline" *ngFor="let carClass of classes">-->
+<!--    <h1>{{ carClass.name }}-CLASS</h1>-->
+<!--    <div class="car-list" *ngIf="classHasCars(carClass)">-->
+<!--      <mat-card class="car-card" *ngFor="let car of getCarsFromClass(carClass)">-->
+<!--        <img [src]="getCarImage(car).path" [alt]="getCarImage(car).name" mat-card-image>-->
+<!--        <h3 class="car-name">{{ car.name }}</h3>-->
+<!--      </mat-card>-->
+<!--    </div>-->
+<!--    <div class="no-content" *ngIf="!classHasCars(carClass)">-->
+<!--      <h2 class="no-content-text" >There are no cars in this class</h2>-->
+<!--    </div>-->
+<!--  </mat-card>-->

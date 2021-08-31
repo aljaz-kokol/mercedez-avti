@@ -2,14 +2,20 @@ import {NgModule} from '@angular/core';
 import {SharedModule} from './shared.module';
 import {ControlPanelRoutingModule} from './routes/control-panel-routing.module';
 import {ControlPanelComponent} from '../components/control-panel/control-panel.component';
+import {CarControlComponent} from '../components/control-panel/car-control/car-control.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {CreateCarComponent} from '../components/control-panel/car-control/create-car/create-car.component';
 
 @NgModule({
   declarations: [
-    ControlPanelComponent
+    ControlPanelComponent,
+    CarControlComponent,
+    CreateCarComponent
   ],
-  imports: [
-    ControlPanelRoutingModule,
-    SharedModule
-  ]
+    imports: [
+        ControlPanelRoutingModule,
+        SharedModule,
+        MatTooltipModule
+    ]
 })
 export class ControlPanelModule {}

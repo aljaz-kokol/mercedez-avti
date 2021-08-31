@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-control-panel',
@@ -13,4 +14,14 @@ export class ControlPanelComponent {
     'Car Types',
     'Fuel Types'
   ];
+
+  constructor(private router: Router,
+              private route: ActivatedRoute) {}
+
+  async onNavigate(controlItem: string): Promise<void> {
+    const path = controlItem.replace(' ', '-').toLowerCase();
+    await this.router.navigate([path], {
+      relativeTo: this.route
+    });
+  }
 }

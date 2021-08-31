@@ -9,7 +9,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {MatGridListModule} from '@angular/material/grid-list';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   exports: [
@@ -24,6 +24,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
+    MatExpansionModule
   ]
 })
 export class MaterialModule {}

@@ -1,6 +1,6 @@
-import {Request, Response, NextFunction} from 'express';
+import {Request, Response, NextFunction, request} from 'express';
 import { CustomError } from '../errors/custom.error';
-import { Types } from 'mongoose';
+import { isValidObjectId } from 'mongoose';
 
 import CarClass from '../model/car-class.model';
 import { ResourceAlreadyExistsError } from '../errors/already-exists.error';
@@ -23,7 +23,7 @@ export const getCarClassFromId = async (req: Request, res: Response, next: NextF
     type ExpectedReq = { classId: string };
     const params = (req.params) as ExpectedReq;
     try {
-        if (!Types.ObjectId.isValid(params.classId)) {
+        if (!isValidObjectId(params.classId)) {
             const error = new CustomError('CarClass id is invalid');
             error.statusCode = 400;
             throw error;
@@ -68,4 +68,34 @@ export const createCarClass = async (req: Request, res: Response, next: NextFunc
         next(err);
         return err;
     } 
+}
+
+export const createSubclass = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Check the validity of classId
+        if (!isValidObjectId(req.params.classId)) {
+            const error = new CustomError('CarClass id is invalid');
+            error.statusCode = 400;
+            throw error;
+        }
+        // Check if CarClass with the given id exists
+        const carClass = await CarClass.findById(req.params.classId);
+        if (!carClass) {
+            throw new ResourceNotFoundError('CarClass with this id does not exist');
+        }
+        // Add new subclass and save
+        carClass.subclasses.push(new CarClass({
+            name: req.body.name
+        }));
+        await carClass.save();
+        // Return response with confirmation message and status code of 201
+        res.status(200).json({
+            message: 'Successfully added a subclass'
+        })
+    } catch(err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+    }
 }

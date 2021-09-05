@@ -89,4 +89,8 @@ export class ApiEndpointService {
   public get loginEndpoint(): string {
     return this.createUrl('auth/login');
   }
+  // Return url of api endpoint that returns users status (is admin)
+  public get userStatusEndpoint(): string {
+    return this.createUrl('auth/status');
+  }
 }

@@ -1,0 +1,11 @@
+mat-form-field {
+  width:80%;
+  margin: auto;
+  display: block;
+}
+
+/* Change material form-field outline and label text color to black */
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick,
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: black!important;
+}

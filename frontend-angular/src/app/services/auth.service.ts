@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
 interface LoginResponse {
   message: string;
   token: string;
-  userId: string;
+  status: boolean; // true = admin, false = not admin
   expiresIn: number;
 }
 
@@ -24,7 +24,7 @@ export class AuthService {
               private router: Router) {
   }
 
-  getIsAuth(): boolean {
+  public getIsAuth(): boolean {
     return this.isAuth;
   }
 
@@ -74,6 +74,12 @@ export class AuthService {
       console.log(err);
     }
   }
+
+  public async getUserStatus(): Promise<boolean> {
+    const result = await this.apiHttp.get<{ userStatus: boolean }>(this.apiEndpoint.userStatusEndpoint).toPromise();
+    return result.userStatus;
+  }
+
   // Auto authenticate a user
   public autoAuthUser() {
     const authInformation = AuthService.authData;

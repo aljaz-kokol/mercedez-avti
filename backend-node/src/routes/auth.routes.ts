@@ -1,10 +1,13 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { signup, login } from '../controller/auth.controller';
+import { signup, login, getUserStatus } from '../controller/auth.controller';
+import { isAuth } from '../middleware/is-auth.middleware';
 
 import User from '../model/user.model';
 
 const router = Router();
+
+router.get('/status', isAuth, getUserStatus);
 
 router.post('/signup', [
     body('email', 'Please enter a valid email').isEmail()

@@ -1,11 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
+import { isValidObjectId } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { CustomError } from '../errors/custom.error';
 import { jwtPrivateKey } from '../util/variables.util';
 import User from '../model/user.model';
+import CarType from '../model/car-type.model';
+import { ResourceNotFoundError } from '../errors/not-found.error';
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
     type ExpectedReq = {
@@ -81,7 +84,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         res.status(200).json({
             message: 'Successfully logged in',
             token: token,
-            userId: user._id,
             expiresIn: tokenExpiration
         });
     } catch(err) {
@@ -90,5 +92,27 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         }
         next(err);
         return err;
+    }
+}
+
+export const getUserStatus = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        if (!isValidObjectId(req.userId)) {
+            const error = new CustomError('User id is invalid');
+            error.statusCode = 400;
+            throw error;
+        }
+        if (!await User.exists({ _id: req.userId })) {
+            throw new ResourceNotFoundError('User with this id does not exist');
+        }
+        const user = await User.findById(req.userId);
+        res.status(200).json({
+            userStatus: user?.isAdmin
+        });
+    } catch(err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
     }
 }

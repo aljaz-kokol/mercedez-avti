@@ -5,6 +5,7 @@ import { isValidObjectId } from 'mongoose';
 import CarClass from '../model/car-class.model';
 import { ResourceAlreadyExistsError } from '../errors/already-exists.error';
 import { ResourceNotFoundError } from '../errors/not-found.error';
+import { getCarClass, getCarClassWithNewSubclass } from '../util/find-carclass';
 
 export const getCarClasses = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -79,15 +80,17 @@ export const createSubclass = async (req: Request, res: Response, next: NextFunc
             throw error;
         }
         // Check if CarClass with the given id exists
-        const carClass = await CarClass.findById(req.params.classId);
+        const carClass = await getCarClassWithNewSubclass(req.params.classId, req.body.name);
         if (!carClass) {
             throw new ResourceNotFoundError('CarClass with this id does not exist');
         }
-        // Add new subclass and save
-        carClass.subclasses.push(new CarClass({
-            name: req.body.name
-        }));
-        await carClass.save();
+        
+        let updatedCarClass = await CarClass.findById(carClass._id);
+        if (!updatedCarClass) {
+            throw new ResourceNotFoundError('CarClass with this id does not exist');
+        }
+        updatedCarClass.subclasses = carClass.subclasses;
+        await updatedCarClass.save();
         // Return response with confirmation message and status code of 201
         res.status(200).json({
             message: 'Successfully added a subclass'

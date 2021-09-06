@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
-import { ResourceAlreadyExistsError } from '../errors/already-exists.error';
 
 import { CustomError } from '../errors/custom.error';
 import { ResourceNotFoundError } from '../errors/not-found.error';
 import CarClass from '../model/car-class.model';
 import Car from '../model/car.model';
 import { ApiImage } from '../util/api-image';
+import { getCarClass } from '../util/find-carclass';
 
 export const getCars = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -86,7 +86,7 @@ export const getCarsFromClass = async (req: Request, res: Response, next: NextFu
     const classId = req.params.classId;
     try {
         // Check if car class with given id exists else throw an error
-        if (!await CarClass.exists({ _id: classId })) {
+        if (!await getCarClass(classId)) {
             throw new ResourceNotFoundError(`Can't find cars related to this class. Class does not exits.`);
         }
         const cars = await Car.find({ class: classId });

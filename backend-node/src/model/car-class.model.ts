@@ -1,7 +1,8 @@
 import { Schema, model, Document } from 'mongoose';
 export interface CarClassDocument extends Document {
+    _id: string;
     name: string;
-    subclasses: this[]
+    subclasses: CarClassDocument[];
 }
 
 const carClassSchema: Schema = new Schema({

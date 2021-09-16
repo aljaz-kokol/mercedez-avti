@@ -2,10 +2,11 @@ import {Request, Response, NextFunction, request} from 'express';
 import { CustomError } from '../errors/custom.error';
 import { isValidObjectId } from 'mongoose';
 
-import CarClass from '../model/car-class.model';
+import CarClass, { CarClassDocument } from '../model/car-class.model';
 import { ResourceAlreadyExistsError } from '../errors/already-exists.error';
 import { ResourceNotFoundError } from '../errors/not-found.error';
 import { getCarClass, getCarClassWithNewSubclass } from '../util/find-carclass';
+import { ApiImage } from '../util/api-image';
 
 export const getCarClasses = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -29,7 +30,7 @@ export const getCarClassFromId = async (req: Request, res: Response, next: NextF
             error.statusCode = 400;
             throw error;
         }
-        const carClass = await CarClass.findById(params.classId);
+        const carClass = await getCarClass(params.classId);
         if (!carClass) {
             throw new ResourceNotFoundError('CarClass with this id does not exists!');
         }
@@ -45,7 +46,9 @@ export const getCarClassFromId = async (req: Request, res: Response, next: NextF
 
 export const createCarClass = async (req: Request, res: Response, next: NextFunction) => {
     type ExpectedReq = {
-        name: string
+        name: string;
+        subclasses?: CarClassDocument[];
+        images?: ApiImage[];
     };
     const reqBody = (req.body) as ExpectedReq;
     
@@ -55,7 +58,9 @@ export const createCarClass = async (req: Request, res: Response, next: NextFunc
             throw new ResourceAlreadyExistsError('CasClass with this name already exists!');
         }
         const carClass = new CarClass({
-            name: reqBody.name
+            name: reqBody.name,
+            subclasses: reqBody.subclasses || [],
+            images: reqBody.images || []
         });
         const savedCarClass = await carClass.save();
         res.status(201).json({
@@ -72,6 +77,12 @@ export const createCarClass = async (req: Request, res: Response, next: NextFunc
 }
 
 export const createSubclass = async (req: Request, res: Response, next: NextFunction) => {
+    type ExpectedReq = {
+        name: string;
+        subclasses?: CarClassDocument[];
+        images?: ApiImage[];
+    };
+    const reqBody = (req.body) as ExpectedReq;
     try {
         // Check the validity of classId
         if (!isValidObjectId(req.params.classId)) {
@@ -80,7 +91,7 @@ export const createSubclass = async (req: Request, res: Response, next: NextFunc
             throw error;
         }
         // Check if CarClass with the given id exists
-        const carClass = await getCarClassWithNewSubclass(req.params.classId, req.body.name);
+        const carClass = await getCarClassWithNewSubclass(req.params.classId, reqBody.name, reqBody.subclasses, reqBody.images);
         if (!carClass) {
             throw new ResourceNotFoundError('CarClass with this id does not exist');
         }

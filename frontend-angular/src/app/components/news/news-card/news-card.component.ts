@@ -26,7 +26,6 @@ export class NewsCardComponent implements OnInit, OnDestroy {
       .subscribe(isAuth => {
         this.userIsAuth = isAuth;
       });
-    console.log(this.news.images);
   }
 
   ngOnDestroy(): void {

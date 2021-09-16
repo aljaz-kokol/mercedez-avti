@@ -15,17 +15,21 @@ interface LoginResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private isAuth = false;
+  private isAdmin = false;
   private token: string;
   private tokenTimer: any;
   private authStatusListener = new Subject<boolean>();
 
   constructor(private apiHttp: ApiHttpService,
               private apiEndpoint: ApiEndpointService,
-              private router: Router) {
-  }
+              private router: Router) {}
 
   public getIsAuth(): boolean {
     return this.isAuth;
+  }
+
+  public getIsAdmin(): boolean {
+    return this.isAdmin;
   }
 
   public getToken(): string {
@@ -66,8 +70,10 @@ export class AuthService {
       this.token = httpResult.token;
       this.setAuthTimer(httpResult.expiresIn);
       this.isAuth = true;
+      this.isAdmin = await this.getUserStatus();
       this.authStatusListener.next(true);
       AuthService.saveAuthData(this.token, AuthService.getExpirationDate(httpResult.expiresIn));
+      // Get users status (isAdmin)
       await this.router.navigate(['/']);
     } catch (err) {
       console.log('There was an error logging in');
@@ -76,12 +82,15 @@ export class AuthService {
   }
 
   public async getUserStatus(): Promise<boolean> {
-    const result = await this.apiHttp.get<{ userStatus: boolean }>(this.apiEndpoint.userStatusEndpoint).toPromise();
-    return result.userStatus;
+    if (this.isAuth) {
+      const result = await this.apiHttp.get<{ userStatus: boolean }>(this.apiEndpoint.userStatusEndpoint).toPromise();
+      return result.userStatus;
+    }
+    return false;
   }
 
   // Auto authenticate a user
-  public autoAuthUser() {
+  public async autoAuthUser(): Promise<void> {
     const authInformation = AuthService.authData;
     if (!authInformation) {
       return;
@@ -89,6 +98,7 @@ export class AuthService {
     if (AuthService.validExpirationDated(authInformation.expirationDate)) {
       this.token = authInformation.token;
       this.isAuth = true;
+      this.isAdmin = await this.getUserStatus();
       this.authStatusListener.next(true);
       this.setAuthTimer(AuthService.getExpirationInMilliseconds(authInformation.expirationDate) / 1000);
     }
@@ -97,6 +107,7 @@ export class AuthService {
   public async logout() {
     this.token = null;
     this.isAuth = false;
+    this.isAdmin = false;
     this.authStatusListener.next(false);
     await this.router.navigate(['/']);
     clearTimeout(this.tokenTimer);
@@ -112,11 +123,13 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
   }
+
   // Given the JWT token expiration date it returns a Date object of it
   private static getExpirationDate(expiresInSeconds: number): Date {
     const now = new Date();
     return new Date(now.getTime() + (expiresInSeconds * 1000));
   }
+
   // Returns the authentication data stored in local storage
   private static get authData() {
     const token = localStorage.getItem('token');
@@ -129,11 +142,13 @@ export class AuthService {
       expirationDate: new Date(expirationDate)
     }
   }
+
   // Checks if the expiration date is still valid (is in the future)
   private static validExpirationDated(expirationDate: Date) {
     const now = new Date();
     return expirationDate > now;
   }
+
   // Given the expiration date it returns the difference between it and the current date in milliseconds
   private static getExpirationInMilliseconds(expirationDate: Date): number {
     const now = new Date();

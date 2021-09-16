@@ -11,17 +11,17 @@ export class AdminGuard implements CanActivate {
               private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    // First check if user is logged in
     if (this.authService.getToken()) {
-      return this.authService.getUserStatus().then(result => {
-        if (result) {
-          return true;
-        }
-        return this.router.createUrlTree(['/']);
-      }).catch(err => {
-        return this.router.createUrlTree(['/']);
-      });
+      return this.authService.getUserStatus()
+        .then(result => {
+          if (result)
+            return true;
+          return this.router.createUrlTree(['/']);
+        })
+        .catch(err => {
+          return this.router.createUrlTree(['/']);
+        })
     }
-    return false;
+    return this.router.createUrlTree(['/']);
   }
 }

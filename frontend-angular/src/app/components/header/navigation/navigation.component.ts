@@ -14,6 +14,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   private authListenerSubs: Subscription;
   carClassList: CarClass[];
   userIsAuth = false;
+  userIsAdmin = false;
 
   constructor(private carClassService: CarClassService,
               private authService: AuthService,
@@ -22,9 +23,11 @@ export class NavigationComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     this.carClassList = await this.carClassService.getCarClassList();
     this.userIsAuth = this.authService.getIsAuth();
+    this.userIsAdmin = this.authService.getIsAdmin();
     this.authListenerSubs = this.authService.getAuthStatusListener()
       .subscribe(isAuth => {
         this.userIsAuth = isAuth;
+        this.userIsAdmin = this.authService.getIsAdmin();
       });
   }
 

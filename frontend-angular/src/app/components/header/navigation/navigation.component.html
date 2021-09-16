@@ -3,11 +3,11 @@
     <button
       class="nav-button"
       mat-button
-      color="black"
       (click)="navigate(['car', 'class', carClass.id])"
       *ngFor="let carClass of carClassList">
       {{ carClass.name }}-Class
     </button>
+    <button *ngIf="userIsAuth && userIsAdmin" class="nav-button" mat-button (click)="navigate(['control-panel'])">Control-Panel</button>
   </div>
   <div class="auth-navigation">
     <button *ngIf="!userIsAuth" class="nav-auth-button" mat-button (click)="navigate(['auth', 'login'])">Login</button>

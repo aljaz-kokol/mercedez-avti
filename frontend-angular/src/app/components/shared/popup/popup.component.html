@@ -1,0 +1,8 @@
+<button class="show-popup-btn" mat-icon-button
+        [matTooltip]="toolTip" (click)="togglePopUp()">
+  <mat-icon>keyboard_arrow_up</mat-icon>
+</button>
+<div class="popup" *ngIf="popUpVisible" @popup>
+  <ng-content></ng-content>
+</div>
+<app-overlay *ngIf="popUpVisible" [entireScreen]="true" (click)="togglePopUp()"></app-overlay>

@@ -1,102 +1,107 @@
 <app-page-title>ADD CAR</app-page-title>
-<div class="content-container">
-  <form>
-    <!-- Car Name   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Car name</mat-label>
-      <input type="text" matInput />
-    </mat-form-field>
-    <!-- Car Class   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Car Class</mat-label>
-      <mat-select>
-        <!-- TODO: Add car class options -->
-      </mat-select>
-    </mat-form-field>
-    <!-- Car Type   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Car Type</mat-label>
-      <mat-select>
-        <!-- TODO: Add car type options -->
-      </mat-select>
-    </mat-form-field>
-    <!-- Fuel   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Fuel</mat-label>
-      <mat-select>
-        <!-- TODO: Add fuel options -->
-      </mat-select>
-    </mat-form-field>
-    <!-- Drive Type   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Drive Type</mat-label>
-      <mat-select>
-        <!-- TODO: Add drive type options -->
-      </mat-select>
-    </mat-form-field>
-    <!-- Gearbox   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Gearbox</mat-label>
-      <mat-select>
-        <!-- TODO: Add Gearbox options -->
-      </mat-select>
-    </mat-form-field>
-    <!-- Weight   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Weight - kg</mat-label>
-      <input type="number" min="1" matInput />
-    </mat-form-field>
-    <!-- Height   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Height - mm</mat-label>
-      <input type="number" min="1" matInput />
-    </mat-form-field>
-    <!-- Length   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Length - mm</mat-label>
-      <input type="number" min="1" matInput />
-    </mat-form-field>
-    <!-- Width   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Width - mm</mat-label>
-      <input type="number" min="1" matInput />
-    </mat-form-field>
-    <!-- Doors   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Number of doors</mat-label>
-      <input type="number" min="1" matInput />
-    </mat-form-field>
-    <!-- Top speed   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Top speed - km/h</mat-label>
-      <input type="number" min="1" matInput />
-    </mat-form-field>
-    <!-- Base price   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Base price</mat-label>
-      <input type="number" min="1" matInput />
-    </mat-form-field>
-    <!-- Kilowatts   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Kilowatts</mat-label>
-      <input type="number" min="1" matInput />
-    </mat-form-field>
-    <!-- Torque   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Torque - Nm</mat-label>
-      <input type="number" min="1" matInput />
-    </mat-form-field>
-    <!-- Volume   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Volume - cm<sup>3</sup></mat-label>
-      <input type="number" min="1" matInput />
-    </mat-form-field>
-    <!-- Release year   -->
-    <mat-form-field appearance="outline">
-      <mat-label>Release date</mat-label>
-      <input matInput [matDatepicker]="datepicker" />
-      <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-      <mat-datepicker #datepicker ></mat-datepicker>
-    </mat-form-field>
-  </form>
+<div class="subclass-list">
+  <mat-horizontal-stepper>
+    <mat-step>
+
+    </mat-step>
+  </mat-horizontal-stepper>
+<!--  <form>-->
+<!--    &lt;!&ndash; Car Name   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Car name</mat-label>-->
+<!--      <input type="text" matInput />-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Car Class   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Car Class</mat-label>-->
+<!--      <mat-select>-->
+<!--        &lt;!&ndash; TODO: Add car class options &ndash;&gt;-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Car Type   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Car Type</mat-label>-->
+<!--      <mat-select>-->
+<!--        &lt;!&ndash; TODO: Add car type options &ndash;&gt;-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Fuel   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Fuel</mat-label>-->
+<!--      <mat-select>-->
+<!--        &lt;!&ndash; TODO: Add fuel options &ndash;&gt;-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Drive Type   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Drive Type</mat-label>-->
+<!--      <mat-select>-->
+<!--        &lt;!&ndash; TODO: Add drive type options &ndash;&gt;-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Gearbox   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Gearbox</mat-label>-->
+<!--      <mat-select>-->
+<!--        &lt;!&ndash; TODO: Add Gearbox options &ndash;&gt;-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Weight   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Weight - kg</mat-label>-->
+<!--      <input type="number" min="1" matInput />-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Height   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Height - mm</mat-label>-->
+<!--      <input type="number" min="1" matInput />-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Length   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Length - mm</mat-label>-->
+<!--      <input type="number" min="1" matInput />-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Width   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Width - mm</mat-label>-->
+<!--      <input type="number" min="1" matInput />-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Doors   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Number of doors</mat-label>-->
+<!--      <input type="number" min="1" matInput />-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Top speed   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Top speed - km/h</mat-label>-->
+<!--      <input type="number" min="1" matInput />-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Base price   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Base price</mat-label>-->
+<!--      <input type="number" min="1" matInput />-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Kilowatts   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Kilowatts</mat-label>-->
+<!--      <input type="number" min="1" matInput />-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Torque   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Torque - Nm</mat-label>-->
+<!--      <input type="number" min="1" matInput />-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Volume   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Volume - cm<sup>3</sup></mat-label>-->
+<!--      <input type="number" min="1" matInput />-->
+<!--    </mat-form-field>-->
+<!--    &lt;!&ndash; Release year   &ndash;&gt;-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Release date</mat-label>-->
+<!--      <input matInput [matDatepicker]="datepicker" />-->
+<!--      <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>-->
+<!--      <mat-datepicker #datepicker ></mat-datepicker>-->
+<!--    </mat-form-field>-->
+<!--  </form>-->
 </div>

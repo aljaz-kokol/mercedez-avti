@@ -3,6 +3,7 @@ import {News} from '../../../models/news.model';
 import {AuthService} from '../../../services/auth.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
+import {ApiImage} from '../../../shared/api-image';
 
 @Component({
   selector: 'app-news-card',
@@ -25,10 +26,15 @@ export class NewsCardComponent implements OnInit, OnDestroy {
       .subscribe(isAuth => {
         this.userIsAuth = isAuth;
       });
+    console.log(this.news.images);
   }
 
   ngOnDestroy(): void {
     this.authListenerSubs.unsubscribe();
+  }
+
+  get image(): ApiImage {
+    return this.news.images[0];
   }
 
   async navigateRelative(path: any[]): Promise<void> {

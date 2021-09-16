@@ -1,0 +1,24 @@
+<mat-spinner *ngIf="showSpinner"></mat-spinner>
+<div class="content-container" *ngIf="!showSpinner">
+  <app-page-title>{{ carClass.name }}-CLASS</app-page-title>
+    <div class="car-list-grid" *ngIf="hasCars">
+      <app-car-card *ngFor="let car of carList"
+                    [car]="car">
+      </app-car-card>
+    </div>
+    <p class="no-content" *ngIf="!hasCars">There are no cars in this class</p>
+</div>
+<app-popup toolTip="Show subclasses" *ngIf="!showSpinner && hasSubclasses">
+  <div class="popup-content">
+    <mat-card class="subclass" *ngFor="let subclass of carClass.subclasses"  >
+      <app-image-carousel
+        [images]="subclass.images"
+        [isExpandable]="false"
+        bRadius="10px"
+        height="250px"
+      >
+      </app-image-carousel>
+      <h2 class="subclass-name" (click)="navigate(['car', 'class', subclass.id])">{{ subclass.name }}</h2>
+    </mat-card>
+  </div>
+</app-popup>

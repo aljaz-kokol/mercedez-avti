@@ -1,5 +1,5 @@
 <mat-spinner *ngIf="showSpinner"></mat-spinner>
-<div class="content-container" *ngIf="!showSpinner">
+<div class="subclass-list" *ngIf="!showSpinner">
   <app-page-title>{{ car.name }}</app-page-title>
   <app-car-basic-data [car]="car"></app-car-basic-data>
   <app-car-data [car]="car"></app-car-data>

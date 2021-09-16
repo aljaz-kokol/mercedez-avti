@@ -10,7 +10,8 @@ import {NewsService} from '../../../services/news.service';
 export class NewsListComponent implements OnInit {
   newsList: News[];
 
-  constructor(private newsService: NewsService) {}
+  constructor(private newsService: NewsService) {
+  }
 
   async ngOnInit(): Promise<void> {
     this.newsList = await this.newsService.getNewsList();

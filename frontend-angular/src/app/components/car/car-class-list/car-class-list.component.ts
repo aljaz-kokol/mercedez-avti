@@ -4,15 +4,14 @@ import {CarClass} from '../../../models/car-class.model';
 import {CarClassService} from '../../../services/car-class.service';
 import {Car} from '../../../models/car.model';
 import {CarService} from '../../../services/car.service';
+import {ApiImage} from '../../../shared/api-image';
 
 @Component({
-  selector: 'app-car-list',
-  templateUrl: './car-list.component.html',
-  styleUrls: ['./car-list.component.css']
+  selector: 'app-car-class-list',
+  templateUrl: './car-class-list.component.html',
+  styleUrls: ['./car-class-list.component.css']
 })
-export class CarListComponent implements OnInit {
-  private classId: string;
-
+export class CarClassListComponent implements OnInit {
   carClass: CarClass;
   carList: Car[];
 
@@ -23,9 +22,9 @@ export class CarListComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(async params => {
-      this.classId = params.get('classId');
-      this.carClass = await this.carClassService.getCarClassFromId(this.classId);
-      this.carList = await this.carService.getCarListFromClass(this.carClass.id);
+      const classId = params.get('classId');
+      this.carClass = await this.carClassService.getCarClassFromId(classId);
+      this.carList = await this.carService.getCarListFromClass(classId);
     });
   }
 
@@ -35,10 +34,14 @@ export class CarListComponent implements OnInit {
 
   // Return true if the carClass has not yet been instantiated
   public get showSpinner(): boolean {
-    return (!this.carList);
+    return (!this.carList || !this.carClass);
   }
   // Return true if there is at least 1 one in carList array
-  public get haveCars(): boolean {
+  public get hasCars(): boolean {
     return this.carList.length > 0;
+  }
+
+  public get hasSubclasses(): boolean {
+    return  this.carClass.subclasses.length > 0;
   }
 }

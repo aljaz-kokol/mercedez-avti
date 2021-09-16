@@ -5,7 +5,7 @@ mat-spinner {
   transform: translate(-50%, -50%);
 }
 
-.content-container {
+.subclass-list {
   padding-bottom: 10px;
 }
 

@@ -1,8 +1,0 @@
-<mat-spinner *ngIf="showSpinner"></mat-spinner>
-<div class="content-container" *ngIf="!showSpinner">
-  <app-page-title>{{ carClass.name }}-CLASS</app-page-title>
-  <div class="car-list-grid" *ngIf="haveCars">
-    <app-car-card *ngFor="let car of carList" [car]="car"></app-car-card>
-  </div>
-  <p class="no-content" *ngIf="!haveCars">There are no cars in this class</p>
-</div>

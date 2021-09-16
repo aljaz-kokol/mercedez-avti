@@ -17,7 +17,9 @@ import {ApiImage} from '../../../shared/api-image';
 export class ImageCarouselComponent implements OnInit, OnDestroy {
   @Input() images: ApiImage[];
   @Input() width?: string;
+  @Input() height?: string;
   @Input() bRadius?: string; //  Border radius
+  @Input() isExpandable = true; // Determines if the image can be expanded into detail view
 
   private autoLoopTimer: any;
   private loopDuration = 3000;
@@ -54,11 +56,13 @@ export class ImageCarouselComponent implements OnInit, OnDestroy {
   }
 
   toggleDetailView() {
-    this.detailView = !this.detailView;
-    if (this.detailView) {
-      this.stopLoopTimer();
-    } else {
-      this.resetLoopTimer();
+    if (this.isExpandable) {
+      this.detailView = !this.detailView;
+      if (this.detailView) {
+        this.stopLoopTimer();
+      } else {
+        this.resetLoopTimer();
+      }
     }
   }
 

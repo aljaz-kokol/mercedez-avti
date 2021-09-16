@@ -1,5 +1,5 @@
 <mat-spinner *ngIf="showSpinner"></mat-spinner>
-<div class="content-container" *ngIf="!showSpinner">
+<div class="subclass-list" *ngIf="!showSpinner">
   <app-page-title>NEWS</app-page-title>
   <div class="news-list-container">
     <app-news-card *ngFor="let news of newsList" [news]="news"></app-news-card>

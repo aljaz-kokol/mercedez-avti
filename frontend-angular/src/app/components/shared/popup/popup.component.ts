@@ -14,10 +14,20 @@ import {stretchIn, stretchOut} from '../../../animations/popup-animation';
   ]
 })
 export class PopupComponent {
-  @Input() toolTip: string = "Popup btn";
+  @Input() toolTip: string = 'Popup btn';
+  @Input() absolutePos: boolean = false;
+  @Input() overlayEntireScreen: boolean = true;
+
   popUpVisible = false;
 
   togglePopUp() {
     this.popUpVisible = !this.popUpVisible;
+  }
+
+  get position(): string {
+    if (this.absolutePos) {
+      return 'absolute';
+    }
+    return 'fixed'
   }
 }

@@ -1,3 +1,7 @@
+mat-expansion-panel-header {
+  padding-left: 5px;
+}
+
 .class-list {
   padding-bottom: 1px;
 }
@@ -6,6 +10,10 @@
   border-width: thin;
   border-style: solid;
   border-color: rgb(181, 181, 181);
+}
+
+.class-link:hover {
+  text-decoration: underline;
 }
 
 .car-list {
@@ -18,20 +26,11 @@
   margin-bottom: 5px;
 }
 
-mat-expansion-panel-header {
-  padding-left: 5px;
-}
-
 .add-car-btn {
   position: fixed;
   background: black;
   bottom: 2.5%;
   right: 2.5%;
-}
-
-.add-class-car-btn {
-  margin-right: 10px;
-  margin-left: 0;
 }
 
 .car-class-name {
@@ -60,6 +59,33 @@ mat-expansion-panel-header {
   padding-bottom: 10px;
 }
 
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.popup-content {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.subclass {
+  cursor: pointer;
+  padding: 0;
+  border-radius: 10px;
+  flex-shrink: 0;
+  width: 30%;
+  margin: 0 15px;
+}
+
+.subclass-name {
+  text-align: center;
+  padding: 5px 0;
+}
+
 /* Added custom scroll bar */
 ::-webkit-scrollbar {
   height: 4px;
@@ -73,6 +99,10 @@ mat-expansion-panel-header {
 }
 
 @media only screen and (max-width: 820px) {
+  .subclass {
+    width: 80%;
+  }
+
   .car-card {
     width: 60%;
   }

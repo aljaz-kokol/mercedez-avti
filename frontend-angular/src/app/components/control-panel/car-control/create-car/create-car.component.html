@@ -1,107 +1,190 @@
 <app-page-title>ADD CAR</app-page-title>
-<div class="subclass-list">
-  <mat-horizontal-stepper>
-    <mat-step>
-
+<div class="content-container" *ngIf="!showSpinner">
+  <mat-horizontal-stepper >
+    <!-- Basic Data Form -->
+    <mat-step [stepControl]="basicDataForm">
+      <ng-template matStepLabel>Basic data</ng-template>
+      <form [formGroup]="basicDataForm">
+        <!-- Car Name --->
+        <mat-form-field appearance="outline">
+          <mat-label>Car Name</mat-label>
+          <input matInput required formControlName="name" />
+          <mat-error>Please enter Car's name</mat-error>
+        </mat-form-field>
+        <!-- Car Class --->
+        <mat-form-field appearance="outline">
+          <mat-label>Car Class</mat-label>
+          <mat-select required disableOptionCentering formControlName="carClass" >
+            <mat-option *ngFor="let carClass of carClassList" [value]="carClass.id">
+              {{ carClass.name }}-CLASS
+            </mat-option>
+          </mat-select>
+          <mat-error>Please select Car's class</mat-error>
+        </mat-form-field>
+        <!-- Car Class --->
+        <mat-form-field appearance="outline">
+          <mat-label>Car Type</mat-label>
+          <mat-select required disableOptionCentering formControlName="carType">
+            <mat-option *ngFor="let type of carTypeList" [value]="type.id">
+              {{ type.type }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Please select Car's type</mat-error>
+        </mat-form-field>
+        <!-- Car Drive Type -->
+        <mat-form-field appearance="outline">
+          <mat-label>Drive Type</mat-label>
+          <mat-select required disableOptionCentering formControlName="drive" >
+            <mat-option *ngFor="let drive of driveTypeList" [value]="drive.id" >
+              {{ drive.type }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Please select Car's drive type</mat-error>
+        </mat-form-field>
+        <!-- Car Gearbox Type -->
+        <mat-form-field appearance="outline">
+          <mat-label>Gearbox</mat-label>
+          <mat-select required disableOptionCentering formControlName="gearbox" >
+            <mat-option *ngFor="let gearbox of gearboxList" [value]="gearbox.id">
+              {{ gearbox.type }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Please select Car's gearbox type</mat-error>
+        </mat-form-field>
+        <button mat-raised-button matStepperNext [disabled]="basicDataForm.invalid" class="step-btn">Next</button>
+      </form>
+    </mat-step>
+    <!-- Engine Form -->
+    <mat-step [stepControl]="engineForm">
+      <ng-template matStepLabel>Engine</ng-template>
+      <form [formGroup]="engineForm">
+        <!-- Fuel Type -->
+        <mat-form-field appearance="outline">
+          <mat-label>Fuel</mat-label>
+          <mat-select formControlName="fuel" disableOptionCentering required>
+            <mat-option *ngFor="let fuel of fuelList" [value]="fuel.id">
+              {{ fuel.type }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Please select car's engine fuel type</mat-error>
+        </mat-form-field>
+        <!-- Kilowatts -->
+        <mat-form-field appearance="outline">
+          <mat-label>Kilowatts - kW</mat-label>
+          <input formControlName="kilowatts" type="number" min="1" matInput required>
+          <mat-error>Please enter car's engine kilowatts</mat-error>
+        </mat-form-field>
+        <!-- Kilowatts -->
+        <mat-form-field appearance="outline">
+          <mat-label>Torque - Nm</mat-label>
+          <input formControlName="torque" type="number" min="1" matInput required>
+          <mat-error>Please enter car's engine torque</mat-error>
+        </mat-form-field>
+        <!-- Kilowatts -->
+        <mat-form-field appearance="outline">
+          <mat-label>Volume - cm<sup>3</sup></mat-label>
+          <input formControlName="volume" type="number" min="1" matInput required>
+          <mat-error>Please enter car's engine volume</mat-error>
+        </mat-form-field>
+        <button mat-raised-button matStepperPrevious class="step-btn">Back</button>
+        <button mat-raised-button matStepperNext [disabled]="engineForm.invalid" class="step-btn">Next</button>
+      </form>
+    </mat-step>
+    <!-- Car Dimensions form -->
+    <mat-step [stepControl]="carDimensionsForm">
+      <ng-template matStepLabel >Dimensions</ng-template>
+      <form [formGroup]="carDimensionsForm">
+        <!-- Car length -->
+        <mat-form-field appearance="outline">
+          <mat-label>Length - mm</mat-label>
+          <input formControlName="length" type="number" min="1" matInput required />
+          <mat-error>Please enter car's length</mat-error>
+        </mat-form-field>
+        <!-- Car height -->
+        <mat-form-field appearance="outline">
+          <mat-label>Height - mm</mat-label>
+          <input formControlName="height" type="number" min="1" matInput required />
+          <mat-error>Please enter car's height</mat-error>
+        </mat-form-field>
+        <!-- Car width -->
+        <mat-form-field appearance="outline">
+          <mat-label>Width - mm</mat-label>
+          <input formControlName="width" type="number" min="1" matInput required />
+          <mat-error>Please enter car's width</mat-error>
+        </mat-form-field>
+        <!-- Car weight -->
+        <mat-form-field appearance="outline">
+          <mat-label>Weight - kg</mat-label>
+          <input formControlName="weight" type="number" min="1" matInput required />
+          <mat-error>Please enter car's weight</mat-error>
+        </mat-form-field>
+        <button mat-raised-button matStepperPrevious class="step-btn">Back</button>
+        <button mat-raised-button matStepperNext [disabled]="carDimensionsForm.invalid" class="step-btn">Next</button>
+      </form>
+    </mat-step>
+    <!-- Extra Data Form -->
+    <mat-step [stepControl]="extraDataForm">
+      <ng-template matStepLabel>Extra Data</ng-template>
+      <form [formGroup]="extraDataForm">
+        <!-- Base price -->
+        <mat-form-field appearance="outline">
+          <mat-label>Base price - &euro;</mat-label>
+          <input formControlName="basePrice" type="number" min="1" matInput required />
+          <mat-error>Please enter car's base price</mat-error>
+        </mat-form-field>
+        <!-- Top speed -->
+        <mat-form-field appearance="outline">
+          <mat-label>Top speed - km/h;</mat-label>
+          <input formControlName="topSpeed" type="number" min="1" matInput required />
+          <mat-error>Please enter car's top speed</mat-error>
+        </mat-form-field>
+        <!-- Doors -->
+        <mat-form-field appearance="outline">
+          <mat-label>Number of doors</mat-label>
+          <input formControlName="doors" type="number" min="1" matInput required />
+          <mat-error>Please enter car's number of doors</mat-error>
+        </mat-form-field>
+        <!-- Release date -->
+        <mat-form-field appearance="outline">
+          <mat-label>Release date</mat-label>
+          <input matInput [matDatepicker]="picker">
+          <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>Please pick car's release date</mat-error>
+        </mat-form-field>
+        <button mat-raised-button matStepperPrevious class="step-btn">Back</button>
+        <button mat-raised-button matStepperNext [disabled]="extraDataForm.invalid" class="step-btn">Next</button>
+      </form>
+    </mat-step>
+    <!-- Images -->
+    <mat-step [stepControl]="imagesForm">
+      <ng-template matStepLabel>Images</ng-template>
+      <form [formGroup]="imagesForm" *ngIf="imageFormArray.controls.length > 0" >
+        <div class="form-array-container" formArrayName="images">
+          <div class="image-control" *ngFor="let image of imageFormArray.controls; let i = index" [formGroupName]="i">
+            <mat-form-field appearance="outline">
+              <mat-label>Image name</mat-label>
+              <input formControlName="name" type="text" matInput required>
+              <mat-error>Please enter name of the image</mat-error>
+            </mat-form-field>
+            <div class="image-picker">
+              <input formControlName="imgFile" accept="image/*" type="file" (change)="onFileSelected($event, i)" hidden required #filePicker />
+              <img *ngIf="localImgPaths[i]" [src]="localImgPaths[i]" alt="">
+              <button type="button" (click)="filePicker.click()" mat-raised-button>Pick image file</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="no-img-control-content">
+        <p *ngIf="imageFormArray.controls.length === 0" >Add Car Image</p>
+        <button class="mat-elevation-z2"
+                [disabled]="imageFormArray.invalid && imageFormArray.controls.length > 0 "
+                (click)="onAddImgControl()"
+                mat-icon-button>
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
     </mat-step>
   </mat-horizontal-stepper>
-<!--  <form>-->
-<!--    &lt;!&ndash; Car Name   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Car name</mat-label>-->
-<!--      <input type="text" matInput />-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Car Class   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Car Class</mat-label>-->
-<!--      <mat-select>-->
-<!--        &lt;!&ndash; TODO: Add car class options &ndash;&gt;-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Car Type   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Car Type</mat-label>-->
-<!--      <mat-select>-->
-<!--        &lt;!&ndash; TODO: Add car type options &ndash;&gt;-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Fuel   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Fuel</mat-label>-->
-<!--      <mat-select>-->
-<!--        &lt;!&ndash; TODO: Add fuel options &ndash;&gt;-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Drive Type   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Drive Type</mat-label>-->
-<!--      <mat-select>-->
-<!--        &lt;!&ndash; TODO: Add drive type options &ndash;&gt;-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Gearbox   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Gearbox</mat-label>-->
-<!--      <mat-select>-->
-<!--        &lt;!&ndash; TODO: Add Gearbox options &ndash;&gt;-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Weight   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Weight - kg</mat-label>-->
-<!--      <input type="number" min="1" matInput />-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Height   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Height - mm</mat-label>-->
-<!--      <input type="number" min="1" matInput />-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Length   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Length - mm</mat-label>-->
-<!--      <input type="number" min="1" matInput />-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Width   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Width - mm</mat-label>-->
-<!--      <input type="number" min="1" matInput />-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Doors   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Number of doors</mat-label>-->
-<!--      <input type="number" min="1" matInput />-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Top speed   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Top speed - km/h</mat-label>-->
-<!--      <input type="number" min="1" matInput />-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Base price   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Base price</mat-label>-->
-<!--      <input type="number" min="1" matInput />-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Kilowatts   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Kilowatts</mat-label>-->
-<!--      <input type="number" min="1" matInput />-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Torque   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Torque - Nm</mat-label>-->
-<!--      <input type="number" min="1" matInput />-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Volume   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Volume - cm<sup>3</sup></mat-label>-->
-<!--      <input type="number" min="1" matInput />-->
-<!--    </mat-form-field>-->
-<!--    &lt;!&ndash; Release year   &ndash;&gt;-->
-<!--    <mat-form-field appearance="outline">-->
-<!--      <mat-label>Release date</mat-label>-->
-<!--      <input matInput [matDatepicker]="datepicker" />-->
-<!--      <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>-->
-<!--      <mat-datepicker #datepicker ></mat-datepicker>-->
-<!--    </mat-form-field>-->
-<!--  </form>-->
 </div>
+<mat-spinner *ngIf="showSpinner" class="spinner"></mat-spinner>

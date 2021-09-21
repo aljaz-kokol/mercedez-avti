@@ -57,24 +57,40 @@ export class ApiEndpointService {
   }
 
   // === CAR-TYPE ENDPOINTS ==
+  // Return url of api endpoint which returns a list of car-types
+  public get carTypeListEndPoint(): string {
+    return this.createUrl('car-type');
+  }
   // Return url of api endpoint which returns a car-type based on the given id
   public getCarTypeByIdEndPoint(typeId: string): string {
     return this.createUrlWithPathVariables('car-type', [typeId]);
   }
 
   // === FUEL ENDPOINTS ==
+  // Return url of api endpoint which return a list of all fuel types
+  public get fuelListEndPoint(): string {
+    return this.createUrl('fuel');
+  }
   // Return url of api endpoint which returns fuel based on the given id
   public getFuelByIdEndpoint(fuelId: string): string {
     return this.createUrlWithPathVariables('fuel', [fuelId]);
   }
 
   // === DRIVE ENDPOINTS ==
+  // Return url of api endpoint which returns a list of all drive modes
+  public get driveListEndPoint(): string {
+    return this.createUrl('drive');
+  }
   // Return url of api endpoint which returns the drive mode based on the given id
   public getDriveByIdEndPoint(driveId: string): string {
     return this.createUrlWithPathVariables('drive', [driveId]);
   }
 
   // === GEARBOX ENDPOINTS ==
+  // Return url of api endpoint which returns a list of all gearboxes
+  public get gearboxListEndPoint(): string {
+    return this.createUrl('gearbox');
+  }
   // Return url of api endpoint which returns a gearbox based on the given id
   public getGearboxByIdEndPoint(gearboxId: string): string {
     return this.createUrlWithPathVariables('gearbox', [gearboxId]);

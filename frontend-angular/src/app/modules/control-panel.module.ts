@@ -5,6 +5,7 @@ import {ControlPanelComponent} from '../components/control-panel/control-panel.c
 import {CarControlComponent} from '../components/control-panel/car-control/car-control.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {CreateCarComponent} from '../components/control-panel/car-control/create-car/create-car.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {CreateCarComponent} from '../components/control-panel/car-control/create
     imports: [
         ControlPanelRoutingModule,
         SharedModule,
-        MatTooltipModule
+        MatTooltipModule,
+        ReactiveFormsModule
     ]
 })
 export class ControlPanelModule {}

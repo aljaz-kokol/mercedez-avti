@@ -9,6 +9,11 @@ export class DriveService {
   constructor(private apiHttp: ApiHttpService,
               private apiEndPoint: ApiEndpointService) {}
 
+  public async getDriveList(): Promise<Drive[]> {
+    return this.apiHttp.get<DriveApi[]>(this.apiEndPoint.driveListEndPoint)
+      .pipe(map(Drive.fromApiList)).toPromise();
+  }
+
   public async getDriveFromId(id: string): Promise<Drive> {
     return this.apiHttp.get<DriveApi>(this.apiEndPoint.getDriveByIdEndPoint(id))
       .pipe(map(Drive.fromApi)).toPromise();

@@ -14,7 +14,6 @@ router.post('/', [
     isAdmin
 ], createCarClass);
 
-
 // Create subclass of car-class
 router.patch('/:classId', [
     isAuth,

@@ -1,6 +1,6 @@
 <app-page-title>ADD CAR</app-page-title>
 <div class="content-container" *ngIf="!showSpinner">
-  <mat-horizontal-stepper >
+  <mat-horizontal-stepper linear >
     <!-- Basic Data Form -->
     <mat-step [stepControl]="basicDataForm">
       <ng-template matStepLabel>Basic data</ng-template>
@@ -147,7 +147,7 @@
         <!-- Release date -->
         <mat-form-field appearance="outline">
           <mat-label>Release date</mat-label>
-          <input matInput [matDatepicker]="picker">
+          <input matInput [matDatepicker]="picker" formControlName="releaseDate">
           <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
           <mat-error>Please pick car's release date</mat-error>
@@ -184,6 +184,8 @@
           <mat-icon>add</mat-icon>
         </button>
       </div>
+      <button mat-raised-button matStepperPrevious class="step-btn">Back</button>
+      <button mat-raised-button [disabled]="!canCreate" (click)="onCrateCar()" class="step-btn">Create Car</button>
     </mat-step>
   </mat-horizontal-stepper>
 </div>

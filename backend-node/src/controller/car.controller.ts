@@ -3,7 +3,6 @@ import { Types } from 'mongoose';
 
 import { CustomError } from '../errors/custom.error';
 import { ResourceNotFoundError } from '../errors/not-found.error';
-import CarClass from '../model/car-class.model';
 import Car from '../model/car.model';
 import { ApiImage } from '../util/api-image';
 import { getCarClass } from '../util/find-carclass';
@@ -44,31 +43,44 @@ export const getCarFromId = async (req: Request, res: Response, next: NextFuncti
     }
 };
 
-export const createCar = async (req: Request, res: Response, next: NextFunction) => {
+export const createCar = async (req: Request, res: Response, next: NextFunction) => {    
     type ExpectedReq = {
-        class: string,
-        type: string,
-        fuel: string,
-        engine: {
-            kilowatts: number,
-            torque: number,
-            volume: number
+        car: {
+            class: string,
+            type: string,
+            fuel: string,
+            engine: {
+                kilowatts: number,
+                torque: number,
+                volume: number
+            },
+            drive: string,
+            gearbox: string,
+            name: string,
+            releaseYear: string,
+            doors: number,
+            weight: number,
+            height: number,
+            length: number,
+            width: number,
+            topSpeed: number,
+            basePrice: number,
         },
-        drive: string,
-        gearbox: string,
-        images: ApiImage[],
-        name: string,
-        releaseYear: string,
-        doors: number,
-        weight: number,
-        height: number,
-        length: number,
-        width: number,
-        topSpeed: number
+        imageNames: string[]
     };
-    const reqBody = req.body as ExpectedReq;
+    const reqBody = JSON.parse(req.body.data) as ExpectedReq;    
     try {
-        const car = await Car.create({...reqBody});
+        const images: ApiImage[] = [];
+        if (req.files && req.files.length > 0) {
+            req.files = req.files as Express.Multer.File[];
+            req.files.forEach((file, index) => {
+                images.push({
+                    name: reqBody.imageNames[index],
+                    path: `http://localhost:3000/api/images/${file.filename}`
+                })
+            });
+        }
+        const car = await Car.create({...reqBody.car, images});
         res.status(201).json({
             message: 'Car document successfully created',
             car

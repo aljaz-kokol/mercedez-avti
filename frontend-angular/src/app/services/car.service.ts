@@ -50,4 +50,10 @@ export class CarService {
 
     return car.toCarFull(carClass, type, fuel, drive, gearbox);
   }
+
+  public async createCar(formData: FormData): Promise<void> {
+    const result = await this.apiHttp.post<{message: string, car: CarApi}>(this.apiEndPoint.carListEndPoint, formData).toPromise();
+    console.log(result);
+  }
 }
+

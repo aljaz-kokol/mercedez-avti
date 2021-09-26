@@ -13,8 +13,8 @@ import authRoutes from './routes/auth.routes';
 import { CustomError } from './errors/custom.error';
 
 const app = express();
-
 app.use(express.json());
+
 app.use('/api/images', express.static(path.join('images')));
 
 app.use((req: Request, res: Response, next: NextFunction) => {    

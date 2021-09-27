@@ -1,6 +1,6 @@
 <app-page-title>ADD CAR</app-page-title>
 <div class="content-container" *ngIf="!showSpinner">
-  <mat-horizontal-stepper>
+  <mat-horizontal-stepper >
     <!-- Basic Data Form -->
     <mat-step [stepControl]="basicDataForm">
       <ng-template matStepLabel>Basic data</ng-template>
@@ -15,13 +15,13 @@
         <mat-form-field appearance="outline">
           <mat-label>Car Class</mat-label>
           <mat-select required disableOptionCentering formControlName="carClass" >
-            <mat-option *ngFor="let carClass of carClassList" [value]="carClass.id">
+            <mat-option *ngFor="let carClass of classList" [value]="carClass.id">
               {{ carClass.name }}-CLASS
             </mat-option>
           </mat-select>
           <mat-error>Please select Car's class</mat-error>
         </mat-form-field>
-        <!-- Car Class --->
+        <!-- Car Type --->
         <mat-form-field appearance="outline">
           <mat-label>Car Type</mat-label>
           <mat-select required disableOptionCentering formControlName="carType">
@@ -192,4 +192,5 @@
     </mat-step>
   </mat-horizontal-stepper>
 </div>
+
 <mat-spinner *ngIf="showSpinner" class="spinner"></mat-spinner>

@@ -16,6 +16,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {DialogService} from '../../../../services/dialog.service';
 import {DeactivateComponent} from '../../../../services/guards/deactivate/deactivate.guard';
 import {Observable} from 'rxjs';
+import {Car} from '../../../../models/car.model';
 
 @Component({
   selector: 'app-create-car',
@@ -24,9 +25,10 @@ import {Observable} from 'rxjs';
 })
 export class CreateCarComponent implements OnInit, DeactivateComponent {
 
-  private canExit = false;
-  private fileList: File[] = [];
-  private formData: FormData = new FormData();
+  private _canExit = false;
+  private _fileList: File[] = [];
+  private _formData: FormData = new FormData();
+  private _classList: CarClass[] = [];
 
   localImgPaths: string[] = [];
 
@@ -53,17 +55,6 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
               private dialogService: DialogService) {
   }
 
-  canDeactivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (!this.canExit) {
-      return this.dialogService.openAlertDialog(
-        {title: 'Are you sure you want to exit?', body: 'Are you sure you want to exit this page without saving?'}
-      ).toPromise().then(result => {
-        return result;
-      });
-    }
-    return true;
-  }
-
   async ngOnInit(): Promise<void> {
     this.carClassList = await this.classService.getCarClassList();
     this.carTypeList = await this.typeService.getCarTypeList();
@@ -75,6 +66,18 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
     this.initCarDimensionsForm();
     this.initExtraDataForm();
     this.initImagesForm();
+    this.getAllClasses(this.carClassList);
+  }
+
+  canDeactivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if (!this._canExit) {
+      return this.dialogService.openAlertDialog(
+        {title: 'Are you sure you want to exit?', body: 'Are you sure you want to exit this page without saving?'}
+      ).toPromise().then(result => {
+        return result;
+      });
+    }
+    return true;
   }
 
   async onCrateCar(): Promise<void> {
@@ -130,21 +133,21 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
       imageNames: imageNames
     }
     // Append JSON data
-    this.formData.append('data', JSON.stringify(carObj));
+    this._formData.append('data', JSON.stringify(carObj));
     // Append file data
-    this.fileList.forEach(file => {
-      this.formData.append('images', file, file.name);
+    this._fileList.forEach(file => {
+      this._formData.append('images', file, file.name);
     });
-    this.canExit = true;
-    await this.carService.createCar(this.formData);
+    this._canExit = true;
+    await this.carService.createCar(this._formData);
     await this.router.navigate(['../'], {relativeTo: this.route});
   }
 
   onFileSelected(event, index: number): void {
     const file: File = event.target.files[0];
     if (file) {
-      this.fileList[index] = file;
-      console.log(this.fileList[index]);
+      this._fileList[index] = file;
+      console.log(this._fileList[index]);
       const reader = new FileReader();
       reader.onload = () => {
         this.localImgPaths[index] = reader.result as string;
@@ -152,7 +155,7 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
       reader.readAsDataURL(file);
     } else {
       this.localImgPaths[index] = null;
-      this.fileList[index] = null;
+      this._fileList[index] = null;
     }
   }
 
@@ -170,7 +173,7 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
     }).subscribe(result => {
       if (result) {
         this.imageFormArray.removeAt(index);
-        this.fileList.splice(index, 1);
+        this._fileList.splice(index, 1);
         this.localImgPaths.splice(index, 1);
       }
     })
@@ -188,6 +191,19 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
     return this.basicDataForm.valid && this.extraDataForm.valid && this.extraDataForm.valid && this.carDimensionsForm.valid && this.imagesForm.valid;
   }
 
+  get classList(): CarClass[] {
+    return [...this._classList];
+  }
+
+  private getAllClasses(cList: CarClass[]): CarClass[] {
+    cList.forEach(item => {
+      this._classList.push(item);
+      if (item.subclasses.length > 0) {
+        return this.getAllClasses(item.subclasses);
+      }
+    });
+    return this._classList;
+  }
 
   private initBasicDataForm() {
     this.basicDataForm = new FormGroup({

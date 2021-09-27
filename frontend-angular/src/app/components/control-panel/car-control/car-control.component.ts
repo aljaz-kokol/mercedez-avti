@@ -4,6 +4,7 @@ import {CarService} from '../../../services/car.service';
 import {CarClass} from '../../../models/car-class.model';
 import {Car} from '../../../models/car.model';
 import {ApiImage} from '../../../shared/api-image';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-car-control',
@@ -19,7 +20,9 @@ export class CarControlComponent implements OnInit {
   private panelChangeIndex: number; // Index of the expansion panel that has changed to subclass
 
   constructor(private carClassService: CarClassService,
-              private carService: CarService) {}
+              private carService: CarService,
+              private router: Router,
+              private route: ActivatedRoute) {}
 
   async ngOnInit(): Promise<void> {
     this.classes = await this.carClassService.getCarClassList();
@@ -61,10 +64,6 @@ export class CarControlComponent implements OnInit {
     return this.panelChangeIndex === panelIndex;
   }
 
-  panelHasConstructedName(panelIndex: number): boolean {
-    return this.expansionPanelClasses[panelIndex].length > 1;
-  }
-
   getActiveClassNameOfPanel(panelIndex: number): string {
     const lastIndex = this.expansionPanelClasses[panelIndex].length - 1;
     return this.expansionPanelClasses[panelIndex][lastIndex].name;
@@ -77,6 +76,10 @@ export class CarControlComponent implements OnInit {
 
   classHasSubclasses(carClass: CarClass) {
     return carClass.subclasses.length > 0;
+  }
+
+  async onNavigate(path: string[]) {
+    await this.router.navigate(path, {relativeTo: this.route});
   }
 
   get showSpinner(): boolean {

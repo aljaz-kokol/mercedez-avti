@@ -24,6 +24,7 @@ import {Observable} from 'rxjs';
 })
 export class CreateCarComponent implements OnInit, DeactivateComponent {
 
+  private canExit = false;
   private fileList: File[] = [];
   private formData: FormData = new FormData();
 
@@ -53,11 +54,14 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
   }
 
   canDeactivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.dialogService.openAlertDialog(
-      {title: 'Are you sure you want to exit?', body: 'Are you sure you want to exit this page without saving?'}
-    ).toPromise().then(result => {
-      return result;
-    });
+    if (!this.canExit) {
+      return this.dialogService.openAlertDialog(
+        {title: 'Are you sure you want to exit?', body: 'Are you sure you want to exit this page without saving?'}
+      ).toPromise().then(result => {
+        return result;
+      });
+    }
+    return true;
   }
 
   async ngOnInit(): Promise<void> {
@@ -71,35 +75,6 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
     this.initCarDimensionsForm();
     this.initExtraDataForm();
     this.initImagesForm();
-  }
-
-  onFileSelected(event, index: number): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.fileList[index] = file;
-      console.log(this.fileList[index]);
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.localImgPaths[index] = reader.result as string;
-      }
-      reader.readAsDataURL(file);
-    } else {
-      this.localImgPaths[index] = null;
-      this.fileList[index] = null;
-    }
-  }
-
-  onAddImgControl(): void {
-    this.imageFormArray.push(new FormGroup({
-      name: new FormControl(null, Validators.required),
-      imgFile: new FormControl(null, Validators.required)
-    }));
-  }
-
-  onRemoveImage(index: number): void {
-    this.imageFormArray.removeAt(index);
-    this.fileList.splice(index, 1);
-    this.localImgPaths.splice(index, 1);
   }
 
   async onCrateCar(): Promise<void> {
@@ -160,9 +135,45 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
     this.fileList.forEach(file => {
       this.formData.append('images', file, file.name);
     });
-
+    this.canExit = true;
     await this.carService.createCar(this.formData);
     await this.router.navigate(['../'], {relativeTo: this.route});
+  }
+
+  onFileSelected(event, index: number): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.fileList[index] = file;
+      console.log(this.fileList[index]);
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.localImgPaths[index] = reader.result as string;
+      }
+      reader.readAsDataURL(file);
+    } else {
+      this.localImgPaths[index] = null;
+      this.fileList[index] = null;
+    }
+  }
+
+  onAddImgControl(): void {
+    this.imageFormArray.push(new FormGroup({
+      name: new FormControl(null, Validators.required),
+      imgFile: new FormControl(null, Validators.required)
+    }));
+  }
+
+  onRemoveImage(index: number): void {
+    this.dialogService.openAlertDialog({
+      title: 'Delete Image',
+      body: 'Are you sure you want to delete this image?'
+    }).subscribe(result => {
+      if (result) {
+        this.imageFormArray.removeAt(index);
+        this.fileList.splice(index, 1);
+        this.localImgPaths.splice(index, 1);
+      }
+    })
   }
 
   get showSpinner(): boolean {
@@ -176,6 +187,7 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
   get canCreate(): boolean  {
     return this.basicDataForm.valid && this.extraDataForm.valid && this.extraDataForm.valid && this.carDimensionsForm.valid && this.imagesForm.valid;
   }
+
 
   private initBasicDataForm() {
     this.basicDataForm = new FormGroup({

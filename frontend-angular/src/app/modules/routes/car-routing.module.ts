@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {CarDetailComponent} from '../../components/car/car-detail/car-detail.component';
-import {CarDetailGuard} from '../../services/guards/car-detail.guard';
+import {CarDetailGuard} from '../../services/guards/activate/car-detail.guard';
 import {CarClassListComponent} from '../../components/car/car-class-list/car-class-list.component';
-import {CarListGuard} from '../../services/guards/car-list.guard';
+import {CarListGuard} from '../../services/guards/activate/car-list.guard';
 
 const routes: Routes = [
   {path: '', children: [

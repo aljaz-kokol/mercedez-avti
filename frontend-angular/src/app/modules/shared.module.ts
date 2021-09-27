@@ -5,17 +5,21 @@ import {MaterialModule} from './material.module';
 import {ImageCarouselComponent} from '../components/shared/image-carousel/image-carousel.component';
 import {OverlayComponent} from '../components/shared/overlay/overlay.component';
 import {PopupComponent} from '../components/shared/popup/popup.component';
+import {AlertDialogComponent} from '../components/shared/dialog/alert-dialog/alert-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     PageTitleComponent,
     OverlayComponent,
     ImageCarouselComponent,
-    PopupComponent
+    PopupComponent,
+    AlertDialogComponent
   ],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    MatDialogModule
   ],
   exports: [
     PageTitleComponent,
@@ -24,6 +28,7 @@ import {PopupComponent} from '../components/shared/popup/popup.component';
     CommonModule,
     MaterialModule,
     PopupComponent,
+    AlertDialogComponent
   ]
 })
 export class SharedModule {}

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
-import {CarClassService} from '../car-class.service';
+import {CarClassService} from '../../car-class.service';
 
 @Injectable({ providedIn: 'root' })
 export class CarListGuard implements CanActivate {

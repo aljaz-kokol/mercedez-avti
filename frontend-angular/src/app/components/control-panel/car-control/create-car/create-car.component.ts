@@ -11,15 +11,20 @@ import {Gearbox} from '../../../../models/gearbox.model';
 import {FuelService} from '../../../../services/fuel.service';
 import {Fuel} from '../../../../models/fuel.model';
 import {CarService} from '../../../../services/car.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, UrlTree} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogService} from '../../../../services/dialog.service';
+import {DeactivateComponent} from '../../../../services/guards/deactivate/deactivate.guard';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-create-car',
   templateUrl: './create-car.component.html',
   styleUrls: ['./create-car.component.css'],
 })
-export class CreateCarComponent implements OnInit {
+export class CreateCarComponent implements OnInit, DeactivateComponent {
 
+  private fileList: File[] = [];
   private formData: FormData = new FormData();
 
   localImgPaths: string[] = [];
@@ -43,7 +48,17 @@ export class CreateCarComponent implements OnInit {
               private fuelService: FuelService,
               private carService: CarService,
               private router: Router,
-              private route: ActivatedRoute) {}
+              private route: ActivatedRoute,
+              private dialogService: DialogService) {
+  }
+
+  canDeactivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return this.dialogService.openAlertDialog(
+      {title: 'Are you sure you want to exit?', body: 'Are you sure you want to exit this page without saving?'}
+    ).toPromise().then(result => {
+      return result;
+    });
+  }
 
   async ngOnInit(): Promise<void> {
     this.carClassList = await this.classService.getCarClassList();
@@ -58,28 +73,36 @@ export class CreateCarComponent implements OnInit {
     this.initImagesForm();
   }
 
-  onFileSelected(event, index: number) {
+  onFileSelected(event, index: number): void {
     const file: File = event.target.files[0];
     if (file) {
-      this.formData.append('images', file, file.name);
+      this.fileList[index] = file;
+      console.log(this.fileList[index]);
       const reader = new FileReader();
       reader.onload = () => {
         this.localImgPaths[index] = reader.result as string;
       }
       reader.readAsDataURL(file);
     } else {
-      this.localImgPaths.splice(index, 1);
+      this.localImgPaths[index] = null;
+      this.fileList[index] = null;
     }
   }
 
-  onAddImgControl() {
+  onAddImgControl(): void {
     this.imageFormArray.push(new FormGroup({
       name: new FormControl(null, Validators.required),
       imgFile: new FormControl(null, Validators.required)
     }));
   }
 
-  async onCrateCar() {
+  onRemoveImage(index: number): void {
+    this.imageFormArray.removeAt(index);
+    this.fileList.splice(index, 1);
+    this.localImgPaths.splice(index, 1);
+  }
+
+  async onCrateCar(): Promise<void> {
     // Basic Data
     const carName: string = this.basicDataForm.get('name').value;
     const carClass: string = this.basicDataForm.get('carClass').value;
@@ -131,7 +154,13 @@ export class CreateCarComponent implements OnInit {
       },
       imageNames: imageNames
     }
+    // Append JSON data
     this.formData.append('data', JSON.stringify(carObj));
+    // Append file data
+    this.fileList.forEach(file => {
+      this.formData.append('images', file, file.name);
+    });
+
     await this.carService.createCar(this.formData);
     await this.router.navigate(['../'], {relativeTo: this.route});
   }

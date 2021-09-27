@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {NewsService} from '../news.service';
+import {NewsService} from '../../news.service';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 

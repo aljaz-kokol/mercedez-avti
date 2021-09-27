@@ -1,6 +1,6 @@
 <app-page-title>ADD CAR</app-page-title>
 <div class="content-container" *ngIf="!showSpinner">
-  <mat-horizontal-stepper linear >
+  <mat-horizontal-stepper linear>
     <!-- Basic Data Form -->
     <mat-step [stepControl]="basicDataForm">
       <ng-template matStepLabel>Basic data</ng-template>
@@ -161,6 +161,7 @@
       <ng-template matStepLabel>Images</ng-template>
       <form [formGroup]="imagesForm" *ngIf="imageFormArray.controls.length > 0" >
         <div class="form-array-container" formArrayName="images">
+
           <div class="image-control" *ngFor="let image of imageFormArray.controls; let i = index" [formGroupName]="i">
             <mat-form-field appearance="outline">
               <mat-label>Image name</mat-label>
@@ -168,11 +169,13 @@
               <mat-error>Please enter name of the image</mat-error>
             </mat-form-field>
             <div class="image-picker">
-              <input formControlName="imgFile" accept="image/*" type="file" (change)="onFileSelected($event, i)" hidden required #filePicker />
+              <input formControlName="imgFile" accept="image/*" type="file"  (change)="onFileSelected($event, i)" hidden required #filePicker />
               <img *ngIf="localImgPaths[i]" [src]="localImgPaths[i]" alt="">
               <button type="button" (click)="filePicker.click()" mat-raised-button>Pick image file</button>
+              <button type="button" color="warn" (click)="onRemoveImage(i)" mat-raised-button>Remove</button>
             </div>
           </div>
+
         </div>
       </form>
       <div class="no-img-control-content">

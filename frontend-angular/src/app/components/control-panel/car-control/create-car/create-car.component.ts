@@ -1,5 +1,5 @@
-import {Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CarClassService} from '../../../../services/car-class.service';
 import {CarTypeService} from '../../../../services/car-type.service';
 import {DriveService} from '../../../../services/drive.service';
@@ -12,11 +12,11 @@ import {FuelService} from '../../../../services/fuel.service';
 import {Fuel} from '../../../../models/fuel.model';
 import {CarService} from '../../../../services/car.service';
 import {ActivatedRoute, Router, UrlTree} from '@angular/router';
-import {MatDialog} from '@angular/material/dialog';
 import {DialogService} from '../../../../services/dialog.service';
 import {DeactivateComponent} from '../../../../services/guards/deactivate/deactivate.guard';
 import {Observable} from 'rxjs';
-import {Car} from '../../../../models/car.model';
+import {AlertState} from '../../../../shared/alert-state';
+import {tick} from '@angular/core/testing';
 
 @Component({
   selector: 'app-create-car',
@@ -67,6 +67,26 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
     this.initExtraDataForm();
     this.initImagesForm();
     this.getAllClasses(this.carClassList);
+    this.route.queryParams.subscribe(async params => {
+      // Set the default selected car class if query parameter of class was passed
+      if (params['class']) {
+        try {
+          const carClass = await this.classService.getCarClassFromId(params['class']);
+          if (carClass) {
+            this.basicDataForm.get('carClass').setValue(carClass.id);
+          }
+        } catch (err) {
+          this.dialogService.openAlertDialog({
+            title: 'Invalid car-class id parameter',
+            body: 'Car-class will not be preselected because the passed car-class id is invalid. Do you wish to continue anyways?'
+          }, true).subscribe(result => {
+            if (!result) {
+              this.onNavigate(['../']);
+            }
+          });
+        }
+      }
+    })
   }
 
   canDeactivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
@@ -138,9 +158,9 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
     this._fileList.forEach(file => {
       this._formData.append('images', file, file.name);
     });
-    this._canExit = true;
+
     await this.carService.createCar(this._formData);
-    await this.router.navigate(['../'], {relativeTo: this.route});
+    this.onNavigate(['../']);
   }
 
   onFileSelected(event, index: number): void {
@@ -193,6 +213,11 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
 
   get classList(): CarClass[] {
     return [...this._classList];
+  }
+
+  private onNavigate(path: string[]) {
+    this._canExit = true;
+    this.router.navigate(path, { relativeTo: this.route });
   }
 
   private getAllClasses(cList: CarClass[]): CarClass[] {

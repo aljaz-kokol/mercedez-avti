@@ -8,9 +8,10 @@ import {Observable} from 'rxjs';
 export class DialogService {
   constructor(private dialog: MatDialog) {}
 
-  public openAlertDialog(data: AlertDialogData): Observable<boolean> {
+  public openAlertDialog(data: AlertDialogData, disableClose?: boolean): Observable<boolean> {
     const dialogRef = this.dialog.open(AlertDialogComponent, {
-      data: data
+      data: data,
+      disableClose: disableClose
     });
     return dialogRef.afterClosed();
   }

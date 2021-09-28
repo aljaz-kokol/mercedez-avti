@@ -4,7 +4,7 @@ import {CarService} from '../../../services/car.service';
 import {CarClass} from '../../../models/car-class.model';
 import {Car} from '../../../models/car.model';
 import {ApiImage} from '../../../shared/api-image';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 
 @Component({
   selector: 'app-car-control',
@@ -78,8 +78,11 @@ export class CarControlComponent implements OnInit {
     return carClass.subclasses.length > 0;
   }
 
-  async onNavigate(path: string[]) {
-    await this.router.navigate(path, {relativeTo: this.route});
+  async onNavigate(path: string[], queryParams?: Params) {
+    await this.router.navigate(path, {
+      relativeTo: this.route,
+      queryParams: queryParams
+    });
   }
 
   get showSpinner(): boolean {

@@ -6,12 +6,13 @@ import {CarControlComponent} from '../components/control-panel/car-control/car-c
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {CreateCarComponent} from '../components/control-panel/car-control/create-car/create-car.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {AlertComponent} from '../components/shared/alert/alert.component';
 
 @NgModule({
   declarations: [
     ControlPanelComponent,
     CarControlComponent,
-    CreateCarComponent
+    CreateCarComponent,
   ],
     imports: [
         ControlPanelRoutingModule,

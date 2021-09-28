@@ -1,11 +1,11 @@
-<app-page-title>CONTROL PANEL - CARS</app-page-title>
+<app-page-title><a routerLink="/control-panel">CONTROL PANEL</a> - CARS</app-page-title>
 <div class="content-container" *ngIf="!showSpinner">
   <mat-accordion class="class-list" multi>
     <mat-expansion-panel [expanded]="panelClassHasChanged(panelIndex)" class="car-class-block" *ngFor="let carClass of classes; let panelIndex = index">
       <!-- Class name and Add car to class button -->
       <mat-expansion-panel-header>
         <mat-panel-title class="car-class-name">
-          <button matTooltip="Add car to {{carClass.name}}-CLASS" mat-icon-button >
+          <button matTooltip="Add car to {{carClass.name}}-CLASS" (click)="onNavigate(['create'], { class: carClass.id })" mat-icon-button >
             <mat-icon>add</mat-icon>
           </button>
           <span *ngIf="!panelClassHasChanged(panelIndex)">{{ carClass.name }}-CLASS</span>

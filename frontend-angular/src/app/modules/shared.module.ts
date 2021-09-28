@@ -7,6 +7,7 @@ import {OverlayComponent} from '../components/shared/overlay/overlay.component';
 import {PopupComponent} from '../components/shared/popup/popup.component';
 import {AlertDialogComponent} from '../components/shared/dialog/alert-dialog/alert-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import {AlertComponent} from '../components/shared/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     OverlayComponent,
     ImageCarouselComponent,
     PopupComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    AlertComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     CommonModule,
     MaterialModule,
     PopupComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    AlertComponent
   ]
 })
 export class SharedModule {}

@@ -1,6 +1,7 @@
-<app-page-title>ADD CAR</app-page-title>
+<app-page-title><a routerLink="/control-panel/cars">CARS</a> - ADD CAR</app-page-title>
+<!--<app-alert *ngIf="alertMessage" [message]="alertMessage.message" [state]="alertMessage.state"></app-alert>-->
 <div class="content-container" *ngIf="!showSpinner">
-  <mat-horizontal-stepper >
+  <mat-horizontal-stepper linear>
     <!-- Basic Data Form -->
     <mat-step [stepControl]="basicDataForm">
       <ng-template matStepLabel>Basic data</ng-template>

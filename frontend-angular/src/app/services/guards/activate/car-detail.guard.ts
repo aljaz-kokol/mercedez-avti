@@ -9,12 +9,10 @@ export class CarDetailGuard implements CanActivate {
               private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return new Promise(resolve => {
-      this.carService.getCarFromId(route.paramMap.get('carId'))
-        .then(data => resolve(true))
-        .catch(err => {
-          resolve(this.router.createUrlTree(['/news']));
-        });
-    });
+    return this.carService.getCarFromId(route.paramMap.get('carId')).then(result => {
+      return true;
+    }).catch(err => {
+      return this.router.createUrlTree(['/news'])
+    })
   }
 }

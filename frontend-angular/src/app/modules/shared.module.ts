@@ -5,9 +5,10 @@ import {MaterialModule} from './material.module';
 import {ImageCarouselComponent} from '../components/shared/image-carousel/image-carousel.component';
 import {OverlayComponent} from '../components/shared/overlay/overlay.component';
 import {PopupComponent} from '../components/shared/popup/popup.component';
-import {AlertDialogComponent} from '../components/shared/dialog/alert-dialog/alert-dialog.component';
+import {ChoiceDialogComponent} from '../components/shared/dialog/choice-dialog/choice-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {AlertComponent} from '../components/shared/alert/alert.component';
+import {MessageDialogComponent} from '../components/shared/dialog/message-dialog/message-dialog.component';
 
 @NgModule({
   declarations: [
@@ -15,8 +16,9 @@ import {AlertComponent} from '../components/shared/alert/alert.component';
     OverlayComponent,
     ImageCarouselComponent,
     PopupComponent,
-    AlertDialogComponent,
-    AlertComponent
+    ChoiceDialogComponent,
+    AlertComponent,
+    MessageDialogComponent
   ],
   imports: [
     CommonModule,
@@ -30,8 +32,9 @@ import {AlertComponent} from '../components/shared/alert/alert.component';
     CommonModule,
     MaterialModule,
     PopupComponent,
-    AlertDialogComponent,
-    AlertComponent
+    ChoiceDialogComponent,
+    AlertComponent,
+    MessageDialogComponent
   ]
 })
 export class SharedModule {}

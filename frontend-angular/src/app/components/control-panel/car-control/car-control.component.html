@@ -19,7 +19,7 @@
       </mat-expansion-panel-header>
       <!-- Car List -->
       <div class="car-list" *ngIf="classHasCars(carClass)">
-        <mat-card class="car-card" *ngFor="let car of getCarsFromClass(carClass)">
+        <mat-card class="car-card" *ngFor="let car of getCarsFromClass(carClass)" (click)="onNavigate(['create'], { car: car.id })">
           <img [src]="getCarImage(car).path" [alt]="getCarImage(car).name" mat-card-image>
           <h3 class="car-name">{{ car.name }}</h3>
         </mat-card>

@@ -11,12 +11,11 @@ import {Gearbox} from '../../../../models/gearbox.model';
 import {FuelService} from '../../../../services/fuel.service';
 import {Fuel} from '../../../../models/fuel.model';
 import {CarService} from '../../../../services/car.service';
-import {ActivatedRoute, Router, UrlTree} from '@angular/router';
+import {ActivatedRoute, Params, Router, UrlTree} from '@angular/router';
 import {DialogService} from '../../../../services/dialog.service';
 import {DeactivateComponent} from '../../../../services/guards/deactivate/deactivate.guard';
 import {Observable} from 'rxjs';
-import {AlertState} from '../../../../shared/alert-state';
-import {tick} from '@angular/core/testing';
+import {Car} from '../../../../models/car.model';
 
 @Component({
   selector: 'app-create-car',
@@ -30,8 +29,6 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
   private _formData: FormData = new FormData();
   private _classList: CarClass[] = [];
 
-  localImgPaths: string[] = [];
-
   basicDataForm: FormGroup;
   engineForm: FormGroup;
   carDimensionsForm: FormGroup;
@@ -43,6 +40,8 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
   driveTypeList: Drive[];
   gearboxList: Gearbox[];
   fuelList: Fuel[];
+
+  localImgPaths: string[] = [];
 
   constructor(private classService: CarClassService,
               private typeService: CarTypeService,
@@ -69,29 +68,16 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
     this.getAllClasses(this.carClassList);
     this.route.queryParams.subscribe(async params => {
       // Set the default selected car class if query parameter of class was passed
-      if (params['class']) {
-        try {
-          const carClass = await this.classService.getCarClassFromId(params['class']);
-          if (carClass) {
-            this.basicDataForm.get('carClass').setValue(carClass.id);
-          }
-        } catch (err) {
-          this.dialogService.openAlertDialog({
-            title: 'Invalid car-class id parameter',
-            body: 'Car-class will not be preselected because the passed car-class id is invalid. Do you wish to continue anyways?'
-          }, true).subscribe(result => {
-            if (!result) {
-              this.onNavigate(['../']);
-            }
-          });
-        }
-      }
+      await this.setDefaultClass(params);
+      // Pre-populate all form fields
+      await this.setDefaultCarValues(params);
     })
+    this.fieldsAreEmpty;
   }
 
   canDeactivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (!this._canExit) {
-      return this.dialogService.openAlertDialog(
+    if (!this.canLeave) {
+      return this.dialogService.openChoiceDialog(
         {title: 'Are you sure you want to exit?', body: 'Are you sure you want to exit this page without saving?'}
       ).toPromise().then(result => {
         return result;
@@ -101,56 +87,30 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
   }
 
   async onCrateCar(): Promise<void> {
-    // Basic Data
-    const carName: string = this.basicDataForm.get('name').value;
-    const carClass: string = this.basicDataForm.get('carClass').value;
-    const carType: string = this.basicDataForm.get('carType').value
-    const drive: string = this.basicDataForm.get('drive').value;
-    const gearbox: string = this.basicDataForm.get('gearbox').value;
-    // Engine Data
-    const fuel: string = this.engineForm.get('fuel').value;
-    const kilowatts: number = this.engineForm.get('kilowatts').value;
-    const torque: number = this.engineForm.get('torque').value;
-    const volume: number = this.engineForm.get('volume').value;
-    // Dimension Data
-    const length: number = this.carDimensionsForm.get('length').value;
-    const height: number = this.carDimensionsForm.get('height').value;
-    const width: number = this.carDimensionsForm.get('width').value;
-    const weight: number = this.carDimensionsForm.get('weight').value;
-    // Extra Data
-    const basePrice: number = this.extraDataForm.get('basePrice').value;
-    const topSpeed: number = this.extraDataForm.get('topSpeed').value;
-    const doors: number = this.extraDataForm.get('doors').value;
-    const releaseDate: Date = this.extraDataForm.get('releaseDate').value;
-    // Image names
-    const imageNames: string[] = [];
-    this.imageFormArray.controls.forEach(el => {
-      imageNames.push(el.get('name').value);
-    });
-
+    const formsData = this.formsData;
     const carObj = {
       car: {
-        'class': carClass,
-        type: carType,
-        fuel: fuel,
+        'class': formsData.basic.carClass,
+        type: formsData.basic.carType,
+        fuel: formsData.engine.fuel,
         engine: {
-          kilowatts: kilowatts,
-          torque: torque,
-          volume: volume
+          kilowatts: formsData.engine.kilowatts,
+          torque: formsData.engine.torque,
+          volume: formsData.engine.volume
         },
-        drive: drive,
-        gearbox: gearbox,
-        name: carName,
-        releaseYear: releaseDate,
-        doors: doors,
-        weight: weight,
-        height: height,
-        length: length,
-        width: width,
-        topSpeed: topSpeed,
-        basePrice: basePrice
+        drive: formsData.basic.drive,
+        gearbox: formsData.basic.gearbox,
+        name: formsData.basic.carName,
+        releaseYear: formsData.extra.releaseDate,
+        doors: formsData.extra.doors,
+        weight: formsData.dimensions.weight,
+        height: formsData.dimensions.height,
+        length: formsData.dimensions.length,
+        width: formsData.dimensions.width,
+        topSpeed: formsData.extra.topSpeed,
+        basePrice: formsData.extra.basePrice
       },
-      imageNames: imageNames
+      imageNames: formsData.imageNames
     }
     // Append JSON data
     this._formData.append('data', JSON.stringify(carObj));
@@ -187,7 +147,7 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
   }
 
   onRemoveImage(index: number): void {
-    this.dialogService.openAlertDialog({
+    this.dialogService.openChoiceDialog({
       title: 'Delete Image',
       body: 'Are you sure you want to delete this image?'
     }).subscribe(result => {
@@ -213,6 +173,125 @@ export class CreateCarComponent implements OnInit, DeactivateComponent {
 
   get classList(): CarClass[] {
     return [...this._classList];
+  }
+
+  private async setDefaultClass(params: Params) {
+    if (params['class']) {
+      try {
+        const carClass = await this.classService.getCarClassFromId(params['class']);
+        if (carClass) {
+          this.basicDataForm.get('carClass').setValue(carClass.id);
+        }
+      } catch (err) {
+        this.dialogService.openMessageDialog({
+          title: 'Invalid car-class id parameter',
+          body: 'Car-class will not be preselected because the passed car-class id is invalid. Do you wish to continue anyways?'
+        });
+      }
+    }
+  }
+
+  private async setDefaultCarValues(params: Params) {
+    if (params['car']) {
+      try {
+        const car: Car = await this.carService.getCarFromId(params['car']);
+        if (car) {
+
+        }
+      }
+      catch (err) {
+        this.dialogService.openMessageDialog({
+          title: 'Invalid car-id parameter',
+          body: 'Form values will not be pre-populated because the passed car-id is invalid. Do you wish to continue anyways?'
+        });
+      }
+    }
+  }
+
+  private get canLeave(): boolean {
+    return (this._canExit || this.fieldsAreEmpty);
+  }
+  // Return an object containing values of every form control
+  private get formsData() {
+    const carName: string = this.basicDataForm.get('name').value;
+    const carClass: string = this.basicDataForm.get('carClass').value;
+    const carType: string = this.basicDataForm.get('carType').value
+    const drive: string = this.basicDataForm.get('drive').value;
+    const gearbox: string = this.basicDataForm.get('gearbox').value;
+    // Engine Data
+    const fuel: string = this.engineForm.get('fuel').value;
+    const kilowatts: number = this.engineForm.get('kilowatts').value;
+    const torque: number = this.engineForm.get('torque').value;
+    const volume: number = this.engineForm.get('volume').value;
+    // Dimension Data
+    const length: number = this.carDimensionsForm.get('length').value;
+    const height: number = this.carDimensionsForm.get('height').value;
+    const width: number = this.carDimensionsForm.get('width').value;
+    const weight: number = this.carDimensionsForm.get('weight').value;
+    // Extra Data
+    const basePrice: number = this.extraDataForm.get('basePrice').value;
+    const topSpeed: number = this.extraDataForm.get('topSpeed').value;
+    const doors: number = this.extraDataForm.get('doors').value;
+    const releaseDate: Date = this.extraDataForm.get('releaseDate').value;
+    // Image names
+    const imageNames: string[] = [];
+    this.imageFormArray.controls.forEach(el => {
+      imageNames.push(el.get('name').value);
+    });
+
+    return {
+      basic: {
+        carName,
+        carClass,
+        carType,
+        drive,
+        gearbox
+      },
+      engine: {
+        fuel,
+        kilowatts,
+        torque,
+        volume
+      },
+      dimensions: {
+        length,
+        height,
+        width,
+        weight
+      },
+      extra: {
+        basePrice,
+        topSpeed,
+        doors,
+        releaseDate
+      },
+      imageNames
+    }
+    ;
+
+  }
+  // Returns true if all formControls are empty (have no value)
+  private get fieldsAreEmpty(): boolean {
+    let canLeave: boolean = true;
+    Object.keys(this.basicDataForm.controls).forEach(key => {
+      if (this.basicDataForm.get(key).value !== null && this.basicDataForm.get(key).value != '') {
+        canLeave = false;
+      }
+    });
+    Object.keys(this.engineForm.controls).forEach(key => {
+      if (this.engineForm.get(key).value !== null && this.engineForm.get(key).value != '') {
+        canLeave = false;
+      }
+    })
+    Object.keys(this.carDimensionsForm.controls).forEach(key => {
+      if (this.carDimensionsForm.get(key).value !== null && this.carDimensionsForm.get(key).value != '')
+        canLeave = false;
+    });
+    Object.keys(this.extraDataForm.controls).forEach(key => {
+      if (this.extraDataForm.get(key).value !== null && this.extraDataForm.get(key).value != '')
+        canLeave = false;
+    });
+    return canLeave;
   }
 
   private onNavigate(path: string[]) {

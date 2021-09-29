@@ -12,8 +12,8 @@ const routes: Routes = [
       { path: '', component: ControlPanelComponent },
       { path: 'cars', children: [
           { path: '', component: CarControlComponent },
-          { path: 'create', component: CreateCarComponent, canDeactivate: [DeactivateGuard] }
-      ]}
+          { path: 'create', component: CreateCarComponent, canDeactivate: [DeactivateGuard] },
+      ]},
   ], canActivate: [AuthGuard, AdminGuard]}
 ];
 

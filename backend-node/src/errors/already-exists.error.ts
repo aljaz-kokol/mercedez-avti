@@ -12,7 +12,7 @@ export class ResourceAlreadyExistsError extends CustomError {
         this.statusCode = 409;
         this.message = message;
         this.data = data;
-        
+
     }
 
 }

@@ -1,0 +1,36 @@
+name: Build Angular App
+
+on:
+  push:
+    branches:
+      - master  # Specify the branch you want to trigger the workflow on push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Specify the Node.js version you need
+
+      - name: Navigate to frontend-angular directory
+        run: cd frontend-angular
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: frontend-angular
+
+      - name: Build Angular app
+        run: npm run build
+        working-directory: frontend-angular
+
+      - name: Upload production-ready build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: frontend-angular/dist/  # Specify the path to your build output directory

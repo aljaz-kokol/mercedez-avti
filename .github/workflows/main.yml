@@ -3,10 +3,10 @@ name: Build Angular App
 on:
   push:
     branches:
-      - master  # Specify the branch you want to trigger the workflow on push
+      - master
 
 jobs:
-  build:
+  build-linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,21 +16,52 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Specify the Node.js version you need
-
-      - name: Navigate to frontend-angular directory
-        run: cd frontend-angular
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install --force
+        working-directory: frontend-angular
+
+      - name: Run linter
+        run: npm run lint
         working-directory: frontend-angular
 
       - name: Build Angular app
         run: npm run build
         working-directory: frontend-angular
 
-      - name: Upload production-ready build artifacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build-artifacts
-          path: frontend-angular/dist/  # Specify the path to your build output directory
+          name: linux-build-artifacts
+          path: frontend-angular/dist/
+
+  build-macos:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install --force
+        working-directory: frontend-angular
+
+      - name: Run linter
+        run: npm run lint
+        working-directory: frontend-angular
+
+      - name: Build Angular app
+        run: npm run build
+        working-directory: frontend-angular
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos-build-artifacts
+          path: frontend-angular/dist/

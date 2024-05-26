@@ -22,9 +22,9 @@ jobs:
         run: npm install --force
         working-directory: frontend-angular
 
-      - name: Run linter
-        run: npm run lint
-        working-directory: frontend-angular
+      - name: Run tests
+        run: npm run test
+        working-directory: backend-node
 
       - name: Build Angular app
         run: npm run build
@@ -52,9 +52,9 @@ jobs:
         run: npm install --force
         working-directory: frontend-angular
 
-      - name: Run linter
-        run: npm run lint
-        working-directory: frontend-angular
+      - name: Run tests
+        run: npm run test
+        working-directory: backend-node
 
       - name: Build Angular app
         run: npm run build
